@@ -77,7 +77,9 @@
   };
 
   /* ---------- cart ---------- */
-  var cart = store.get('cart', []).filter(function (l) { return byId[l.p] && variantOf(l.p, l.v) && l.q > 0; });
+  // Older versions of the site stored the cart in a different shape. Anything unexpected is discarded.
+  var cartRaw = store.get('cart', []);
+  var cart = (Array.isArray(cartRaw) ? cartRaw : []).filter(function (l) { return l && byId[l.p] && variantOf(l.p, l.v) && l.q > 0; });
   function variantOf(pid, vid) { var p = byId[pid]; if (!p) return null; for (var i = 0; i < p.variants.length; i++) if (p.variants[i].id === vid) return p.variants[i]; return null; }
   function inCart(pid) { return cart.reduce(function (a, l) { return a + (l.p === pid ? l.q : 0); }, 0); }
   function saveCart() { store.set('cart', cart); var n = cart.reduce(function (a, l) { return a + l.q; }, 0); $$('.cart-count').forEach(function (e) { e.textContent = n; }); if ($('#grid')) renderGrid(); }
@@ -415,7 +417,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    gate(); nav(); themeToggle(); renderGrid(); filters(); drawer(); hero(); reveal(); contact(); saveCart();
+    [gate, nav, themeToggle, renderGrid, filters, drawer, hero, reveal, contact, saveCart].forEach(function (fn) { try { fn(); } catch (e) { if (window.console) console.error('Asanoha:', fn.name, e); } });
   });
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
