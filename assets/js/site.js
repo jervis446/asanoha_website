@@ -14,6 +14,8 @@
     // Until then, sign-ups open a pre-filled email to orderEmail so nobody is lost.
     newsletterAction: '',
     newsletterField: 'fields[email]',
+    // Without MailerLite, sign-ups are delivered to this inbox through FormSubmit (free, no account).
+    newsletterInbox: 'orders@asanoha.co.in',
     // Free gift added to every order. Set to '' to switch it off everywhere in the cart and order message.
     gift: 'Asanoha rolling paper booklet (1 per order)'
   };
@@ -424,14 +426,20 @@
       var em = f.email.value.trim(), msg = $('#nl-msg');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { msg.textContent = 'That email looks a little off. Try again?'; f.email.focus(); return; }
       var done = function () { f.reset(); msg.textContent = 'You\u2019re in. Check your inbox for a hello from us.'; store.set('subscribed', true); };
+      var btn = f.querySelector('button'); btn.disabled = true; msg.textContent = 'Adding you to the list\u2026';
+      var fail = function () { msg.textContent = 'Could not reach the server. Please try again in a minute.'; };
+      var req;
       if (CONFIG.newsletterAction) {
         var fd = new FormData(); fd.append(CONFIG.newsletterField, em); fd.append('ml-submit', '1'); fd.append('anticsrf', 'true');
-        f.querySelector('button').disabled = true;
-        fetch(CONFIG.newsletterAction, { method: 'POST', body: fd, mode: 'no-cors' }).then(done).catch(function () { msg.textContent = 'Could not reach the server. Please try again in a minute.'; }).then(function () { f.querySelector('button').disabled = false; });
+        req = fetch(CONFIG.newsletterAction, { method: 'POST', body: fd, mode: 'no-cors' }).then(done);
       } else {
-        location.href = 'mailto:' + CONFIG.orderEmail + '?subject=' + encodeURIComponent('Subscribe me to the Asanoha newsletter') + '&body=' + encodeURIComponent('Please add ' + em + ' to the Asanoha newsletter. I am 18 or older.');
-        done();
+        req = fetch('https://formsubmit.co/ajax/' + CONFIG.newsletterInbox, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ email: em, source: location.pathname, _subject: 'New newsletter subscriber: ' + em, _template: 'table', _captcha: 'false',
+            _autoresponse: 'Thanks for joining the Asanoha list. We will write when the halves go live, about once a month, and never spam you. Reply UNSUBSCRIBE anytime to leave. Aadha tera, aadha mera.' })
+        }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { if (j && (j.success === false || j.success === 'false')) throw new Error(j.message || 'not activated'); done(); });
       }
+      req.catch(fail).then(function () { btn.disabled = false; });
     });
   }
   function partnerForm() {
