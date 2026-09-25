@@ -427,7 +427,7 @@
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { msg.textContent = 'That email looks a little off. Try again?'; f.email.focus(); return; }
       var done = function () { f.reset(); msg.textContent = 'You\u2019re in. Check your inbox for a hello from us.'; store.set('subscribed', true); };
       var btn = f.querySelector('button'); btn.disabled = true; msg.textContent = 'Adding you to the list\u2026';
-      var fail = function () { msg.textContent = 'Could not reach the server. Please try again in a minute.'; };
+      var fail = function (err) { if (window.console) console.error('Newsletter:', err); msg.textContent = /activat/i.test(String(err && err.message)) ? 'Almost ready: the newsletter inbox still needs a one-time activation. Please try again later.' : 'Could not add you right now (' + String((err && err.message) || 'network error').slice(0, 80) + '). Please try again in a minute.'; };
       var req;
       if (CONFIG.newsletterAction) {
         var fd = new FormData(); fd.append(CONFIG.newsletterField, em); fd.append('ml-submit', '1'); fd.append('anticsrf', 'true');
@@ -439,8 +439,21 @@
             _autoresponse: 'Thanks for joining the Asanoha list. We will write when the halves go live, about once a month, and never spam you. Reply UNSUBSCRIBE anytime to leave. Aadha tera, aadha mera.' })
         }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { if (j && (j.success === false || j.success === 'false')) throw new Error(j.message || 'not activated'); done(); });
       }
-      req.catch(fail).then(function () { btn.disabled = false; });
+      req.catch(function (err) {
+        // Some browsers and ad blockers stop cross-site fetch. Fall back to a plain form post, which they allow.
+        if (!CONFIG.newsletterAction && /fetch|network|load failed/i.test(String(err && err.message))) { postViaIframe(em); done(); }
+        else fail(err);
+      }).then(function () { btn.disabled = false; });
     });
+  }
+  function postViaIframe(em) {
+    var name = 'nl-sink', frame = document.querySelector('iframe[name="' + name + '"]');
+    if (!frame) { frame = document.createElement('iframe'); frame.name = name; frame.title = 'Newsletter'; frame.style.display = 'none'; document.body.appendChild(frame); }
+    var form = document.createElement('form'); form.method = 'POST'; form.target = name; form.action = 'https://formsubmit.co/' + CONFIG.newsletterInbox; form.style.display = 'none';
+    var add = function (k, v) { var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; form.appendChild(i); };
+    add('email', em); add('_subject', 'New newsletter subscriber: ' + em); add('_template', 'table'); add('_captcha', 'false');
+    add('_autoresponse', 'Thanks for joining the Asanoha list. We will write when the halves go live, about once a month, and never spam you. Reply UNSUBSCRIBE anytime to leave. Aadha tera, aadha mera.');
+    document.body.appendChild(form); form.submit(); setTimeout(function () { form.remove(); }, 2000);
   }
   function partnerForm() {
     var f = $('#partner-form'); if (!f) return;
