@@ -10,6 +10,10 @@
     freeShippingFrom: 1299,
     // true = prices are blurred on the site and left out of the order message. Set false to show real prices.
     hidePrices: true,
+    // Newsletter: paste your MailerLite embedded-form action URL here (it ends in /subscribe).
+    // Until then, sign-ups open a pre-filled email to orderEmail so nobody is lost.
+    newsletterAction: '',
+    newsletterField: 'fields[email]',
     // Free gift added to every order. Set to '' to switch it off everywhere in the cart and order message.
     gift: 'Asanoha rolling paper booklet (1 per order)'
   };
@@ -67,7 +71,7 @@
   function money(n) {
     if (!CONFIG.hidePrices) return inr(n);
     var fake = '\u20B9' + String(Math.round(n)).replace(/\d/g, '8').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return '<span class="blurprice" title="Shared after your prescription check"><span class="bp-num" aria-hidden="true">' + fake + '</span><span class="sr">Price shared after your prescription check</span></span>';
+    return '<span class="blurprice" title="Revealed at launch"><span class="bp-num" aria-hidden="true">' + fake + '</span><span class="sr">Price revealed at launch</span></span>';
   }
   var waReady = /^\d{10,15}$/.test(CONFIG.whatsapp);
 
@@ -124,7 +128,7 @@
         '<div class="body"><span class="badge ' + p.dose + '">' + DOSE[p.dose].name + ' dose</span>' +
         '<h3>' + esc(p.name) + '</h3><p class="meta">' + esc(p.short) + '. ' + esc(p.story || STORY[p.dose]) + '</p>' +
         (inCart(p.id) ? '<span class="incart">\u2713 ' + inCart(p.id) + ' in your cart</span>' : '') +
-        '<div class="row"><span class="price">' + (p.variants.length > 1 && !CONFIG.hidePrices ? '<small>from </small>' : '') + money(from) + (CONFIG.hidePrices ? '<span class="lockchip">\uD83D\uDD12 after Rx check</span>' : '') + '</span>' +
+        '<div class="row"><span class="price">' + (p.variants.length > 1 && !CONFIG.hidePrices ? '<small>from </small>' : '') + money(from) + (CONFIG.hidePrices ? '<span class="lockchip">\uD83D\uDD12 after launch</span>' : '') + '</span>' +
         '<button class="btn small clay" data-open="' + p.id + '">' + (inCart(p.id) ? 'Add more' : 'Choose') + '</button></div></div></article>';
     }).join('');
   }
@@ -238,7 +242,7 @@
       return '<div class="line"><img src="' + p.img + '" alt=""><div><b>' + esc(p.name) + '</b><small>' + esc(v.label) + '</small><small>' + DOSE[p.dose].name + ' dose \u00B7 ' + money(v.price) + '</small><button class="rm" data-rm="' + i + '">Remove</button></div>' +
         '<div class="qty" role="group" aria-label="Quantity for ' + esc(p.name) + '"><button data-dq="-1" data-i="' + i + '" aria-label="One less">\u2212</button><output>' + l.q + '</output><button data-dq="1" data-i="' + i + '" aria-label="One more">+</button></div></div>';
     }).join('');
-    foot.innerHTML = (CONFIG.hidePrices ? '<p class="hint" style="margin:0">\uD83D\uDD12 Your price and delivery charge are shared with the payment link, right after we check your prescription.</p>' : '') +
+    foot.innerHTML = (CONFIG.hidePrices ? '<p class="hint" style="margin:0">\uD83D\uDD12 Prices go live at launch. Send your order now and we\u2019ll confirm the price and delivery charge before you pay.</p>' : '') +
       (CONFIG.hidePrices ? '' : '<div class="sum"><span>Subtotal</span><span>' + money(s) + '</span></div><div class="sum"><span>Delivery</span><span>' + (sh ? money(sh) : 'Free') + '</span></div>') +
       (sh && !CONFIG.hidePrices ? '<p class="hint" style="margin:0">Free delivery from ' + money(CONFIG.freeShippingFrom) + '.</p>' : '') +
       (CONFIG.gift ? '<div class="gift-line"><span aria-hidden="true">\uD83C\uDF81</span>Free with this order: ' + esc(CONFIG.gift) + '</div>' : '') +
@@ -263,7 +267,7 @@
     var now = new Date(), id = 'ASN-' + String(now.getFullYear()).slice(2) + ('0' + (now.getMonth() + 1)).slice(-2) + ('0' + now.getDate()).slice(-2) + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
     var s = subtotal(), sh = shippingFor(s);
     var lines = cart.map(function (l) { var p = byId[l.p], v = variantOf(l.p, l.v); return '\u2022 ' + p.name + ' (' + DOSE[p.dose].name + ' dose), ' + v.label + ' x ' + l.q + (CONFIG.hidePrices ? '' : ' = ' + inr(v.price * l.q)); });
-    var text = 'Hi Asanoha, new order ' + id + '\n\n' + lines.join('\n') + (CONFIG.gift ? '\n\u2022 Free gift: ' + CONFIG.gift : '') + (CONFIG.hidePrices ? '\n\nPlease share the price and payment link after checking my prescription.' : '\n\nSubtotal: ' + inr(s) + '\nDelivery: ' + (sh ? inr(sh) : 'Free') + '\nTotal: ' + inr(s + sh)) +
+    var text = 'Hi Asanoha, new order ' + id + '\n\n' + lines.join('\n') + (CONFIG.gift ? '\n\u2022 Free gift: ' + CONFIG.gift : '') + (CONFIG.hidePrices ? '\n\nPlease confirm the price and send a payment link once you launch.' : '\n\nSubtotal: ' + inr(s) + '\nDelivery: ' + (sh ? inr(sh) : 'Free') + '\nTotal: ' + inr(s + sh)) +
       '\n\nName: ' + d.name + '\nPhone: ' + d.phone + (d.email ? '\nEmail: ' + d.email : '') + '\nAddress: ' + d.addr + ', ' + d.city + ' - ' + d.pin +
       '\nPrescription: ' + (rx === 'upload' ? 'attached (' + file.name + ')' : 'need a consultation') +
       (f.slam.value.trim() ? '\nSlam book line: ' + f.slam.value.trim() + (f.print.checked ? ' (ok to print)' : ' (do not print)') : '');
@@ -403,6 +407,48 @@
     };
   })();
 
+
+  /* ---------- launch banner ---------- */
+  function launchBar() {
+    var b = $('#launch-bar'); if (!b) return;
+    if (store.get('launchBarClosed', false)) { b.remove(); return; }
+    b.hidden = false;
+    $('#launch-x').addEventListener('click', function () { store.set('launchBarClosed', true); b.remove(); });
+  }
+
+  /* ---------- newsletter + partner forms ---------- */
+  function newsletter() {
+    var f = $('#nl-form'); if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var em = f.email.value.trim(), msg = $('#nl-msg');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { msg.textContent = 'That email looks a little off. Try again?'; f.email.focus(); return; }
+      var done = function () { f.reset(); msg.textContent = 'You\u2019re in. Check your inbox for a hello from us.'; store.set('subscribed', true); };
+      if (CONFIG.newsletterAction) {
+        var fd = new FormData(); fd.append(CONFIG.newsletterField, em); fd.append('ml-submit', '1'); fd.append('anticsrf', 'true');
+        f.querySelector('button').disabled = true;
+        fetch(CONFIG.newsletterAction, { method: 'POST', body: fd, mode: 'no-cors' }).then(done).catch(function () { msg.textContent = 'Could not reach the server. Please try again in a minute.'; }).then(function () { f.querySelector('button').disabled = false; });
+      } else {
+        location.href = 'mailto:' + CONFIG.orderEmail + '?subject=' + encodeURIComponent('Subscribe me to the Asanoha newsletter') + '&body=' + encodeURIComponent('Please add ' + em + ' to the Asanoha newsletter. I am 18 or older.');
+        done();
+      }
+    });
+  }
+  function partnerForm() {
+    var f = $('#partner-form'); if (!f) return;
+    var via = 'wa';
+    $$('button[data-via]', f).forEach(function (b) { b.addEventListener('click', function () { via = b.getAttribute('data-via'); }); });
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = { name: f.name.value.trim(), biz: f.biz.value.trim(), city: f.city.value.trim(), phone: f.phone.value.trim(), type: f.type.value, msg: f.msg.value.trim() };
+      if (!d.name || !d.biz || !d.city || !d.phone) { $('#pf-err').textContent = 'Please fill in your name, business, city and phone.'; return; }
+      var text = 'Hi Asanoha, partnership enquiry\n\nName: ' + d.name + '\nBusiness: ' + d.biz + ' (' + d.type + ')\nCity: ' + d.city + '\nPhone: ' + d.phone + (d.msg ? '\n\n' + d.msg : '');
+      if (via === 'wa' && waReady) window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+      else location.href = 'mailto:' + CONFIG.orderEmail + '?subject=' + encodeURIComponent('Partnership: ' + d.biz) + '&body=' + encodeURIComponent(text);
+      $('#pf-err').textContent = '';
+    });
+  }
+
   /* ---------- hero + reveal ---------- */
   function hero() { var h = $('.hero-art'); if (h) setTimeout(function () { h.classList.add('joined'); }, 350); }
   function reveal() {
@@ -417,7 +463,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    [gate, nav, themeToggle, renderGrid, filters, drawer, hero, reveal, contact, saveCart].forEach(function (fn) { try { fn(); } catch (e) { if (window.console) console.error('Asanoha:', fn.name, e); } });
+    [launchBar, gate, nav, themeToggle, renderGrid, filters, drawer, hero, reveal, contact, saveCart, newsletter, partnerForm].forEach(function (fn) { try { fn(); } catch (e) { if (window.console) console.error('Asanoha:', fn.name, e); } });
   });
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });

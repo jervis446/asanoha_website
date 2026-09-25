@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Dela+Gothic+One&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=Tiro+Devanagari+Sanskrit&display=swap">
 <script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','day');}})();</script>
-<link rel="stylesheet" href="assets/css/site.css?v=9">
+<link rel="stylesheet" href="assets/css/site.css?v=11">
 
 </head>
 <body>
@@ -39,6 +39,10 @@
     <div class="btns"><button class="btn yes" id="gate-yes">Yes, I am 18+</button><button class="btn no" id="gate-no">No</button></div>
     <p id="gate-msg" style="margin-top:18px" hidden>Come back in a few years. We’ll save you half.</p>
   </div>
+</div>
+<div class="launch-bar" id="launch-bar" role="region" aria-label="Announcement" hidden>
+  <p><span class="dot" aria-hidden="true"></span><b>We’re launching soon.</b> <span class="lb-sub">Be the first to know when the halves go live.</span> <a href="./#newsletter">Join the list →</a></p>
+  <button class="lb-x" id="launch-x" aria-label="Dismiss announcement"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
 </div>
 <header class="top">
   <div class="wrap">
@@ -105,7 +109,7 @@
         <img src="assets/img/ayush-badge.svg" alt="AYUSH-licensed manufacturing" width="84" height="84">
       </div>
       <div><h4>Shop</h4><ul><li><a href="./#shop">All products</a></li><li><a href="./#doses">Low, beach</a></li><li><a href="./#doses">Medium, mountain</a></li><li><a href="./#doses">High, rooftop</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="story.html">Our story</a></li><li><a href="./#faq">FAQ</a></li><li><a href="about.html#contact">Contact</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="story.html">Our story</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="partner.html">Partner with us</a></li><li><a href="./#faq">FAQ</a></li><li><a href="about.html#contact">Contact</a></li></ul></div>
       <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy policy</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="terms.html#returns">Shipping and returns</a></li></ul></div>
     </div>
     <div class="legalnote">
@@ -126,6 +130,6 @@
   <div class="panel"><button class="x" id="pm-close" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div id="pm-body" style="display:contents"></div></div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="assets/js/site.js?v=9" defer></script>
+<script src="assets/js/site.js?v=11" defer></script>
 </body>
 </html>
