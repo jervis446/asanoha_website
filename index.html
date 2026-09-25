@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Asanoha Ayurveda · Aadha tera, aadha mera</title>
+<meta name="theme-color" content="#1E2624">
+<meta name="description" content="Asanoha makes Vijaya leaf gummies and oil as Ayurvedic proprietary medicines, packed in pairs for friends. Prescription-based and AYUSH compliant. For adults 18+.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Mitr:wght@600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;600;700;800&family=Tiro+Devanagari+Sanskrit&family=Caveat:wght@500&display=swap">
+<style>
+:root{
+  --ground:#ECE5D8; --paper:#F7F2E9; --ink:#1E2624; --ink-soft:#3A4441; --muted:#5A625F;
+  --clay:#A84B27; --gold:#F0C987; --haldi:#C9962B; --teal:#3F6B66; --line:#C9BFAE;
+  --on-ink:#F4EEE3; --on-ink-soft:#CFC6B6;
+  --serif:Fraunces,Georgia,"Times New Roman",serif; --sans:Manrope,"Helvetica Neue",Helvetica,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#141A19; --paper:#1E2624; --ink:#F4EEE3; --ink-soft:#DDD5C6; --muted:#B3AA9A;
+    --clay:#D2744C; --line:#3A4441; --on-ink:#1E2624; --on-ink-soft:#3A4441;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#141A19; --paper:#1E2624; --ink:#F4EEE3; --ink-soft:#DDD5C6; --muted:#B3AA9A;
+  --clay:#D2744C; --line:#3A4441; --on-ink:#1E2624; --on-ink-soft:#3A4441;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--haldi);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--ground);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.mark b{font-family:"Dela Gothic One",var(--sans);font-weight:400;font-size:24px}
+.mark sup{font-size:11px;font-weight:600}
+.dot{width:26px;height:26px;border-radius:50%;background:linear-gradient(90deg,var(--clay) 50%,var(--gold) 50%)}
+.cart-btn{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:22px;border:2px solid var(--ink);background:transparent;cursor:pointer;font-weight:700}
+.cart-btn .count{min-width:24px;height:24px;border-radius:12px;background:var(--clay);color:#fff;font-size:13px;display:grid;place-items:center;padding:0 6px}
+
+/* hero */
+.hero{padding:48px 0 40px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,7vw,76px);line-height:1.02;margin:0 0 18px;letter-spacing:-.01em}
+.hero p{max-width:34ch;margin:0 0 26px;color:var(--ink-soft);font-size:18px}
+.hero .hindi{font-family:"Tiro Devanagari Sanskrit",serif;color:var(--haldi);font-size:20px;margin:0 0 8px}
+.cta{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;border-radius:24px;background:var(--ink);color:var(--ground);font-weight:700;text-decoration:none;border:0;cursor:pointer}
+.halves{position:relative;max-width:440px;width:100%;justify-self:center}
+.hero-mark{width:100%;height:auto;display:block}
+.hero-mark .half-l,.hero-mark .half-r{transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.hero-mark .half-l{transform:translateX(-46px)} .hero-mark .half-r{transform:translateX(46px)}
+.halves.joined .half-l,.halves.joined .half-r{transform:none}
+.lock{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:6px}
+.lock b{font-family:"Dela Gothic One",var(--sans);font-weight:400;font-size:clamp(34px,5vw,48px);line-height:1}
+@media (prefers-reduced-motion: reduce){.hero-mark .half-l,.hero-mark .half-r{transition:none}}
+
+/* shop */
+.shop{padding:24px 0 56px}
+.shop-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;margin-bottom:22px}
+.shop-head h2{font-family:var(--serif);font-weight:600;font-size:34px;margin:0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{min-height:44px;padding:0 18px;border-radius:22px;border:1.5px solid var(--line);background:transparent;cursor:pointer;font-weight:600}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.prod{background:var(--paper);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
+.prod .art{background:#1E2624;aspect-ratio:4/3;display:grid;place-items:center;padding:18px}
+.prod .body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:6px;flex-grow:1}
+.prod h3{font-family:var(--serif);font-weight:600;font-size:22px;margin:0;line-height:1.2}
+.prod .meta{color:var(--muted);font-size:14px;margin:0}
+.prod .note{font-family:Caveat,cursive;font-size:20px;color:var(--clay);margin:2px 0 6px;line-height:1.2}
+.prod .row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:10px}
+.price{font-weight:800;font-size:20px}
+.add{min-height:44px;padding:0 18px;border-radius:22px;background:var(--clay);color:#fff;border:0;font-weight:700;cursor:pointer}
+.add:active{transform:scale(.97)}
+.flav{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* slam */
+.slam{padding:0 0 56px}
+.slam .card{background:#1E2624;color:#F4EEE3;border-radius:26px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.slam h2{font-family:var(--serif);font-weight:600;font-size:32px;margin:0 0 10px;color:#F4EEE3}
+.slam p{margin:0;color:#CFC6B6;max-width:40ch}
+.page{background:#F7F2E9;color:#1E2624;border-radius:14px;padding:18px 20px;transform:rotate(-1.5deg)}
+.page div{display:flex;gap:10px;align-items:baseline;border-bottom:1px dashed #9A9285;padding:6px 0}
+.page span{font-size:13px;color:#5A625F;width:118px;flex-shrink:0}
+.page i{font-family:Caveat,cursive;font-style:normal;font-size:22px;color:#A84B27;line-height:1.1}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:28px 0 40px;font-size:13px;color:var(--muted)}
+footer p{margin:0 0 6px;max-width:80ch}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(20,26,25,.5);opacity:0;pointer-events:none;transition:opacity .25s;z-index:30}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--paper);z-index:31;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer.open{transform:none}
+@media (prefers-reduced-motion: reduce){.drawer,.scrim{transition:none}}
+.d-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.d-head h2{font-family:var(--serif);font-weight:600;font-size:24px;margin:0}
+.x{width:44px;height:44px;border-radius:22px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center}
+.d-body{flex-grow:1;overflow-y:auto;padding:16px 20px}
+.line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.line .thumb{width:64px;height:64px;border-radius:12px;background:#1E2624;display:grid;place-items:center;padding:6px}
+.line b{display:block;font-size:15px}
+.line small{color:var(--muted)}
+.qty{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:22px}
+.qty button{width:44px;height:44px;border:0;background:transparent;cursor:pointer;font-size:18px;font-weight:700}
+.qty output{min-width:18px;text-align:center;font-weight:700}
+.empty{padding:40px 0;text-align:center;color:var(--muted)}
+.empty .cta{margin-top:14px}
+.d-foot{border-top:1px solid var(--line);padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.sum{display:flex;justify-content:space-between;font-size:15px}
+.sum.total{font-weight:800;font-size:18px}
+.wide{width:100%;justify-content:center}
+.form{display:flex;flex-direction:column;gap:14px}
+.form label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600}
+.form input[type=text],.form input[type=tel],.form textarea{min-height:44px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--ground)}
+.form textarea{min-height:80px;font-family:Caveat,cursive;font-size:22px;resize:vertical}
+.form .check{flex-direction:row;align-items:flex-start;gap:10px;font-weight:500}
+.form .check input{width:22px;height:22px;margin-top:2px;flex-shrink:0;accent-color:var(--clay)}
+.hint{font-size:13px;color:var(--muted);font-weight:500}
+.err{color:#B3261E;font-size:14px;font-weight:600;min-height:1em}
+.done{text-align:center;padding:36px 8px}
+.done h3{font-family:var(--serif);font-size:28px;margin:14px 0 8px}
+
+/* age gate */
+.gate{position:fixed;inset:0;z-index:50;background:#1E2624;color:#F4EEE3;display:none;align-items:center;justify-content:center;padding:24px}
+.gate.show{display:flex}
+.gate .box{max-width:420px;text-align:center}
+.gate h2{font-family:var(--serif);font-weight:600;font-size:30px;margin:18px 0 10px}
+.gate p{color:#CFC6B6;margin:0 0 22px}
+.gate .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.gate .yes{background:#F0C987;color:#1E2624}
+.gate .no{background:transparent;color:#F4EEE3;border:2px solid #F4EEE3}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:var(--ink);color:var(--ground);padding:12px 20px;border-radius:22px;font-weight:700;z-index:40;transition:transform .25s}
+.toast.show{transform:translate(-50%,0)}
+
+
+/* legal views */
+footer nav{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 14px}
+footer nav a{color:var(--ink);font-weight:700;font-size:14px}
+.legal{position:fixed;inset:0;z-index:35;background:var(--ground);overflow-y:auto;display:none;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.legal.open{display:block}
+.legal .bar{position:sticky;top:0;background:var(--ground);border-bottom:1px solid var(--line)}
+.legal .bar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.legal article{max-width:720px;margin:0 auto;padding:32px 20px 64px}
+.legal h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5vw,44px);margin:0 0 6px}
+.legal h2{font-family:var(--serif);font-weight:600;font-size:21px;margin:30px 0 8px}
+.legal p{margin:0 0 10px;color:var(--ink-soft)}
+.legal .upd{color:var(--muted);font-size:14px;margin-bottom:20px}
+
+@media (max-width:760px){
+  .hero .wrap{grid-template-columns:1fr}
+  .halves{max-width:280px;order:-1}
+  .slam .card{grid-template-columns:1fr;padding:24px}
+}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-t">
+  <div class="box">
+    <svg class="" width="84" height="84" viewBox="-230 -230 460 460" aria-hidden="true"><circle cx="0" cy="0" r="188" fill="#ECE5D8"></circle><circle cx="0" cy="0" r="188" fill="none" stroke="#C9962B" stroke-width="1.5" stroke-opacity="0.7"></circle><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(0)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(10)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(20)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(30)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(40)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(50)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(60)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(70)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(80)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(90)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(100)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(110)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(120)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(130)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(140)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(150)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(160)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(170)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(180)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(190)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(200)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(210)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(220)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(230)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(240)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(250)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(260)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(270)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(280)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(290)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(300)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(310)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(320)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(330)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(340)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(350)" fill="#C9962B"></path>
+<defs><clipPath id="lhg"><rect x="-260" y="-260" width="260" height="520"></rect></clipPath><clipPath id="rhg"><rect x="0" y="-260" width="260" height="520"></rect></clipPath></defs>
+<g transform="translate(0,70)">
+<g clip-path="url(#lhg)"><rect x="-5" y="0" width="10" height="70" rx="5" fill="#1E2624"></rect><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(-78)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(-78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(-52)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(-52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(-26)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(-26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.6 -9.7 L8.5 -19.4 L13.5 -29.2 L13.7 -38.9 L18.0 -48.6 L16.1 -58.3 L19.2 -68.1 L15.9 -77.8 L17.5 -87.5 L13.3 -97.2 L13.5 -106.9 L9.3 -116.7 L8.1 -126.4 L4.4 -136.1 L2.1 -145.8 L0.0 -155.6 L0.0 -165.3 L0.0 -175.0 L-0.0 -175.0 L-0.0 -165.3 L-0.0 -155.6 L-2.1 -145.8 L-4.4 -136.1 L-8.1 -126.4 L-9.3 -116.7 L-13.5 -106.9 L-13.3 -97.2 L-17.5 -87.5 L-15.9 -77.8 L-19.2 -68.1 L-16.1 -58.3 L-18.0 -48.6 L-13.7 -38.9 L-13.5 -29.2 L-8.5 -19.4 L-5.6 -9.7 L-0.0 -0.0 Z" transform="rotate(0)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-149" transform="rotate(0)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(26)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(52)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(78)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line></g>
+<g clip-path="url(#rhg)"><rect x="-5" y="0" width="10" height="70" rx="5" fill="#1E2624"></rect><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(-78)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(-78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(-52)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(-52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(-26)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(-26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.6 -9.7 L8.5 -19.4 L13.5 -29.2 L13.7 -38.9 L18.0 -48.6 L16.1 -58.3 L19.2 -68.1 L15.9 -77.8 L17.5 -87.5 L13.3 -97.2 L13.5 -106.9 L9.3 -116.7 L8.1 -126.4 L4.4 -136.1 L2.1 -145.8 L0.0 -155.6 L0.0 -165.3 L0.0 -175.0 L-0.0 -175.0 L-0.0 -165.3 L-0.0 -155.6 L-2.1 -145.8 L-4.4 -136.1 L-8.1 -126.4 L-9.3 -116.7 L-13.5 -106.9 L-13.3 -97.2 L-17.5 -87.5 L-15.9 -77.8 L-19.2 -68.1 L-16.1 -58.3 L-18.0 -48.6 L-13.7 -38.9 L-13.5 -29.2 L-8.5 -19.4 L-5.6 -9.7 L-0.0 -0.0 Z" transform="rotate(0)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-149" transform="rotate(0)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(26)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(52)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(78)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line></g>
+</g>
+</svg>
+    <h2 id="gate-t">Are you 18 or older?</h2>
+    <p>Asanoha products are Ayurvedic proprietary medicines made with Vijaya leaf extract. They are sold only to adults, with a prescription from a registered Ayurvedic practitioner.</p>
+    <div class="btns">
+      <button class="cta yes" id="gate-yes">Yes, I am 18+</button>
+      <button class="cta no" id="gate-no">No</button>
+    </div>
+    <p id="gate-msg" style="margin-top:18px" hidden>This store is for adults only.</p>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Asanoha home"><svg class="" width="34" height="34" viewBox="-230 -230 460 460" aria-hidden="true"><circle cx="0" cy="0" r="188" fill="#ECE5D8"></circle><circle cx="0" cy="0" r="188" fill="none" stroke="#C9962B" stroke-width="1.5" stroke-opacity="0.7"></circle><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(0)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(10)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(20)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(30)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(40)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(50)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(60)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(70)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(80)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(90)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(100)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(110)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(120)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(130)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(140)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(150)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(160)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(170)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(180)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(190)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(200)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(210)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(220)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(230)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(240)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(250)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(260)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(270)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(280)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(290)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(300)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(310)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(320)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(330)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(340)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(350)" fill="#C9962B"></path>
+<defs><clipPath id="lhh"><rect x="-260" y="-260" width="260" height="520"></rect></clipPath><clipPath id="rhh"><rect x="0" y="-260" width="260" height="520"></rect></clipPath></defs>
+<g transform="translate(0,70)">
+<g clip-path="url(#lhh)"><rect x="-5" y="0" width="10" height="70" rx="5" fill="#1E2624"></rect><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(-78)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(-78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(-52)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(-52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(-26)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(-26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.6 -9.7 L8.5 -19.4 L13.5 -29.2 L13.7 -38.9 L18.0 -48.6 L16.1 -58.3 L19.2 -68.1 L15.9 -77.8 L17.5 -87.5 L13.3 -97.2 L13.5 -106.9 L9.3 -116.7 L8.1 -126.4 L4.4 -136.1 L2.1 -145.8 L0.0 -155.6 L0.0 -165.3 L0.0 -175.0 L-0.0 -175.0 L-0.0 -165.3 L-0.0 -155.6 L-2.1 -145.8 L-4.4 -136.1 L-8.1 -126.4 L-9.3 -116.7 L-13.5 -106.9 L-13.3 -97.2 L-17.5 -87.5 L-15.9 -77.8 L-19.2 -68.1 L-16.1 -58.3 L-18.0 -48.6 L-13.7 -38.9 L-13.5 -29.2 L-8.5 -19.4 L-5.6 -9.7 L-0.0 -0.0 Z" transform="rotate(0)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-149" transform="rotate(0)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(26)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(52)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(78)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line></g>
+<g clip-path="url(#rhh)"><rect x="-5" y="0" width="10" height="70" rx="5" fill="#1E2624"></rect><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(-78)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(-78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(-52)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(-52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(-26)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(-26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.6 -9.7 L8.5 -19.4 L13.5 -29.2 L13.7 -38.9 L18.0 -48.6 L16.1 -58.3 L19.2 -68.1 L15.9 -77.8 L17.5 -87.5 L13.3 -97.2 L13.5 -106.9 L9.3 -116.7 L8.1 -126.4 L4.4 -136.1 L2.1 -145.8 L0.0 -155.6 L0.0 -165.3 L0.0 -175.0 L-0.0 -175.0 L-0.0 -165.3 L-0.0 -155.6 L-2.1 -145.8 L-4.4 -136.1 L-8.1 -126.4 L-9.3 -116.7 L-13.5 -106.9 L-13.3 -97.2 L-17.5 -87.5 L-15.9 -77.8 L-19.2 -68.1 L-16.1 -58.3 L-18.0 -48.6 L-13.7 -38.9 L-13.5 -29.2 L-8.5 -19.4 L-5.6 -9.7 L-0.0 -0.0 Z" transform="rotate(0)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-149" transform="rotate(0)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(26)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(52)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(78)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line></g>
+</g>
+</svg><b>asanoha</b><sup>™</sup></a>
+    <button class="cart-btn" id="open-cart" aria-label="Open cart">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.5 12h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      Cart <span class="count" id="count">0</span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="hindi" lang="hi">आधा तेरा, आधा मेरा</p>
+        <h1>Aadha tera, aadha mera.</h1>
+        <p>Full spectrum Vijaya leaf gummies and oil, packed in pairs. One half stays with you. The other goes to the friend who shared your tiffin.</p>
+        <a class="cta" href="#shop">Shop the range</a>
+      </div>
+      <div class="halves" id="halves"><svg class="hero-mark" viewBox="-240 -240 480 480" role="img" aria-label="Asanoha mark: a hemp leaf split in two halves"><circle cx="0" cy="0" r="188" fill="#ECE5D8"></circle><circle cx="0" cy="0" r="188" fill="none" stroke="#C9962B" stroke-width="1.5" stroke-opacity="0.7"></circle><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(0)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(10)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(20)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(30)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(40)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(50)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(60)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(70)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(80)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(90)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(100)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(110)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(120)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(130)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(140)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(150)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(160)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(170)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(180)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(190)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(200)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(210)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(220)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(230)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(240)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(250)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(260)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(270)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(280)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(290)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(300)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(310)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(320)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(330)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(340)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(350)" fill="#C9962B"></path>
+<defs><clipPath id="lhx"><rect x="-260" y="-260" width="260" height="520"></rect></clipPath><clipPath id="rhx"><rect x="0" y="-260" width="260" height="520"></rect></clipPath></defs>
+<g transform="translate(0,70)">
+<g class="half-l"><g clip-path="url(#lhx)"><rect x="-5" y="0" width="10" height="70" rx="5" fill="#1E2624"></rect><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(-78)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(-78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(-52)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(-52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(-26)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(-26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.6 -9.7 L8.5 -19.4 L13.5 -29.2 L13.7 -38.9 L18.0 -48.6 L16.1 -58.3 L19.2 -68.1 L15.9 -77.8 L17.5 -87.5 L13.3 -97.2 L13.5 -106.9 L9.3 -116.7 L8.1 -126.4 L4.4 -136.1 L2.1 -145.8 L0.0 -155.6 L0.0 -165.3 L0.0 -175.0 L-0.0 -175.0 L-0.0 -165.3 L-0.0 -155.6 L-2.1 -145.8 L-4.4 -136.1 L-8.1 -126.4 L-9.3 -116.7 L-13.5 -106.9 L-13.3 -97.2 L-17.5 -87.5 L-15.9 -77.8 L-19.2 -68.1 L-16.1 -58.3 L-18.0 -48.6 L-13.7 -38.9 L-13.5 -29.2 L-8.5 -19.4 L-5.6 -9.7 L-0.0 -0.0 Z" transform="rotate(0)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-149" transform="rotate(0)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(26)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(52)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(78)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line></g></g>
+<g class="half-r"><g clip-path="url(#rhx)"><rect x="-5" y="0" width="10" height="70" rx="5" fill="#1E2624"></rect><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(-78)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(-78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(-52)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(-52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(-26)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(-26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.6 -9.7 L8.5 -19.4 L13.5 -29.2 L13.7 -38.9 L18.0 -48.6 L16.1 -58.3 L19.2 -68.1 L15.9 -77.8 L17.5 -87.5 L13.3 -97.2 L13.5 -106.9 L9.3 -116.7 L8.1 -126.4 L4.4 -136.1 L2.1 -145.8 L0.0 -155.6 L0.0 -165.3 L0.0 -175.0 L-0.0 -175.0 L-0.0 -165.3 L-0.0 -155.6 L-2.1 -145.8 L-4.4 -136.1 L-8.1 -126.4 L-9.3 -116.7 L-13.5 -106.9 L-13.3 -97.2 L-17.5 -87.5 L-15.9 -77.8 L-19.2 -68.1 L-16.1 -58.3 L-18.0 -48.6 L-13.7 -38.9 L-13.5 -29.2 L-8.5 -19.4 L-5.6 -9.7 L-0.0 -0.0 Z" transform="rotate(0)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-149" transform="rotate(0)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(26)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(52)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(78)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line></g></g>
+</g>
+<g transform="translate(0,168)" aria-hidden="true">
+<path d="M-170 -6 L-120 -6 L-120 34 L-170 34 L-152 14 Z" fill="#8E1F4B"></path>
+<path d="M170 -6 L120 -6 L120 34 L170 34 L152 14 Z" fill="#8E1F4B"></path>
+<path d="M-120 34 L-104 22 L-104 34 Z M120 34 L104 22 L104 34 Z" fill="#5E1432"></path>
+<rect x="-128" y="-22" width="256" height="44" rx="4" fill="#C2366B" stroke="#1E2624" stroke-width="3"></rect>
+<text x="0" y="10" text-anchor="middle" font-family="Mitr, sans-serif" font-weight="600" font-size="26" fill="#F4EEE3" lang="th">สบาย สบาย</text>
+</g>
+</svg><div class="lock"><b>asanoha</b></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shop" id="shop">
+    <div class="wrap">
+      <div class="shop-head">
+        <h2>The range</h2>
+        <div class="tabs" role="group" aria-label="Filter products">
+          <button class="tab" data-f="all" aria-pressed="true">All</button>
+          <button class="tab" data-f="gummies" aria-pressed="false">Gummies</button>
+          <button class="tab" data-f="oil" aria-pressed="false">Oil</button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="slam">
+    <div class="wrap">
+      <div class="card">
+        <div>
+          <h2>A slam book page on every batch</h2>
+          <p>Fill in a page for your friend at checkout. One page from each production run gets printed on the back of the tins.</p>
+        </div>
+        <div class="page" aria-label="Sample slam book page">
+          <div><span>Name</span><i>Riya</i></div>
+          <div><span>Friend since</span><i>class 6, section B</i></div>
+          <div><span>Tiffin we shared</span><i>aloo paratha</i></div>
+          <div><span>Inside joke</span><i>"Sir aa gaye!"</i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <nav aria-label="Legal"><a href="#privacy">Privacy policy</a><a href="#terms">Terms and conditions</a></nav>
+    <p>Asanoha Ayurveda LLP. Ayurvedic Proprietary Medicine. AYUSH Mfg. Lic. [NUMBER]. THC below 0.3%. Made from Vijaya (cannabis) leaf extract.</p>
+    <p>For adults 18+. Use under the guidance of a registered Ayurvedic practitioner. Not intended to diagnose, treat or cure any disease.</p>
+    <p>Demo storefront. Prices and strengths are placeholders. No payment is taken.</p>
+  </div>
+</footer>
+
+<section class="legal" id="view-privacy" aria-label="Privacy policy"><div class="bar"><div class="wrap"><span class="mark"><b>asanoha</b></span><a class="tab" href="#top" style="display:inline-flex;align-items:center;text-decoration:none">Back to store</a></div></div><article><h1>Privacy policy</h1>
+<p class="upd">Last updated: 25 September 2026</p>
+<p>This policy explains how Asanoha Ayurveda LLP ("Asanoha", "we", "us") collects, uses and protects your personal data when you use our website and app and when you order our products. We process personal data under the Digital Personal Data Protection Act, 2023 and its Rules, and the Information Technology Act, 2000 and its rules.</p>
+
+<h2>1. Who we are</h2>
+<p>Asanoha Ayurveda LLP, LLPIN [LLPIN], registered office at [Registered office address], [City] [PIN], India. We market Ayurvedic proprietary medicines made with Vijaya leaf extract by an AYUSH-licensed manufacturer.</p>
+
+<h2>2. Data we collect</h2>
+<p>Identity and contact data: your name, phone number, email address and delivery address.</p>
+<p>Prescription data: the prescription you upload from a registered Ayurvedic practitioner. This is health data and we treat it as sensitive.</p>
+<p>Order data: products ordered, order value, payment status and delivery details. We do not see or store your full card or bank details. Payments are handled by our payment gateway.</p>
+<p>Slam book data: the optional line you write about a friend at checkout.</p>
+<p>Device data: your browser stores your cart and your 18+ confirmation on your own device. We do not use advertising cookies. If we add analytics later, we will update this policy and ask for consent where required.</p>
+
+<h2>3. Why we use it</h2>
+<p>We use your data to verify your age and prescription, to process, dispense and deliver your order, to contact you about your order, to meet legal and record-keeping duties for prescription medicines, to handle complaints and returns, and to prevent fraud and misuse. We rely on your consent, which you give at checkout, and on legitimate uses permitted by law.</p>
+
+<h2>4. Who we share it with</h2>
+<p>We share only what each party needs: the AYUSH-licensed manufacturer or licensed pharmacy that dispenses your order, the registered Ayurvedic practitioner who verifies your prescription, our delivery partner, our payment gateway, and government authorities when the law requires it. We do not sell your personal data.</p>
+
+<h2>5. Slam book pages</h2>
+<p>Your slam book line is optional. We print a line on our packaging only after asking you separately and only with your first name and city, never your full name or contact details. You can withdraw that consent any time before the batch goes to print.</p>
+
+<h2>6. How long we keep it</h2>
+<p>We keep order and prescription records for [X] years, or longer if the law requires it. We delete or anonymise other personal data when it is no longer needed for the purpose it was collected for.</p>
+
+<h2>7. Security</h2>
+<p>We use encrypted connections, access controls and limited staff access to protect your data. Prescription files are stored separately and accessed only for verification and dispensing. If a personal data breach occurs, we will inform affected users and the Data Protection Board of India as the law requires.</p>
+
+<h2>8. Your rights</h2>
+<p>You can ask to access a summary of your personal data, correct or update it, erase it where we are not legally required to keep it, withdraw consent, and nominate another person to exercise your rights in the event of death or incapacity. Withdrawing consent does not affect processing done before the withdrawal, and we may be unable to fulfil orders without the data they require.</p>
+
+<h2>9. Children</h2>
+<p>Our products and services are only for adults aged 18 and above. We do not knowingly collect personal data from anyone under 18.</p>
+
+<h2>10. Grievance officer</h2>
+<p>Name: [Grievance Officer name]<br>Email: [grievance@asanoha.in]<br>Phone: [Phone number]<br>Address: [Registered office address]</p>
+<p>We will acknowledge your complaint within 48 hours and aim to resolve it within 30 days. If you are not satisfied, you may approach the Data Protection Board of India.</p>
+
+<h2>11. Changes</h2>
+<p>We may update this policy. The date at the top shows the latest version. We will notify you of material changes on the website or by email.</p></article></section>
+<section class="legal" id="view-terms" aria-label="Terms and conditions"><div class="bar"><div class="wrap"><span class="mark"><b>asanoha</b></span><a class="tab" href="#top" style="display:inline-flex;align-items:center;text-decoration:none">Back to store</a></div></div><article><h1>Terms and conditions</h1>
+<p class="upd">Last updated: 25 September 2026</p>
+<p>These terms govern your use of the Asanoha website and app and your purchase of products from Asanoha Ayurveda LLP ("Asanoha", "we", "us"). By placing an order you agree to these terms.</p>
+
+<h2>1. Eligibility</h2>
+<p>You must be 18 or older and resident in India to use this website or order our products. We deliver only within India.</p>
+
+<h2>2. Nature of our products</h2>
+<p>Our products are Ayurvedic proprietary medicines made with Vijaya (cannabis) leaf extract by an AYUSH-licensed manufacturer. They are sold only on the prescription of a registered Ayurvedic practitioner. Product descriptions on this website are for information only and are not medical advice. Use our products only as directed by your practitioner. Our products are not intended to diagnose, treat, cure or prevent any disease.</p>
+
+<h2>3. Prescriptions and orders</h2>
+<p>Every order is a request until we verify your prescription and age. We may cancel an order and refund any amount paid if a prescription is missing, invalid, expired or does not cover the product ordered, or if we believe the order breaks the law or these terms. We may limit quantities per order.</p>
+
+<h2>4. Prices and payment</h2>
+<p>Prices are in Indian Rupees and include applicable taxes unless stated otherwise. Delivery charges are shown at checkout. Payment is processed by our payment gateway partner. We may correct pricing errors before dispatch and will contact you if a correction changes your order total.</p>
+
+<h2>5. Delivery</h2>
+<p>We aim to dispatch within [X] working days of prescription verification. Delivery times are estimates. Someone aged 18 or above must receive the parcel, and our delivery partner may ask for ID.</p>
+
+<h2>6. Cancellations, returns and refunds</h2>
+<p>You can cancel an order before it is dispatched for a full refund. As these are medicines, we cannot accept returns of opened or undamaged products. If you receive a damaged, defective, expired or wrong product, tell us within 48 hours of delivery with photos of the product and packaging. We will replace it or refund you after review. Approved refunds are made to the original payment method within [X] working days.</p>
+
+<h2>7. Your responsibilities</h2>
+<p>You agree to give accurate details and a genuine prescription, to use products only for yourself as prescribed, and not to resell, share outside your prescription, or export our products. Our gift packs are designed for two prescribed adults, and each person using a product should hold their own prescription.</p>
+
+<h2>8. Slam book submissions</h2>
+<p>If you submit a slam book line, you confirm it is your own writing and does not name anyone without their permission. With your separate consent, you allow us to print it on our packaging and show it on our website with your first name and city. We may edit it for length or decline to publish it.</p>
+
+<h2>9. Intellectual property</h2>
+<p>The Asanoha name, logo, packaging designs, text and images on this website belong to Asanoha Ayurveda LLP. You may not copy or use them without our written permission.</p>
+
+<h2>10. Limitation of liability</h2>
+<p>To the extent the law allows, our total liability for any claim relating to an order is limited to the amount you paid for that order. We are not liable for any loss caused by misuse of a product, use without a valid prescription, or use contrary to your practitioner's directions.</p>
+
+<h2>11. Governing law</h2>
+<p>These terms are governed by the laws of India. The courts at [City] have exclusive jurisdiction over any dispute.</p>
+
+<h2>12. Grievance officer</h2>
+<p>Name: [Grievance Officer name]<br>Email: [grievance@asanoha.in]<br>Phone: [Phone number]<br>Address: [Registered office address]</p>
+<p>We will acknowledge your complaint within 48 hours and aim to resolve it within one month, as required by the Consumer Protection (E-Commerce) Rules, 2020.</p>
+
+<h2>13. Changes</h2>
+<p>We may update these terms. The version on the website at the time of your order applies to that order.</p></article></section>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title" aria-hidden="true">
+  <div class="d-head">
+    <h2 id="d-title">Your cart</h2>
+    <button class="x" id="close-cart" aria-label="Close cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="d-body" id="d-body"></div>
+  <div class="d-foot" id="d-foot"></div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var INK='#1E2624', CLAY='#A84B27', GOLD='#F0C987', HALDI='#C9962B', CREAM='#F4EEE3', OIL='#D9A441';
+
+  function tin(color, other, flavDot){
+    return '<svg viewBox="0 0 120 150" width="100%" height="100%" style="max-height:150px"><defs><clipPath id="c'+color.slice(1)+'"><rect x="0" y="0" width="120" height="150" rx="16"/></clipPath></defs>'+
+      '<g clip-path="url(#c'+color.slice(1)+')"><rect width="120" height="150" fill="'+color+'"/><circle cx="120" cy="62" r="46" fill="'+other+'"/>'+
+      '<rect x="6" y="6" width="108" height="138" rx="12" fill="none" stroke="'+HALDI+'" stroke-width="1.5" stroke-dasharray="1.5 5" stroke-linecap="round"/>'+
+      '<circle cx="18" cy="132" r="5" fill="'+flavDot+'"/></g></svg>';
+  }
+  function duo(){
+    return '<svg viewBox="0 0 250 150" width="100%" height="100%" style="max-height:150px"><defs><clipPath id="dl"><rect x="0" y="0" width="120" height="150" rx="16"/></clipPath><clipPath id="dr"><rect x="130" y="0" width="120" height="150" rx="16"/></clipPath></defs>'+
+      '<g clip-path="url(#dl)"><rect width="120" height="150" fill="#141A19"/><circle cx="125" cy="62" r="46" fill="'+CLAY+'"/></g>'+
+      '<g clip-path="url(#dr)"><rect x="130" width="120" height="150" fill="'+CLAY+'"/><circle cx="125" cy="62" r="46" fill="#141A19"/></g>'+
+      '<rect x="0" y="108" width="250" height="10" fill="#3F6B66"/><rect x="0" y="108" width="250" height="10" fill="none" stroke="'+CREAM+'" stroke-width="2" stroke-dasharray="4 6"/></svg>';
+  }
+  function syr(){
+    function one(y,c){return '<rect x="4" y="'+(y+9)+'" width="16" height="10" rx="3" fill="'+c+'"/><rect x="20" y="'+(y+11)+'" width="12" height="6" fill="#E6E0D4"/><rect x="32" y="'+y+'" width="150" height="28" rx="6" fill="'+CREAM+'"/><rect x="35" y="'+(y+3)+'" width="144" height="22" rx="4" fill="'+OIL+'"/><rect x="92" y="'+y+'" width="44" height="28" fill="'+c+'"/><rect x="182" y="'+(y-3)+'" width="5" height="34" rx="2" fill="#CFC6B6"/><rect x="187" y="'+(y+9)+'" width="48" height="10" fill="'+c+'"/><rect x="235" y="'+(y+1)+'" width="7" height="26" rx="2" fill="'+c+'"/>';}
+    return '<svg viewBox="0 0 246 90" width="100%" style="max-height:150px">'+one(10,'#0F1413')+one(52,CLAY)+'</svg>';
+  }
+
+  var PRODUCTS=[
+    {id:'aam',cat:'gummies',name:'Kachcha aam gummies',meta:'10 gummies, [X] mg CBD each',note:'the half that stays with you',price:699,flav:'#8DB255',art:function(){return tin('#141A19',CLAY,'#8DB255')}},
+    {id:'cocoa',cat:'gummies',name:'Dark cocoa gummies',meta:'10 gummies, [X] mg CBD each',note:'the half you hand over',price:699,flav:'#6B4430',art:function(){return tin(CLAY,'#141A19','#6B4430')}},
+    {id:'duo',cat:'gummies',name:'Aadha tera, aadha mera duo',meta:'Both tins, magnetic join, woven bracelet',note:'one for you, one for them',price:1299,art:duo},
+    {id:'oil',cat:'oil',name:'Full spectrum oil, syringe duo',meta:'2 x 1 ml oral syringes, [X] mg/ml',note:'two plungers, two people',price:1499,art:syr}
+  ];
+  var byId={}; PRODUCTS.forEach(function(p){byId[p.id]=p});
+
+  var store={
+    get:function(k){try{return JSON.parse(localStorage.getItem('asanoha:'+k))}catch(e){return null}},
+    set:function(k,v){try{localStorage.setItem('asanoha:'+k,JSON.stringify(v))}catch(e){}}
+  };
+  var cart=store.get('cart')||{}; Object.keys(cart).forEach(function(k){if(!byId[k]||!(cart[k]>0))delete cart[k]});
+  var filter='all', view='cart';
+  var inr=function(n){return '₹'+n.toLocaleString('en-IN')};
+  var $=function(id){return document.getElementById(id)};
+
+  // age gate
+  if(!store.get('adult')){$('gate').classList.add('show');$('gate-yes').focus()}
+  $('gate-yes').onclick=function(){store.set('adult',true);$('gate').classList.remove('show')};
+  $('gate-no').onclick=function(){$('gate-msg').hidden=false};
+
+  // hero join
+  requestAnimationFrame(function(){setTimeout(function(){$('halves').classList.add('joined')},250)});
+
+  function renderGrid(){
+    var g=$('grid'); g.innerHTML='';
+    PRODUCTS.filter(function(p){return filter==='all'||p.cat===filter}).forEach(function(p){
+      var el=document.createElement('article'); el.className='prod';
+      el.innerHTML='<div class="art">'+p.art()+'</div><div class="body"><h3>'+(p.flav?'<span class="flav" style="background:'+p.flav+'"></span>':'')+p.name+'</h3><p class="meta">'+p.meta+'</p><p class="note">'+p.note+'</p><div class="row"><span class="price">'+inr(p.price)+'</span><button class="add" data-id="'+p.id+'">Add to cart</button></div></div>';
+      g.appendChild(el);
+    });
+  }
+  document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){
+    filter=t.dataset.f; document.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-pressed',x===t?'true':'false')}); renderGrid();
+  }});
+  $('grid').addEventListener('click',function(e){var b=e.target.closest('.add'); if(!b)return; add(b.dataset.id)});
+
+  function add(id){cart[id]=(cart[id]||0)+1; save(); toast(byId[id].name+' added to cart')}
+  function setQty(id,q){if(q<=0)delete cart[id]; else cart[id]=q; save(); renderCart()}
+  function save(){store.set('cart',cart); var n=0; for(var k in cart)n+=cart[k]; $('count').textContent=n}
+  function subtotal(){var s=0; for(var k in cart)s+=byId[k].price*cart[k]; return s}
+
+  var tt; function toast(m){var t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(function(){t.classList.remove('show')},1800)}
+
+  function renderCart(){
+    var body=$('d-body'), foot=$('d-foot'), ids=Object.keys(cart);
+    if(view==='done'){
+      $('d-title').textContent='Order request sent';
+      body.innerHTML='<div class="done"><svg class="" width="84" height="84" viewBox="-230 -230 460 460" aria-hidden="true"><circle cx="0" cy="0" r="188" fill="#ECE5D8"></circle><circle cx="0" cy="0" r="188" fill="none" stroke="#C9962B" stroke-width="1.5" stroke-opacity="0.7"></circle><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(0)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(10)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(20)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(30)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(40)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(50)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(60)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(70)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(80)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(90)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(100)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(110)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(120)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(130)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(140)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(150)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(160)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(170)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(180)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(190)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(200)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(210)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(220)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(230)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(240)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(250)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(260)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(270)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(280)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(290)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(300)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(310)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(320)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(330)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(340)" fill="#C9962B"></path><path d="M0 -196 C-5 -202 -5 -210 0 -216 C5 -210 5 -202 0 -196 Z" transform="rotate(350)" fill="#C9962B"></path> <defs><clipPath id="lhd"><rect x="-260" y="-260" width="260" height="520"></rect></clipPath><clipPath id="rhd"><rect x="0" y="-260" width="260" height="520"></rect></clipPath></defs> <g transform="translate(0,70)"> <g clip-path="url(#lhd)"><rect x="-5" y="0" width="10" height="70" rx="5" fill="#1E2624"></rect><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(-78)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(-78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(-52)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(-52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(-26)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(-26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.6 -9.7 L8.5 -19.4 L13.5 -29.2 L13.7 -38.9 L18.0 -48.6 L16.1 -58.3 L19.2 -68.1 L15.9 -77.8 L17.5 -87.5 L13.3 -97.2 L13.5 -106.9 L9.3 -116.7 L8.1 -126.4 L4.4 -136.1 L2.1 -145.8 L0.0 -155.6 L0.0 -165.3 L0.0 -175.0 L-0.0 -175.0 L-0.0 -165.3 L-0.0 -155.6 L-2.1 -145.8 L-4.4 -136.1 L-8.1 -126.4 L-9.3 -116.7 L-13.5 -106.9 L-13.3 -97.2 L-17.5 -87.5 L-15.9 -77.8 L-19.2 -68.1 L-16.1 -58.3 L-18.0 -48.6 L-13.7 -38.9 L-13.5 -29.2 L-8.5 -19.4 L-5.6 -9.7 L-0.0 -0.0 Z" transform="rotate(0)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-149" transform="rotate(0)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(26)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(52)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(78)" fill="#A84B27" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line></g> <g clip-path="url(#rhd)"><rect x="-5" y="0" width="10" height="70" rx="5" fill="#1E2624"></rect><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(-78)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(-78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(-52)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(-52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(-26)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(-26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.6 -9.7 L8.5 -19.4 L13.5 -29.2 L13.7 -38.9 L18.0 -48.6 L16.1 -58.3 L19.2 -68.1 L15.9 -77.8 L17.5 -87.5 L13.3 -97.2 L13.5 -106.9 L9.3 -116.7 L8.1 -126.4 L4.4 -136.1 L2.1 -145.8 L0.0 -155.6 L0.0 -165.3 L0.0 -175.0 L-0.0 -175.0 L-0.0 -165.3 L-0.0 -155.6 L-2.1 -145.8 L-4.4 -136.1 L-8.1 -126.4 L-9.3 -116.7 L-13.5 -106.9 L-13.3 -97.2 L-17.5 -87.5 L-15.9 -77.8 L-19.2 -68.1 L-16.1 -58.3 L-18.0 -48.6 L-13.7 -38.9 L-13.5 -29.2 L-8.5 -19.4 L-5.6 -9.7 L-0.0 -0.0 Z" transform="rotate(0)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-149" transform="rotate(0)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.5 -8.6 L8.3 -17.1 L13.2 -25.7 L13.4 -34.2 L17.6 -42.8 L15.7 -51.3 L18.8 -59.9 L15.5 -68.4 L17.1 -77.0 L13.0 -85.6 L13.2 -94.1 L9.0 -102.7 L7.9 -111.2 L4.3 -119.8 L2.1 -128.3 L0.0 -136.9 L0.0 -145.4 L0.0 -154.0 L-0.0 -154.0 L-0.0 -145.4 L-0.0 -136.9 L-2.1 -128.3 L-4.3 -119.8 L-7.9 -111.2 L-9.0 -102.7 L-13.2 -94.1 L-13.0 -85.6 L-17.1 -77.0 L-15.5 -68.4 L-18.8 -59.9 L-15.7 -51.3 L-17.6 -42.8 L-13.4 -34.2 L-13.2 -25.7 L-8.3 -17.1 L-5.5 -8.6 L-0.0 -0.0 Z" transform="rotate(26)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-131" transform="rotate(26)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.3 -6.6 L7.9 -13.2 L12.6 -19.8 L12.8 -26.4 L16.9 -33.1 L15.1 -39.7 L18.0 -46.3 L14.8 -52.9 L16.4 -59.5 L12.5 -66.1 L12.7 -72.7 L8.7 -79.3 L7.6 -85.9 L4.1 -92.6 L2.0 -99.2 L0.0 -105.8 L0.0 -112.4 L0.0 -119.0 L-0.0 -119.0 L-0.0 -112.4 L-0.0 -105.8 L-2.0 -99.2 L-4.1 -92.6 L-7.6 -85.9 L-8.7 -79.3 L-12.7 -72.7 L-12.5 -66.1 L-16.4 -59.5 L-14.8 -52.9 L-18.0 -46.3 L-15.1 -39.7 L-16.9 -33.1 L-12.8 -26.4 L-12.6 -19.8 L-7.9 -13.2 L-5.3 -6.6 L-0.0 -0.0 Z" transform="rotate(52)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-101" transform="rotate(52)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line><path d="M0.0 -0.0 L5.0 -4.1 L7.5 -8.2 L11.9 -12.2 L12.1 -16.3 L15.9 -20.4 L14.3 -24.5 L17.0 -28.6 L14.0 -32.7 L15.5 -36.8 L11.8 -40.8 L11.9 -44.9 L8.2 -49.0 L7.2 -53.1 L3.9 -57.2 L1.9 -61.2 L0.0 -65.3 L0.0 -69.4 L0.0 -73.5 L-0.0 -73.5 L-0.0 -69.4 L-0.0 -65.3 L-1.9 -61.2 L-3.9 -57.2 L-7.2 -53.1 L-8.2 -49.0 L-11.9 -44.9 L-11.8 -40.8 L-15.5 -36.8 L-14.0 -32.7 L-17.0 -28.6 L-14.3 -24.5 L-15.9 -20.4 L-12.1 -16.3 L-11.9 -12.2 L-7.5 -8.2 L-5.0 -4.1 L-0.0 -0.0 Z" transform="rotate(78)" fill="#F0C987" stroke="#1E2624" stroke-width="3.5" stroke-linejoin="round"></path><line x1="0" y1="0" x2="0" y2="-62" transform="rotate(78)" stroke="#1E2624" stroke-width="1.8" stroke-opacity="0.55"></line></g> </g> </svg><h3>Order request sent</h3><p>We will check your prescription and call you to confirm before dispatch. Your slam book line goes to print with the next batch.</p></div>';
+      foot.innerHTML='<button class="cta wide" id="back-shop">Back to the range</button>';
+      $('back-shop').onclick=function(){view='cart'; closeCart()};
+      return;
+    }
+    if(!ids.length){
+      $('d-title').textContent='Your cart';
+      body.innerHTML='<div class="empty"><p>Your cart is empty. Add a tin or the syringe duo to begin.</p><button class="cta" id="go-shop">Browse the range</button></div>';
+      foot.innerHTML=''; $('go-shop').onclick=function(){closeCart(); location.hash='#shop'}; return;
+    }
+    if(view==='checkout'){
+      $('d-title').textContent='Checkout';
+      body.innerHTML='<form class="form" id="co" novalidate>'+
+        '<label>Full name<input type="text" name="name" autocomplete="name" required></label>'+
+        '<label>Phone<input type="tel" name="phone" autocomplete="tel" inputmode="tel" required></label>'+
+        '<label>Pincode<input type="text" name="pin" autocomplete="postal-code" inputmode="numeric" maxlength="6" required></label>'+
+        '<label>Prescription from a registered Ayurvedic practitioner<input type="file" name="rx" accept="image/*,application/pdf"><span class="hint">Photo or PDF. Needed before dispatch.</span></label>'+
+        '<label>Slam book line for your friend (optional)<textarea name="slam" maxlength="120" placeholder="Friend since class 6..."></textarea></label>'+
+        '<label class="check"><input type="checkbox" name="adult" required> I am 18 or older, will use these products under practitioner guidance, and agree to the <a href="#terms">terms</a> and <a href="#privacy">privacy policy</a>.</label>'+
+        '<p class="err" id="err" role="alert"></p></form>';
+      foot.innerHTML='<div class="sum total"><span>Total</span><span>'+inr(subtotal())+'</span></div><button class="cta wide" id="place">Send order request</button><button class="tab wide" id="back">Back to cart</button>';
+      $('back').onclick=function(){view='cart'; renderCart()};
+      $('place').onclick=function(){
+        var f=$('co'), e=$('err'), miss=[];
+        if(!f.name.value.trim())miss.push('name');
+        if(!/^[0-9+\-\s]{10,15}$/.test(f.phone.value.trim()))miss.push('a 10 digit phone number');
+        if(!/^[1-9][0-9]{5}$/.test(f.pin.value.trim()))miss.push('a 6 digit pincode');
+        if(!f.rx.files.length)miss.push('your prescription');
+        if(!f.adult.checked)miss.push('the 18+ confirmation');
+        if(miss.length){e.textContent='Add '+miss.join(', ')+' to send the request.'; return}
+        cart={}; save(); view='done'; renderCart();
+      };
+      return;
+    }
+    $('d-title').textContent='Your cart';
+    body.innerHTML=ids.map(function(id){var p=byId[id]; return '<div class="line"><div class="thumb">'+p.art()+'</div><div><b>'+p.name+'</b><small>'+inr(p.price)+' each</small></div><div class="qty" role="group" aria-label="Quantity for '+p.name+'"><button data-q="-1" data-id="'+id+'" aria-label="Remove one">−</button><output>'+cart[id]+'</output><button data-q="1" data-id="'+id+'" aria-label="Add one">+</button></div></div>'}).join('');
+    foot.innerHTML='<div class="sum"><span>Subtotal</span><span>'+inr(subtotal())+'</span></div><div class="sum"><span>Delivery</span><span>'+(subtotal()>=1299?'Free':inr(79))+'</span></div><div class="sum total"><span>Total</span><span>'+inr(subtotal()+(subtotal()>=1299?0:79))+'</span></div><button class="cta wide" id="to-co">Continue to checkout</button>';
+    $('to-co').onclick=function(){view='checkout'; renderCart()};
+  }
+  $('d-body').addEventListener('click',function(e){var b=e.target.closest('[data-q]'); if(!b)return; setQty(b.dataset.id,(cart[b.dataset.id]||0)+Number(b.dataset.q))});
+
+  var lastFocus;
+  function openCart(){lastFocus=document.activeElement; if(view==='done')view='cart'; renderCart(); $('drawer').classList.add('open'); $('drawer').setAttribute('aria-hidden','false'); $('scrim').classList.add('open'); $('close-cart').focus()}
+  function closeCart(){$('drawer').classList.remove('open'); $('drawer').setAttribute('aria-hidden','true'); $('scrim').classList.remove('open'); if(lastFocus)lastFocus.focus()}
+  $('open-cart').onclick=openCart; $('close-cart').onclick=closeCart; $('scrim').onclick=closeCart;
+  $('drawer').addEventListener('keydown',function(e){if(e.key==='Escape')closeCart()});
+
+  function route(){var h=location.hash;['privacy','terms'].forEach(function(k){var v=$('view-'+k);var on=h==='#'+k;v.classList.toggle('open',on);if(on)v.scrollTop=0});document.body.style.overflow=(h==='#privacy'||h==='#terms')?'hidden':''}
+  window.addEventListener('hashchange',route); route();
+  renderGrid(); save();
+
+  if('serviceWorker' in navigator && location.protocol==='https:' && !/claude\.ai|claudeusercontent/.test(location.hostname)){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>

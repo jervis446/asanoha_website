@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terms and conditions · Asanoha Ayurveda</title>
+<meta name="theme-color" content="#1E2624">
+<meta name="description" content="Asanoha makes Vijaya leaf gummies and oil as Ayurvedic proprietary medicines, packed in pairs for friends. Prescription-based and AYUSH compliant. For adults 18+.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Mitr:wght@600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;600;700;800&family=Tiro+Devanagari+Sanskrit&family=Caveat:wght@500&display=swap">
+<style>
+:root{
+  --ground:#ECE5D8; --paper:#F7F2E9; --ink:#1E2624; --ink-soft:#3A4441; --muted:#5A625F;
+  --clay:#A84B27; --gold:#F0C987; --haldi:#C9962B; --teal:#3F6B66; --line:#C9BFAE;
+  --on-ink:#F4EEE3; --on-ink-soft:#CFC6B6;
+  --serif:Fraunces,Georgia,"Times New Roman",serif; --sans:Manrope,"Helvetica Neue",Helvetica,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#141A19; --paper:#1E2624; --ink:#F4EEE3; --ink-soft:#DDD5C6; --muted:#B3AA9A;
+    --clay:#D2744C; --line:#3A4441; --on-ink:#1E2624; --on-ink-soft:#3A4441;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#141A19; --paper:#1E2624; --ink:#F4EEE3; --ink-soft:#DDD5C6; --muted:#B3AA9A;
+  --clay:#D2744C; --line:#3A4441; --on-ink:#1E2624; --on-ink-soft:#3A4441;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--haldi);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--ground);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.mark b{font-family:"Dela Gothic One",var(--sans);font-weight:400;font-size:24px}
+.mark sup{font-size:11px;font-weight:600}
+.dot{width:26px;height:26px;border-radius:50%;background:linear-gradient(90deg,var(--clay) 50%,var(--gold) 50%)}
+.cart-btn{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:22px;border:2px solid var(--ink);background:transparent;cursor:pointer;font-weight:700}
+.cart-btn .count{min-width:24px;height:24px;border-radius:12px;background:var(--clay);color:#fff;font-size:13px;display:grid;place-items:center;padding:0 6px}
+
+/* hero */
+.hero{padding:48px 0 40px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,7vw,76px);line-height:1.02;margin:0 0 18px;letter-spacing:-.01em}
+.hero p{max-width:34ch;margin:0 0 26px;color:var(--ink-soft);font-size:18px}
+.hero .hindi{font-family:"Tiro Devanagari Sanskrit",serif;color:var(--haldi);font-size:20px;margin:0 0 8px}
+.cta{display:inline-flex;align-items:center;min-height:48px;padding:0 24px;border-radius:24px;background:var(--ink);color:var(--ground);font-weight:700;text-decoration:none;border:0;cursor:pointer}
+.halves{position:relative;max-width:440px;width:100%;justify-self:center}
+.hero-mark{width:100%;height:auto;display:block}
+.hero-mark .half-l,.hero-mark .half-r{transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.hero-mark .half-l{transform:translateX(-46px)} .hero-mark .half-r{transform:translateX(46px)}
+.halves.joined .half-l,.halves.joined .half-r{transform:none}
+.lock{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:6px}
+.lock b{font-family:"Dela Gothic One",var(--sans);font-weight:400;font-size:clamp(34px,5vw,48px);line-height:1}
+@media (prefers-reduced-motion: reduce){.hero-mark .half-l,.hero-mark .half-r{transition:none}}
+
+/* shop */
+.shop{padding:24px 0 56px}
+.shop-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;margin-bottom:22px}
+.shop-head h2{font-family:var(--serif);font-weight:600;font-size:34px;margin:0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{min-height:44px;padding:0 18px;border-radius:22px;border:1.5px solid var(--line);background:transparent;cursor:pointer;font-weight:600}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.prod{background:var(--paper);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
+.prod .art{background:#1E2624;aspect-ratio:4/3;display:grid;place-items:center;padding:18px}
+.prod .body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:6px;flex-grow:1}
+.prod h3{font-family:var(--serif);font-weight:600;font-size:22px;margin:0;line-height:1.2}
+.prod .meta{color:var(--muted);font-size:14px;margin:0}
+.prod .note{font-family:Caveat,cursive;font-size:20px;color:var(--clay);margin:2px 0 6px;line-height:1.2}
+.prod .row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:10px}
+.price{font-weight:800;font-size:20px}
+.add{min-height:44px;padding:0 18px;border-radius:22px;background:var(--clay);color:#fff;border:0;font-weight:700;cursor:pointer}
+.add:active{transform:scale(.97)}
+.flav{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* slam */
+.slam{padding:0 0 56px}
+.slam .card{background:#1E2624;color:#F4EEE3;border-radius:26px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.slam h2{font-family:var(--serif);font-weight:600;font-size:32px;margin:0 0 10px;color:#F4EEE3}
+.slam p{margin:0;color:#CFC6B6;max-width:40ch}
+.page{background:#F7F2E9;color:#1E2624;border-radius:14px;padding:18px 20px;transform:rotate(-1.5deg)}
+.page div{display:flex;gap:10px;align-items:baseline;border-bottom:1px dashed #9A9285;padding:6px 0}
+.page span{font-size:13px;color:#5A625F;width:118px;flex-shrink:0}
+.page i{font-family:Caveat,cursive;font-style:normal;font-size:22px;color:#A84B27;line-height:1.1}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:28px 0 40px;font-size:13px;color:var(--muted)}
+footer p{margin:0 0 6px;max-width:80ch}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(20,26,25,.5);opacity:0;pointer-events:none;transition:opacity .25s;z-index:30}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--paper);z-index:31;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer.open{transform:none}
+@media (prefers-reduced-motion: reduce){.drawer,.scrim{transition:none}}
+.d-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.d-head h2{font-family:var(--serif);font-weight:600;font-size:24px;margin:0}
+.x{width:44px;height:44px;border-radius:22px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center}
+.d-body{flex-grow:1;overflow-y:auto;padding:16px 20px}
+.line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.line .thumb{width:64px;height:64px;border-radius:12px;background:#1E2624;display:grid;place-items:center;padding:6px}
+.line b{display:block;font-size:15px}
+.line small{color:var(--muted)}
+.qty{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:22px}
+.qty button{width:44px;height:44px;border:0;background:transparent;cursor:pointer;font-size:18px;font-weight:700}
+.qty output{min-width:18px;text-align:center;font-weight:700}
+.empty{padding:40px 0;text-align:center;color:var(--muted)}
+.empty .cta{margin-top:14px}
+.d-foot{border-top:1px solid var(--line);padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.sum{display:flex;justify-content:space-between;font-size:15px}
+.sum.total{font-weight:800;font-size:18px}
+.wide{width:100%;justify-content:center}
+.form{display:flex;flex-direction:column;gap:14px}
+.form label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600}
+.form input[type=text],.form input[type=tel],.form textarea{min-height:44px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--ground)}
+.form textarea{min-height:80px;font-family:Caveat,cursive;font-size:22px;resize:vertical}
+.form .check{flex-direction:row;align-items:flex-start;gap:10px;font-weight:500}
+.form .check input{width:22px;height:22px;margin-top:2px;flex-shrink:0;accent-color:var(--clay)}
+.hint{font-size:13px;color:var(--muted);font-weight:500}
+.err{color:#B3261E;font-size:14px;font-weight:600;min-height:1em}
+.done{text-align:center;padding:36px 8px}
+.done h3{font-family:var(--serif);font-size:28px;margin:14px 0 8px}
+
+/* age gate */
+.gate{position:fixed;inset:0;z-index:50;background:#1E2624;color:#F4EEE3;display:none;align-items:center;justify-content:center;padding:24px}
+.gate.show{display:flex}
+.gate .box{max-width:420px;text-align:center}
+.gate h2{font-family:var(--serif);font-weight:600;font-size:30px;margin:18px 0 10px}
+.gate p{color:#CFC6B6;margin:0 0 22px}
+.gate .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.gate .yes{background:#F0C987;color:#1E2624}
+.gate .no{background:transparent;color:#F4EEE3;border:2px solid #F4EEE3}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:var(--ink);color:var(--ground);padding:12px 20px;border-radius:22px;font-weight:700;z-index:40;transition:transform .25s}
+.toast.show{transform:translate(-50%,0)}
+
+
+/* legal views */
+footer nav{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 14px}
+footer nav a{color:var(--ink);font-weight:700;font-size:14px}
+.legal{position:fixed;inset:0;z-index:35;background:var(--ground);overflow-y:auto;display:none;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.legal.open{display:block}
+.legal .bar{position:sticky;top:0;background:var(--ground);border-bottom:1px solid var(--line)}
+.legal .bar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.legal article{max-width:720px;margin:0 auto;padding:32px 20px 64px}
+.legal h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5vw,44px);margin:0 0 6px}
+.legal h2{font-family:var(--serif);font-weight:600;font-size:21px;margin:30px 0 8px}
+.legal p{margin:0 0 10px;color:var(--ink-soft)}
+.legal .upd{color:var(--muted);font-size:14px;margin-bottom:20px}
+
+@media (max-width:760px){
+  .hero .wrap{grid-template-columns:1fr}
+  .halves{max-width:280px;order:-1}
+  .slam .card{grid-template-columns:1fr;padding:24px}
+}
+</style>
+</head>
+<body>
+<section class="legal open" style="position:static;display:block"><div class="bar"><div class="wrap"><a class="mark" href="index.html" style="text-decoration:none;color:var(--ink)"><b>asanoha</b></a><a class="tab" href="index.html" style="display:inline-flex;align-items:center;text-decoration:none">Back to store</a></div></div><article><h1>Terms and conditions</h1>
+<p class="upd">Last updated: 25 September 2026</p>
+<p>These terms govern your use of the Asanoha website and app and your purchase of products from Asanoha Ayurveda LLP ("Asanoha", "we", "us"). By placing an order you agree to these terms.</p>
+
+<h2>1. Eligibility</h2>
+<p>You must be 18 or older and resident in India to use this website or order our products. We deliver only within India.</p>
+
+<h2>2. Nature of our products</h2>
+<p>Our products are Ayurvedic proprietary medicines made with Vijaya (cannabis) leaf extract by an AYUSH-licensed manufacturer. They are sold only on the prescription of a registered Ayurvedic practitioner. Product descriptions on this website are for information only and are not medical advice. Use our products only as directed by your practitioner. Our products are not intended to diagnose, treat, cure or prevent any disease.</p>
+
+<h2>3. Prescriptions and orders</h2>
+<p>Every order is a request until we verify your prescription and age. We may cancel an order and refund any amount paid if a prescription is missing, invalid, expired or does not cover the product ordered, or if we believe the order breaks the law or these terms. We may limit quantities per order.</p>
+
+<h2>4. Prices and payment</h2>
+<p>Prices are in Indian Rupees and include applicable taxes unless stated otherwise. Delivery charges are shown at checkout. Payment is processed by our payment gateway partner. We may correct pricing errors before dispatch and will contact you if a correction changes your order total.</p>
+
+<h2>5. Delivery</h2>
+<p>We aim to dispatch within [X] working days of prescription verification. Delivery times are estimates. Someone aged 18 or above must receive the parcel, and our delivery partner may ask for ID.</p>
+
+<h2>6. Cancellations, returns and refunds</h2>
+<p>You can cancel an order before it is dispatched for a full refund. As these are medicines, we cannot accept returns of opened or undamaged products. If you receive a damaged, defective, expired or wrong product, tell us within 48 hours of delivery with photos of the product and packaging. We will replace it or refund you after review. Approved refunds are made to the original payment method within [X] working days.</p>
+
+<h2>7. Your responsibilities</h2>
+<p>You agree to give accurate details and a genuine prescription, to use products only for yourself as prescribed, and not to resell, share outside your prescription, or export our products. Our gift packs are designed for two prescribed adults, and each person using a product should hold their own prescription.</p>
+
+<h2>8. Slam book submissions</h2>
+<p>If you submit a slam book line, you confirm it is your own writing and does not name anyone without their permission. With your separate consent, you allow us to print it on our packaging and show it on our website with your first name and city. We may edit it for length or decline to publish it.</p>
+
+<h2>9. Intellectual property</h2>
+<p>The Asanoha name, logo, packaging designs, text and images on this website belong to Asanoha Ayurveda LLP. You may not copy or use them without our written permission.</p>
+
+<h2>10. Limitation of liability</h2>
+<p>To the extent the law allows, our total liability for any claim relating to an order is limited to the amount you paid for that order. We are not liable for any loss caused by misuse of a product, use without a valid prescription, or use contrary to your practitioner's directions.</p>
+
+<h2>11. Governing law</h2>
+<p>These terms are governed by the laws of India. The courts at [City] have exclusive jurisdiction over any dispute.</p>
+
+<h2>12. Grievance officer</h2>
+<p>Name: [Grievance Officer name]<br>Email: [grievance@asanoha.in]<br>Phone: [Phone number]<br>Address: [Registered office address]</p>
+<p>We will acknowledge your complaint within 48 hours and aim to resolve it within one month, as required by the Consumer Protection (E-Commerce) Rules, 2020.</p>
+
+<h2>13. Changes</h2>
+<p>We may update these terms. The version on the website at the time of your order applies to that order.</p></article></section>
+</body>
+</html>
