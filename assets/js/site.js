@@ -17,8 +17,15 @@
     // Without MailerLite, sign-ups are delivered to this inbox through FormSubmit (free, no account).
     newsletterInbox: 'orders@asanoha.co.in',
     // Free gift added to every order. Set to '' to switch it off everywhere in the cart and order message.
-    gift: 'Asanoha rolling paper booklet (1 per order)'
+    gift: 'Asanoha rolling paper booklet (1 per order)',
+    // Analytics (loaded only after the visitor accepts). Google Analytics 4 measurement ID, e.g. 'G-XXXXXXX'.
+    ga4Id: 'G-HX5RX21JLR',
+    // Microsoft Clarity project ID for heatmaps and session recordings, e.g. 'abcd1234ef'.
+    clarityId: '',
+    // Google sign-in via Firebase. Paste the web app config from Firebase console > Project settings.
+    firebase: null /* e.g. { apiKey: '...', authDomain: '...', projectId: '...', appId: '...' } */
   };
+  window.ASANOHA = { config: CONFIG };
 
   var DOSE = {
     low:    { name: 'Low',    theme: 'Beach' },
@@ -82,6 +89,47 @@
     set: function (k, v) { try { localStorage.setItem('asanoha:' + k, JSON.stringify(v)); } catch (e) {} }
   };
 
+  /* ---------- analytics ---------- */
+  function track(name, params) {
+    params = params || {};
+    try { if (window.gtag) window.gtag('event', name, params); } catch (e) {}
+    try { if (window.clarity) { window.clarity('event', name); if (params.item_id) window.clarity('set', 'last_item', params.item_id); } } catch (e) {}
+  }
+  window.ASANOHA.track = track;
+  function loadAnalytics() {
+    if (loadAnalytics.done) return; loadAnalytics.done = true;
+    if (CONFIG.ga4Id) {
+      var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + CONFIG.ga4Id; document.head.appendChild(g);
+      window.dataLayer = window.dataLayer || []; window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date()); window.gtag('config', CONFIG.ga4Id, { anonymize_ip: true });
+    }
+    if (CONFIG.clarityId) {
+      (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); }; t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, 'clarity', 'script', CONFIG.clarityId);
+    }
+    sectionWatch();
+  }
+  function consent() {
+    var c = store.get('analytics', null), bar = $('#consent');
+    if (!CONFIG.ga4Id && !CONFIG.clarityId) { if (bar) bar.remove(); return; }
+    if (c === true) { loadAnalytics(); if (bar) bar.remove(); return; }
+    if (c === false || !bar) { if (bar) bar.remove(); return; }
+    bar.hidden = false;
+    $('#consent-yes').addEventListener('click', function () { store.set('analytics', true); bar.remove(); loadAnalytics(); });
+    $('#consent-no').addEventListener('click', function () { store.set('analytics', false); bar.remove(); });
+  }
+  function sectionWatch() {
+    if (!('IntersectionObserver' in window)) return;
+    var seen = {}, start = {};
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        var id = en.target.id; if (!id) return;
+        if (en.isIntersecting) { start[id] = Date.now(); if (!seen[id]) { seen[id] = 1; track('section_view', { section: id }); } }
+        else if (start[id]) { var sec = Math.round((Date.now() - start[id]) / 1000); if (sec >= 2) track('section_time', { section: id, seconds: sec }); start[id] = 0; }
+      });
+    }, { threshold: .35 });
+    $$('main section[id]').forEach(function (s) { io.observe(s); });
+  }
+
   /* ---------- cart ---------- */
   // Older versions of the site stored the cart in a different shape. Anything unexpected is discarded.
   var cartRaw = store.get('cart', []);
@@ -94,6 +142,7 @@
     var line = cart.filter(function (l) { return l.p === pid && l.v === vid; })[0];
     if (line) line.q = Math.min(line.q + q, 10); else cart.push({ p: pid, v: vid, q: Math.min(q, 10) });
     saveCart(); toast(byId[pid].name + ' added to cart');
+    var vv = variantOf(pid, vid); track('add_to_cart', { item_id: pid, item_name: byId[pid].name, item_variant: vid, dose: byId[pid].dose, quantity: q, value: vv ? vv.price * q : 0, currency: 'INR' });
   }
   function subtotal() { return cart.reduce(function (a, l) { return a + variantOf(l.p, l.v).price * l.q; }, 0); }
   function shippingFor(s) { return s === 0 || s >= CONFIG.freeShippingFrom ? 0 : CONFIG.shipping; }
@@ -138,7 +187,7 @@
     $$('[data-filter]').forEach(function (b) {
       b.addEventListener('click', function () {
         var k = b.getAttribute('data-filter'), v = b.getAttribute('data-value');
-        filt[k] = v;
+        filt[k] = v; track('filter_use', { filter: k, value: v });
         $$('[data-filter="' + k + '"]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
         renderGrid();
       });
@@ -155,8 +204,10 @@
 
   /* ---------- product modal ---------- */
   var lastFocus = null;
+  var viewing = null;
   function openProduct(pid, from) {
     var p = byId[pid], m = $('#pmodal'); if (!p || !m) return;
+    viewing = { id: pid, t: Date.now() }; track('view_item', { item_id: pid, item_name: p.name, dose: p.dose, item_category: p.type });
     lastFocus = from || document.activeElement;
     var imgs = [p.img].concat(p.type === 'gummies' ? ['assets/img/tinback.webp', 'assets/img/foil.webp'] : ['assets/img/foil.webp']);
     var inside = p.type === 'tablets'
@@ -185,7 +236,8 @@
     m.classList.add('open'); $('#scrim').classList.add('open'); document.body.classList.add('lock');
     setTimeout(function () { $('#pm-close').focus(); }, 30);
   }
-  function closeModal() { var m = $('#pmodal'); if (!m || !m.classList.contains('open')) return; m.classList.remove('open'); if (!$('#drawer').classList.contains('open')) { $('#scrim').classList.remove('open'); document.body.classList.remove('lock'); } if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  function closeModal() { var m = $('#pmodal'); if (!m || !m.classList.contains('open')) return;
+    if (viewing) { track('product_time', { item_id: viewing.id, seconds: Math.round((Date.now() - viewing.t) / 1000) }); viewing = null; } m.classList.remove('open'); if (!$('#drawer').classList.contains('open')) { $('#scrim').classList.remove('open'); document.body.classList.remove('lock'); } if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 
   /* ---------- drawer / checkout ---------- */
   var view = 'cart', drawerFrom = null, lastOrder = null;
@@ -249,7 +301,7 @@
       (sh && !CONFIG.hidePrices ? '<p class="hint" style="margin:0">Free delivery from ' + money(CONFIG.freeShippingFrom) + '.</p>' : '') +
       (CONFIG.gift ? '<div class="gift-line"><span aria-hidden="true">\uD83C\uDF81</span>Free with this order: ' + esc(CONFIG.gift) + '</div>' : '') +
       '<div class="sum total"><span>Total</span><span>' + money(s + sh) + '</span></div><button class="btn clay wide" id="to-co">Checkout</button>';
-    $('#to-co').addEventListener('click', function () { view = 'checkout'; renderDrawer(); });
+    $('#to-co').addEventListener('click', function () { track('begin_checkout', { items: cart.length }); view = 'checkout'; renderDrawer(); });
   }
   function placeOrder() {
     var f = $('#co'), err = $('#co-err'), miss = [];
@@ -275,6 +327,8 @@
       (f.slam.value.trim() ? '\nSlam book line: ' + f.slam.value.trim() + (f.print.checked ? ' (ok to print)' : ' (do not print)') : '');
     lastOrder = { id: id, text: text, rx: rx, file: file ? file.name : '' };
     var hist = store.get('orders', []); hist.unshift({ id: id, at: now.toISOString(), total: s + sh }); store.set('orders', hist.slice(0, 20));
+    track('generate_lead', { order_id: id, items: cart.length, rx: rx });
+    try { document.dispatchEvent(new CustomEvent('asanoha:order', { detail: { id: id, details: d, items: cart.map(function (l) { return { product: l.p, variant: l.v, qty: l.q }; }), rx: rx, slam: f.slam.value.trim() } })); } catch (e) {}
     view = 'done'; renderDrawer();
   }
   function drawer() {
@@ -425,7 +479,7 @@
       e.preventDefault();
       var em = f.email.value.trim(), msg = $('#nl-msg');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { msg.textContent = 'That email looks a little off. Try again?'; f.email.focus(); return; }
-      var done = function () { f.reset(); msg.textContent = 'You\u2019re in. Check your inbox for a hello from us.'; store.set('subscribed', true); };
+      var done = function () { track('sign_up', { method: 'newsletter' }); f.reset(); msg.textContent = 'You\u2019re in. Check your inbox for a hello from us.'; store.set('subscribed', true); };
       var btn = f.querySelector('button'); btn.disabled = true; msg.textContent = 'Adding you to the list\u2026';
       var fail = function (err) { if (window.console) console.error('Newsletter:', err); msg.textContent = /activat/i.test(String(err && err.message)) ? 'Almost ready: the newsletter inbox still needs a one-time activation. Please try again later.' : 'Could not add you right now (' + String((err && err.message) || 'network error').slice(0, 80) + '). Please try again in a minute.'; };
       var req;
@@ -484,7 +538,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    [launchBar, gate, nav, themeToggle, renderGrid, filters, drawer, hero, reveal, contact, saveCart, newsletter, partnerForm].forEach(function (fn) { try { fn(); } catch (e) { if (window.console) console.error('Asanoha:', fn.name, e); } });
+    [consent, launchBar, gate, nav, themeToggle, renderGrid, filters, drawer, hero, reveal, contact, saveCart, newsletter, partnerForm].forEach(function (fn) { try { fn(); } catch (e) { if (window.console) console.error('Asanoha:', fn.name, e); } });
   });
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });

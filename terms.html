@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Dela+Gothic+One&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=Tiro+Devanagari+Sanskrit&display=swap">
 <script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','day');}})();</script>
-<link rel="stylesheet" href="assets/css/site.css?v=11">
+<link rel="stylesheet" href="assets/css/site.css?v=12">
 
 </head>
 <body>
@@ -51,6 +51,7 @@
       <a href="./#shop">Shop</a><a href="./#doses">Doses</a><a href="story.html">Our story</a><a href="about.html">About us</a><a href="blog.html">Blog</a><a href="./#faq">FAQ</a>
     </nav>
     <div class="actions">
+      <button class="acct-btn" id="account-btn" hidden aria-label="Sign in with Google"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.8 6C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.3.8-4.7l-7.8-6C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.2-13.5-9.9l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg><span class="label">Sign in</span></button>
       <button class="theme-btn" id="theme-btn" aria-label="Switch to night mode" aria-pressed="false"><svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
       <button class="cart-btn" aria-label="Open cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.5 12h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="label">Cart</span><span class="count cart-count">0</span></button>
       <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -131,6 +132,14 @@
   <div class="panel"><button class="x" id="pm-close" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div id="pm-body" style="display:contents"></div></div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="assets/js/site.js?v=14" defer></script>
+<div class="modal" id="acct" role="dialog" aria-modal="true" aria-labelledby="acct-title">
+  <div class="panel acct-panel"><button class="x" id="acct-close" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div id="acct-body"></div></div>
+</div>
+<div class="consent" id="consent" role="region" aria-label="Analytics consent" hidden>
+  <p>We use privacy-friendly analytics to see which pages and products people like, so we can make the site better. No ads, no selling data.</p>
+  <div><button class="btn small clay" id="consent-yes">Accept</button><button class="btn small ghost" id="consent-no">No thanks</button></div>
+</div>
+<script src="assets/js/site.js?v=16" defer></script>
+<script type="module" src="assets/js/account.js?v=1"></script>
 </body>
 </html>

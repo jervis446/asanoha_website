@@ -489,3 +489,23 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opac
 .lb-x:hover{background:rgba(255,255,255,.18)}
 @media (max-width:600px){.launch-bar .lb-sub{display:none}}
 @media (prefers-reduced-motion:reduce){.launch-bar .dot{animation:none}}
+
+/* account + consent */
+.acct-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 10px;border-radius:22px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;font-weight:800}
+.acct-btn img{width:26px;height:26px;border-radius:50%}
+.acct-btn .ini{width:26px;height:26px;border-radius:50%;background:var(--clay);color:#fff;display:grid;place-items:center;font-size:13px}
+@media (max-width:900px){.acct-btn .label{display:none}.acct-btn{padding:0 9px}}
+.acct-panel{grid-template-columns:1fr!important;max-width:560px}
+#acct-body{padding:30px 28px;display:grid;gap:16px}
+.acct-head{display:flex;align-items:center;gap:14px}
+.acct-head img{width:56px;height:56px;border-radius:50%}
+.acct-head h2{font-size:28px}
+.acct-head p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.acct-orders-h{font-size:20px;margin-top:6px}
+.acct-orders{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.acct-orders li{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;font-size:14px}
+.acct-orders b{font-family:var(--display);font-weight:400}
+.consent{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:80;max-width:720px;margin:0 auto;display:flex;align-items:center;gap:16px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:14px 16px;box-shadow:0 16px 40px rgba(0,0,0,.18)}
+.consent p{margin:0;font-size:14px;color:var(--ink-2)}
+.consent div{display:flex;gap:8px;flex-shrink:0}
+@media (max-width:600px){.consent{flex-direction:column;align-items:stretch}}
