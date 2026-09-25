@@ -413,3 +413,12 @@ main{position:relative;z-index:1}
 .card .row{flex-wrap:wrap}
 .lockchip{white-space:nowrap}
 .card .row .btn{white-space:nowrap}
+.founders{grid-template-columns:repeat(4,1fr);gap:22px}
+.founder .portrait{width:150px;height:150px}
+@media (max-width:1100px){.founders{grid-template-columns:repeat(2,1fr);max-width:none}}
+@media (max-width:640px){.founders{grid-template-columns:1fr}}
+.founder .page{background-image:none;padding:16px 18px}
+.founder .page dl>div{display:block;min-height:0;padding:7px 0;border-bottom:1px dashed #D8CDB8}
+.founder .page dl>div:last-child{border-bottom:0}
+.founder .page dt{width:auto;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.founder .page dd{font-size:22px;line-height:1.15}
