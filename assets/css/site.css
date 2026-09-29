@@ -819,10 +819,10 @@ footer.site .ash-sign span{color:var(--pink)}
 
 /* Pincode check button: keep it compact and aligned with the field */
 .ash-pinrow label > .ash-inline{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
+  display:flex;
+  flex-direction:column;
   align-items:stretch;
-  gap:10px;
+  gap:12px;
   width:100%;
 }
 .ash-pinrow .ash-inline input{
@@ -831,7 +831,7 @@ footer.site .ash-sign span{color:var(--pink)}
   box-sizing:border-box;
 }
 .ash-pinrow .ash-inline .ash-cta.alt{
-  width:auto;
+  width:max-content;
   min-width:88px;
   min-height:48px;
   margin:0;
@@ -842,7 +842,5 @@ footer.site .ash-sign span{color:var(--pink)}
   color:#fff;
   font-weight:800;
   box-sizing:border-box;
-}
-@media (max-width:360px){
-  .ash-pinrow .ash-inline .ash-cta.alt{min-width:82px;padding:0 14px}
+  align-self:flex-start;
 }
