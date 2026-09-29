@@ -822,7 +822,7 @@ footer.site .ash-sign span{color:var(--pink)}
   display:flex;
   flex-direction:column;
   align-items:stretch;
-  gap:12px;
+  gap:16px !important;
   width:100%;
 }
 .ash-pinrow .ash-inline input{
@@ -834,7 +834,7 @@ footer.site .ash-sign span{color:var(--pink)}
   width:max-content;
   min-width:88px;
   min-height:48px;
-  margin:0;
+  margin:12px 0 0 !important;
   padding:0 20px;
   border:0;
   border-radius:12px;
