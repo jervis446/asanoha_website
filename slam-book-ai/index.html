@@ -1,0 +1,124 @@
+<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="../assets/img/mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/site.css?v=13">
+<script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>Slam Book AI | Asanoha</title><meta name="description" content="Create a shareable slam-book message from real memories."></head><body>
+<div class="gate" id="tools-gate" role="dialog" aria-modal="true" aria-labelledby="tools-gate-title">
+  <div class="box">
+    <img src="../assets/img/mark.svg" alt="" width="110" height="110">
+    <h2 id="tools-gate-title">Are you 18 or older?</h2>
+    <p>These interactive experiences are part of the Asanoha site. Asanoha products are Ayurvedic proprietary medicines containing Vijaya leaf extract, sold only to adults and on the prescription of a registered Ayurvedic practitioner.</p>
+    <div class="btns"><button class="btn yes" id="tools-gate-yes">Yes, I am 18+</button><button class="btn no" id="tools-gate-no">No</button></div>
+    <p id="tools-gate-msg" style="margin-top:18px" hidden>Come back in a few years. We’ll save you half.</p>
+  </div>
+</div><header class="top"><div class="wrap">
+<a class="brand" href="../" aria-label="Asanoha home"><img src="../assets/img/mark.svg" alt="" width="42" height="42"><b>asanoha</b><sup>™</sup></a>
+<nav class="nav" aria-label="Tools"><a href="./">Tools</a><a href="../">Home</a><a href="../blog.html">Blog</a></nav>
+</div></header><main><section class="tools-hero wrap"><p class="kicker">Asanoha / AI tool</p><h1>Make a slam-book page</h1><p class="lead">Give us a few real details. The browser turns them into a short, playful message you can edit and share.</p></section>
+<section class="tool-shell wrap"><div class="tool-card"><span class="ai-badge">AI-ready experience</span>
+<div class="form-grid" style="margin-top:20px"><div class="field"><label for="friend">Your friend's name</label><input id="friend" maxlength="50" placeholder="Rahul"></div><div class="field"><label for="met">How did you meet?</label><input id="met" maxlength="100" placeholder="College"></div><div class="field full"><label for="thing">Something you always do together</label><input id="thing" maxlength="120" placeholder="Late-night chai"></div><div class="field full"><label for="joke">An inside joke</label><input id="joke" maxlength="160" placeholder="“5 minutes” means 45 minutes"></div><div class="field full"><label for="memory">A favourite memory</label><textarea id="memory" maxlength="300" placeholder="That random trip where nothing went to plan..."></textarea></div></div>
+<div style="margin-top:20px"><button class="btn clay" id="make">Create the page</button></div>
+<div class="result" id="slam"><h2 id="slam-title"></h2><p id="slam-copy"></p><div class="result-actions"><button class="btn" id="slam-share">Share</button><button class="btn ghost" id="copy-prompt">Copy AI prompt</button></div></div>
+<p style="margin-top:18px;color:var(--muted);font-size:14px">The default version runs locally, so no personal details are sent to an AI provider. If you later connect a server-side model, keep the API key off the browser and disclose how submitted data is processed.</p>
+</div></section></main><div class="tool-foot wrap">18+ only. These experiences are for entertainment and community engagement and are not medical advice. Product strength and suitability must be determined by a registered Ayurvedic practitioner.</div><script src="../assets/js/tools.js"></script><script>(function(){
+function v(id){return document.getElementById(id).value.trim()}
+document.getElementById('make').onclick=function(){
+var f=v('friend'),m=v('met'),t=v('thing'),j=v('joke'),mem=v('memory');if(!f||!m||!t){alert('Add a name, how you met, and one thing you always do together.');return}
+var text='Dear '+f+',\\n\\nSomehow we went from meeting '+m.toLowerCase()+' to making '+t.toLowerCase()+' a regular thing. I still laugh about '+(j||'our completely unnecessary inside jokes')+'. '+(mem||'The memories are the part I would never trade.').replace(/\\s+/g,' ')+'\\n\\nHalf the story is mine. The other half is yours.';
+document.getElementById('slam-title').textContent='For '+f;document.getElementById('slam-copy').textContent=text;document.getElementById('slam').classList.add('show');window._slam=text;AsanohaTools.track('tool_completed',{tool:'slam-book-ai'})};
+document.getElementById('slam-share').onclick=function(){AsanohaTools.share(window._slam)};
+document.getElementById('copy-prompt').onclick=function(){var prompt='Write a short, warm and funny slam-book message for my friend '+v('friend')+'. We met '+v('met')+'. We always '+v('thing')+'. Inside joke: '+v('joke')+'. Favourite memory: '+v('memory')+'. Do not invent facts or make medical claims.';navigator.clipboard.writeText(prompt).then(function(){alert('AI prompt copied.')})};
+}());</script>
+<script>
+(function () {
+  const key = "asanoha_egg";
+  const unlocked = localStorage.getItem(key) === "1";
+
+  function showEgg() {
+    if (document.getElementById("asanoha-egg")) return;
+    const box = document.createElement("div");
+    box.id = "asanoha-egg";
+    box.setAttribute("role","dialog");
+    box.innerHTML = `
+      <div class="as-egg-backdrop"></div>
+      <div class="as-egg-card">
+        <button class="as-egg-close" aria-label="Close">×</button>
+        <div class="as-egg-kicker">YOU FOUND THE OTHER HALF</div>
+        <h2>Aadha tera. Aadha mera.</h2>
+        <p>Some things are better discovered than announced.</p>
+        <div class="as-egg-actions">
+          <a href="/slam-book-ai.html">Open the Slam Book</a>
+          <a href="/other-half-game.html">Find your other half</a>
+        </div>
+      </div>`;
+    document.body.appendChild(box);
+    box.querySelector(".as-egg-close").onclick = () => box.remove();
+    box.querySelector(".as-egg-backdrop").onclick = () => box.remove();
+  }
+
+  function unlock() {
+    localStorage.setItem(key,"1");
+    showEgg();
+  }
+
+  // Konami-style keyboard easter egg: A S A N O H A
+  let seq = "";
+  document.addEventListener("keydown", e => {
+    if (e.key.length === 1) {
+      seq = (seq + e.key.toLowerCase()).slice(-7);
+      if (seq === "asanoha") unlock();
+    }
+  });
+
+  // Click the brand mark/logo five times in a relaxed window.
+  let clicks = 0, timer;
+  document.addEventListener("click", e => {
+    const target = e.target.closest("a,button");
+    if (!target) return;
+    const text = (target.textContent || "").trim().toLowerCase();
+    const aria = (target.getAttribute("aria-label") || "").toLowerCase();
+    const looksLikeBrand = text.includes("asanoha") || aria.includes("asanoha") || target.querySelector("img[alt*='Asanoha' i]");
+    if (!looksLikeBrand) return;
+    clicks++;
+    clearTimeout(timer);
+    timer=setTimeout(()=>clicks=0,1800);
+    if (clicks >= 5) { clicks=0; unlock(); }
+  });
+
+  // Hidden footer phrase: type "otherhalf".
+  let hidden = "";
+  document.addEventListener("keypress", e => {
+    hidden = (hidden + (e.key || "").toLowerCase()).slice(-9);
+    if (hidden === "otherhalf") unlock();
+  });
+
+  if (unlocked && location.hash === "#other-half") {
+    setTimeout(showEgg, 300);
+  }
+})();
+</script>
+<style>
+#asanoha-egg .as-egg-backdrop {
+  position:fixed; inset:0; background:rgba(20,14,10,.58); backdrop-filter:blur(5px); z-index:9998;
+}
+#asanoha-egg .as-egg-card {
+  position:fixed; z-index:9999; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:min(520px,calc(100vw - 32px)); padding:32px; border-radius:24px;
+  background:#f7f0e4; color:#231b16; box-shadow:0 24px 80px rgba(0,0,0,.3);
+  font-family:inherit;
+}
+#asanoha-egg .as-egg-kicker { font-size:11px; letter-spacing:.16em; text-transform:uppercase; opacity:.65; }
+#asanoha-egg h2 { margin:10px 0 8px; font-size:clamp(28px,6vw,46px); }
+#asanoha-egg p { margin:0 0 22px; line-height:1.6; }
+#asanoha-egg .as-egg-actions { display:flex; gap:10px; flex-wrap:wrap; }
+#asanoha-egg .as-egg-actions a {
+  display:inline-block; padding:11px 15px; border-radius:999px; text-decoration:none;
+  border:1px solid rgba(35,27,22,.22); color:inherit;
+}
+#asanoha-egg .as-egg-close {
+  position:absolute; right:14px; top:10px; border:0; background:none;
+  font-size:30px; cursor:pointer; color:inherit;
+}
+</style>
+
+</body></html>

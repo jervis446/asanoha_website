@@ -1,0 +1,116 @@
+<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="../assets/img/mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/site.css?v=13">
+<script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>Games & Tools | Asanoha</title><meta name="description" content="Interactive Asanoha games and tools for adults 18+."></head><body>
+<div class="gate" id="tools-gate" role="dialog" aria-modal="true" aria-labelledby="tools-gate-title">
+  <div class="box">
+    <img src="../assets/img/mark.svg" alt="" width="110" height="110">
+    <h2 id="tools-gate-title">Are you 18 or older?</h2>
+    <p>These interactive experiences are part of the Asanoha site. Asanoha products are Ayurvedic proprietary medicines containing Vijaya leaf extract, sold only to adults and on the prescription of a registered Ayurvedic practitioner.</p>
+    <div class="btns"><button class="btn yes" id="tools-gate-yes">Yes, I am 18+</button><button class="btn no" id="tools-gate-no">No</button></div>
+    <p id="tools-gate-msg" style="margin-top:18px" hidden>Come back in a few years. We’ll save you half.</p>
+  </div>
+</div><header class="top"><div class="wrap">
+<a class="brand" href="../" aria-label="Asanoha home"><img src="../assets/img/mark.svg" alt="" width="42" height="42"><b>asanoha</b><sup>™</sup></a>
+<nav class="nav" aria-label="Tools"><a href="./">Tools</a><a href="../">Home</a><a href="../blog.html">Blog</a></nav>
+</div></header><main><section class="tools-hero wrap"><p class="kicker">Asanoha / play</p><h1>Half the story is yours.</h1><p class="lead">Interactive games and tools for you and your other half. 18+ only.</p>
+<div class="tool-grid" style="margin-top:32px">
+<a class="choice" href="../which-half-are-you/"><b>Which half are you?</b><span>A five-question personality game.</span></a>
+<a class="choice" href="../other-half-game/"><b>Other half game</b><span>Compare answers and see your match.</span></a>
+<a class="choice" href="../slam-book-ai/"><b>Slam-book AI</b><span>Turn real memories into a message.</span></a>
+<a class="choice" href="../friendship-story/"><b>Friendship story</b><span>Make a short story from three memories.</span></a>
+</div></section></main><div class="tool-foot wrap">18+ only. These experiences are for entertainment and community engagement and are not medical advice. Product strength and suitability must be determined by a registered Ayurvedic practitioner.</div><script src="../assets/js/tools.js"></script><script></script>
+<script>
+(function () {
+  const key = "asanoha_egg";
+  const unlocked = localStorage.getItem(key) === "1";
+
+  function showEgg() {
+    if (document.getElementById("asanoha-egg")) return;
+    const box = document.createElement("div");
+    box.id = "asanoha-egg";
+    box.setAttribute("role","dialog");
+    box.innerHTML = `
+      <div class="as-egg-backdrop"></div>
+      <div class="as-egg-card">
+        <button class="as-egg-close" aria-label="Close">×</button>
+        <div class="as-egg-kicker">YOU FOUND THE OTHER HALF</div>
+        <h2>Aadha tera. Aadha mera.</h2>
+        <p>Some things are better discovered than announced.</p>
+        <div class="as-egg-actions">
+          <a href="/slam-book-ai.html">Open the Slam Book</a>
+          <a href="/other-half-game.html">Find your other half</a>
+        </div>
+      </div>`;
+    document.body.appendChild(box);
+    box.querySelector(".as-egg-close").onclick = () => box.remove();
+    box.querySelector(".as-egg-backdrop").onclick = () => box.remove();
+  }
+
+  function unlock() {
+    localStorage.setItem(key,"1");
+    showEgg();
+  }
+
+  // Konami-style keyboard easter egg: A S A N O H A
+  let seq = "";
+  document.addEventListener("keydown", e => {
+    if (e.key.length === 1) {
+      seq = (seq + e.key.toLowerCase()).slice(-7);
+      if (seq === "asanoha") unlock();
+    }
+  });
+
+  // Click the brand mark/logo five times in a relaxed window.
+  let clicks = 0, timer;
+  document.addEventListener("click", e => {
+    const target = e.target.closest("a,button");
+    if (!target) return;
+    const text = (target.textContent || "").trim().toLowerCase();
+    const aria = (target.getAttribute("aria-label") || "").toLowerCase();
+    const looksLikeBrand = text.includes("asanoha") || aria.includes("asanoha") || target.querySelector("img[alt*='Asanoha' i]");
+    if (!looksLikeBrand) return;
+    clicks++;
+    clearTimeout(timer);
+    timer=setTimeout(()=>clicks=0,1800);
+    if (clicks >= 5) { clicks=0; unlock(); }
+  });
+
+  // Hidden footer phrase: type "otherhalf".
+  let hidden = "";
+  document.addEventListener("keypress", e => {
+    hidden = (hidden + (e.key || "").toLowerCase()).slice(-9);
+    if (hidden === "otherhalf") unlock();
+  });
+
+  if (unlocked && location.hash === "#other-half") {
+    setTimeout(showEgg, 300);
+  }
+})();
+</script>
+<style>
+#asanoha-egg .as-egg-backdrop {
+  position:fixed; inset:0; background:rgba(20,14,10,.58); backdrop-filter:blur(5px); z-index:9998;
+}
+#asanoha-egg .as-egg-card {
+  position:fixed; z-index:9999; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:min(520px,calc(100vw - 32px)); padding:32px; border-radius:24px;
+  background:#f7f0e4; color:#231b16; box-shadow:0 24px 80px rgba(0,0,0,.3);
+  font-family:inherit;
+}
+#asanoha-egg .as-egg-kicker { font-size:11px; letter-spacing:.16em; text-transform:uppercase; opacity:.65; }
+#asanoha-egg h2 { margin:10px 0 8px; font-size:clamp(28px,6vw,46px); }
+#asanoha-egg p { margin:0 0 22px; line-height:1.6; }
+#asanoha-egg .as-egg-actions { display:flex; gap:10px; flex-wrap:wrap; }
+#asanoha-egg .as-egg-actions a {
+  display:inline-block; padding:11px 15px; border-radius:999px; text-decoration:none;
+  border:1px solid rgba(35,27,22,.22); color:inherit;
+}
+#asanoha-egg .as-egg-close {
+  position:absolute; right:14px; top:10px; border:0; background:none;
+  font-size:30px; cursor:pointer; color:inherit;
+}
+</style>
+
+</body></html>

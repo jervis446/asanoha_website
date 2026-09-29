@@ -125,5 +125,98 @@
 </div>
 <script src="assets/js/site.js?v=16" defer></script>
 <script type="module" src="assets/js/account.js?v=1"></script>
+
+<script>
+(function () {
+  const key = "asanoha_egg";
+  const unlocked = localStorage.getItem(key) === "1";
+
+  function showEgg() {
+    if (document.getElementById("asanoha-egg")) return;
+    const box = document.createElement("div");
+    box.id = "asanoha-egg";
+    box.setAttribute("role","dialog");
+    box.innerHTML = `
+      <div class="as-egg-backdrop"></div>
+      <div class="as-egg-card">
+        <button class="as-egg-close" aria-label="Close">×</button>
+        <div class="as-egg-kicker">YOU FOUND THE OTHER HALF</div>
+        <h2>Aadha tera. Aadha mera.</h2>
+        <p>Some things are better discovered than announced.</p>
+        <div class="as-egg-actions">
+          <a href="/slam-book-ai.html">Open the Slam Book</a>
+          <a href="/other-half-game.html">Find your other half</a>
+        </div>
+      </div>`;
+    document.body.appendChild(box);
+    box.querySelector(".as-egg-close").onclick = () => box.remove();
+    box.querySelector(".as-egg-backdrop").onclick = () => box.remove();
+  }
+
+  function unlock() {
+    localStorage.setItem(key,"1");
+    showEgg();
+  }
+
+  // Konami-style keyboard easter egg: A S A N O H A
+  let seq = "";
+  document.addEventListener("keydown", e => {
+    if (e.key.length === 1) {
+      seq = (seq + e.key.toLowerCase()).slice(-7);
+      if (seq === "asanoha") unlock();
+    }
+  });
+
+  // Click the brand mark/logo five times in a relaxed window.
+  let clicks = 0, timer;
+  document.addEventListener("click", e => {
+    const target = e.target.closest("a,button");
+    if (!target) return;
+    const text = (target.textContent || "").trim().toLowerCase();
+    const aria = (target.getAttribute("aria-label") || "").toLowerCase();
+    const looksLikeBrand = text.includes("asanoha") || aria.includes("asanoha") || target.querySelector("img[alt*='Asanoha' i]");
+    if (!looksLikeBrand) return;
+    clicks++;
+    clearTimeout(timer);
+    timer=setTimeout(()=>clicks=0,1800);
+    if (clicks >= 5) { clicks=0; unlock(); }
+  });
+
+  // Hidden footer phrase: type "otherhalf".
+  let hidden = "";
+  document.addEventListener("keypress", e => {
+    hidden = (hidden + (e.key || "").toLowerCase()).slice(-9);
+    if (hidden === "otherhalf") unlock();
+  });
+
+  if (unlocked && location.hash === "#other-half") {
+    setTimeout(showEgg, 300);
+  }
+})();
+</script>
+<style>
+#asanoha-egg .as-egg-backdrop {
+  position:fixed; inset:0; background:rgba(20,14,10,.58); backdrop-filter:blur(5px); z-index:9998;
+}
+#asanoha-egg .as-egg-card {
+  position:fixed; z-index:9999; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:min(520px,calc(100vw - 32px)); padding:32px; border-radius:24px;
+  background:#f7f0e4; color:#231b16; box-shadow:0 24px 80px rgba(0,0,0,.3);
+  font-family:inherit;
+}
+#asanoha-egg .as-egg-kicker { font-size:11px; letter-spacing:.16em; text-transform:uppercase; opacity:.65; }
+#asanoha-egg h2 { margin:10px 0 8px; font-size:clamp(28px,6vw,46px); }
+#asanoha-egg p { margin:0 0 22px; line-height:1.6; }
+#asanoha-egg .as-egg-actions { display:flex; gap:10px; flex-wrap:wrap; }
+#asanoha-egg .as-egg-actions a {
+  display:inline-block; padding:11px 15px; border-radius:999px; text-decoration:none;
+  border:1px solid rgba(35,27,22,.22); color:inherit;
+}
+#asanoha-egg .as-egg-close {
+  position:absolute; right:14px; top:10px; border:0; background:none;
+  font-size:30px; cursor:pointer; color:inherit;
+}
+</style>
+
 </body>
 </html>

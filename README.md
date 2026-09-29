@@ -24,3 +24,16 @@ There is no payment gateway yet. At checkout the customer fills in details and p
 Upload every file in this folder, including CNAME and .nojekyll, to the root of the main branch of jervis446/asanoha_website. Keep the CNAME file, or GitHub Pages will drop the custom domain.
 
 After each deploy, bump CACHE in sw.js (asanoha-v3 to asanoha-v4 and so on) so returning visitors get the new version.
+
+## Interactive tools
+
+New static routes:
+- `/tools/`
+- `/which-half-are-you/`
+- `/other-half-game/`
+- `/slam-book-ai/`
+- `/friendship-story/`
+
+Each route has its own 18+ gate using `localStorage` key `asanoha:tools-adult`. This is an age acknowledgement, not a secure age-verification system.
+
+The AI-labelled slam-book experience currently runs locally in the browser and includes an optional prompt-copy flow. It does not expose an AI API key. For a production AI model, add a server-side endpoint such as `/api/friendship-story` and keep the provider key on the server.
