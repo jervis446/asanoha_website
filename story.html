@@ -15,8 +15,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Dela+Gothic+One&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=Tiro+Devanagari+Sanskrit&display=swap">
-<script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','day');}})();</script>
-<link rel="stylesheet" href="assets/css/site.css?v=12">
+<script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):'auto';if(t!=='day'&&t!=='night')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','day');}})();</script>
+<link rel="stylesheet" href="assets/css/site.css?v=17">
 
 
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -76,8 +76,8 @@
       <p class="big">Half a samosa at the school canteen. Half the rent in our first Bangalore flat. Half a cab home at 1 a.m., split three ways because somebody always “forgot” their wallet.</p>
       <p>Then life got busy. Jobs, cities, promotions, calendar invites. The halves quietly stopped. Friends turned into a WhatsApp group that only wakes up for birthdays, and “we should meet soon” became the most repeated lie in our phones.</p>
       <p>We noticed it one evening at IIM Indore, three tired people splitting one plate of poha between classes. Somebody said it felt like school. Somebody else said they hadn’t spoken to their school best friend in two years. Nobody said anything for a while.</p>
-      <p class="big">So we made something that doesn’t work unless you share it.</p>
-      <p>Every Asanoha pack comes as two. Two tins that fit together, or two syringes in one sleeve. One half is yours. The other half is for the friend you keep meaning to call. We say it the way we said it in school: aadha tera, aadha mera.</p>
+      <p class="big">So we built a brand around the people who held the other half of our stories.</p>
+      <p>Every Asanoha pack comes as two. Two tins that fit together, or two syringes in one sleeve. Both halves are yours, on your own prescription. The friendship is in everything around it: the slam book, the stories and the nudge to call the friend you keep meaning to call. We say it the way we said it in school: aadha tera, aadha mera.</p>
     </div>
   </div>
 </section>
@@ -112,7 +112,7 @@
     <div class="cols">
       <div>
         <div class="fbrand"><img src="assets/img/mark.svg" alt="" width="44" height="44"><b>asanoha</b></div>
-        <p style="margin:0 0 14px;max-width:32ch">Vijaya leaf gummies and oil, packed in pairs. One half for you, one for the friend you keep meaning to call.</p>
+        <p style="margin:0 0 14px;max-width:32ch">Ayurvedic Vijaya leaf medicines, prescribed by registered AYUSH practitioners. Each pack is for the person it is prescribed to.</p>
         <p style="margin:0 0 16px"><a data-mail href="mailto:orders@asanoha.co.in">orders@asanoha.co.in</a></p>
         <img src="assets/img/ayush-badge.svg" alt="AYUSH-licensed manufacturing" width="84" height="84">
       </div>
@@ -145,7 +145,8 @@
   <p>We use privacy-friendly analytics to see which pages and products people like, so we can make the site better. No ads, no selling data.</p>
   <div><button class="btn small clay" id="consent-yes">Accept</button><button class="btn small ghost" id="consent-no">No thanks</button></div>
 </div>
-<script src="assets/js/site.js?v=16" defer></script>
-<script type="module" src="assets/js/account.js?v=1"></script>
+<script src="assets/js/site.js?v=18" defer></script>
+<script src="assets/js/shop.js?v=5" defer></script>
+<script type="module" src="assets/js/account.js?v=2"></script>
 </body>
 </html>

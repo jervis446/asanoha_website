@@ -30,4 +30,52 @@ Disallow: /other-half-game/
 Disallow: /slam-book-ai/
 Disallow: /friendship-story/
 
+User-agent: ClaudeBot
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
 Sitemap: https://asanoha.co.in/sitemap.xml

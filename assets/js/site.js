@@ -16,6 +16,9 @@
     newsletterField: 'fields[email]',
     // Without MailerLite, sign-ups are delivered to this inbox through FormSubmit (free, no account).
     newsletterInbox: 'orders@asanoha.co.in',
+    // Google Sheet list (recommended). Paste your Google Apps Script web app URL here (ends in /exec).
+    // When set, every sign-up is saved to your Google Sheet and visible on your subscriber dashboard.
+    newsletterSheet: '',
     // Free gift added to every order. Set to '' to switch it off everywhere in the cart and order message.
     gift: 'Asanoha friendship paper booklet (1 per order)',
     // Analytics (loaded only after the visitor accepts). Google Analytics 4 measurement ID, e.g. 'G-XXXXXXX'.
@@ -23,7 +26,14 @@
     // Microsoft Clarity project ID for heatmaps and session recordings, e.g. 'abcd1234ef'.
     clarityId: '',
     // Google sign-in via Firebase. Paste the web app config from Firebase console > Project settings.
-    firebase: null /* e.g. { apiKey: '...', authDomain: '...', projectId: '...', appId: '...' } */
+    firebase: {
+      apiKey: 'AIzaSyDt1TJEaqKMIwmBSz8THpMjGJUFWl_yc3Y',
+      authDomain: 'asanoha-1420b.firebaseapp.com',
+      projectId: 'asanoha-1420b',
+      storageBucket: 'asanoha-1420b.firebasestorage.app',
+      messagingSenderId: '1057840442199',
+      appId: '1:1057840442199:web:9162b2696450875cadac12'
+    }
   };
   window.ASANOHA = { config: CONFIG };
 
@@ -52,7 +62,7 @@
                   { id: 'cocoa', label: 'Single tin: Dark cocoa', price: 849 } ] },
     { id: 'tab-250', type: 'tablets', dose: 'high', name: 'unTrippy tablets', short: '250 mg Vijaya leaf extract per tablet',
       img: 'assets/img/tablets.webp', alt: 'unTrippy tablets carton with two blister strips of 10 tablets',
-      story: 'Our high-strength tablet. One strip for you, one for them, both on prescription. Same rooftop, fewer crumbs.',
+      story: 'Our high-strength tablet. Two strips of 10, both for you, on your own prescription. Same rooftop, fewer crumbs.',
       variants: [ { id: 'duo', label: 'Duo carton: 2 strips x 10 tablets', price: 1799 },
                   { id: 'strip', label: 'Single strip: 10 tablets', price: 949 } ] },
     { id: 'oil-low', type: 'oil', dose: 'low', name: 'Sunset oil syringes', short: '2 x 1 ml oral syringes',
@@ -483,7 +493,9 @@
       var btn = f.querySelector('button'); btn.disabled = true; msg.textContent = 'Adding you to the list\u2026';
       var fail = function (err) { if (window.console) console.error('Newsletter:', err); msg.textContent = /activat/i.test(String(err && err.message)) ? 'Almost ready: the newsletter inbox still needs a one-time activation. Please try again later.' : 'Could not add you right now (' + String((err && err.message) || 'network error').slice(0, 80) + '). Please try again in a minute.'; };
       var req;
-      if (CONFIG.newsletterAction) {
+      if (CONFIG.newsletterSheet) {
+        req = sheetSubscribe(em, location.pathname).then(done);
+      } else if (CONFIG.newsletterAction) {
         var fd = new FormData(); fd.append(CONFIG.newsletterField, em); fd.append('ml-submit', '1'); fd.append('anticsrf', 'true');
         req = fetch(CONFIG.newsletterAction, { method: 'POST', body: fd, mode: 'no-cors' }).then(done);
       } else {
@@ -500,6 +512,18 @@
       }).then(function () { btn.disabled = false; });
     });
   }
+  function sheetSubscribe(em, source) {
+    var body = new URLSearchParams({ email: em, source: source || location.pathname, ua: navigator.userAgent.slice(0, 120), website: '' });
+    return fetch(CONFIG.newsletterSheet, { method: 'POST', mode: 'no-cors', body: body }).catch(function () {
+      // Fallback for blockers: plain form post into a hidden frame.
+      var name = 'nl-sheet', fr = document.querySelector('iframe[name="' + name + '"]');
+      if (!fr) { fr = document.createElement('iframe'); fr.name = name; fr.title = 'Newsletter'; fr.style.display = 'none'; document.body.appendChild(fr); }
+      var fm = document.createElement('form'); fm.method = 'POST'; fm.action = CONFIG.newsletterSheet; fm.target = name; fm.style.display = 'none';
+      body.forEach(function (v, k) { var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; fm.appendChild(i); });
+      document.body.appendChild(fm); fm.submit(); setTimeout(function () { fm.remove(); }, 2000);
+    });
+  }
+  window.ASANOHA.subscribe = function (em, source) { return CONFIG.newsletterSheet ? sheetSubscribe(em, source) : Promise.reject(new Error('newsletterSheet not set')); };
   function postViaIframe(em) {
     var name = 'nl-sink', frame = document.querySelector('iframe[name="' + name + '"]');
     if (!frame) { frame = document.createElement('iframe'); frame.name = name; frame.title = 'Newsletter'; frame.style.display = 'none'; document.body.appendChild(frame); }

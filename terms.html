@@ -15,8 +15,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Dela+Gothic+One&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=Tiro+Devanagari+Sanskrit&display=swap">
-<script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','day');}})();</script>
-<link rel="stylesheet" href="assets/css/site.css?v=12">
+<script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):'auto';if(t!=='day'&&t!=='night')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','day');}})();</script>
+<link rel="stylesheet" href="assets/css/site.css?v=17">
 
 
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -88,7 +88,7 @@
 <p>You can cancel an order before it is dispatched for a full refund. As these are medicines, we cannot accept returns of opened or undamaged products. If you receive a damaged, defective, expired or wrong product, tell us within 48 hours of delivery with photos of the product and packaging. We will replace it or refund you after review. Approved refunds are made to the original payment method within [X] working days.</p>
 
 <h2>7. Your responsibilities</h2>
-<p>You agree to give accurate details and a genuine prescription, to use products only for yourself as prescribed, and not to resell, share outside your prescription, or export our products. Our gift packs are designed for two prescribed adults, and each person using a product should hold their own prescription.</p>
+<p>You agree to give accurate details and a genuine prescription, to use products only for yourself as prescribed, and not to resell, share outside your prescription, or export our products. Each pack is for one prescribed adult. Do not share, gift or resell our medicines, even to a friend.</p>
 
 <h2>8. Slam book submissions</h2>
 <p>If you submit a slam book line, you confirm it is your own writing and does not name anyone without their permission. With your separate consent, you allow us to print it on our packaging and show it on our website with your first name and city. We may edit it for length or decline to publish it.</p>
@@ -113,7 +113,7 @@
     <div class="cols">
       <div>
         <div class="fbrand"><img src="assets/img/mark.svg" alt="" width="44" height="44"><b>asanoha</b></div>
-        <p style="margin:0 0 14px;max-width:32ch">Vijaya leaf gummies and oil, packed in pairs. One half for you, one for the friend you keep meaning to call.</p>
+        <p style="margin:0 0 14px;max-width:32ch">Ayurvedic Vijaya leaf medicines, prescribed by registered AYUSH practitioners. Each pack is for the person it is prescribed to.</p>
         <p style="margin:0 0 16px"><a data-mail href="mailto:orders@asanoha.co.in">orders@asanoha.co.in</a></p>
         <img src="assets/img/ayush-badge.svg" alt="AYUSH-licensed manufacturing" width="84" height="84">
       </div>
@@ -146,7 +146,8 @@
   <p>We use privacy-friendly analytics to see which pages and products people like, so we can make the site better. No ads, no selling data.</p>
   <div><button class="btn small clay" id="consent-yes">Accept</button><button class="btn small ghost" id="consent-no">No thanks</button></div>
 </div>
-<script src="assets/js/site.js?v=16" defer></script>
-<script type="module" src="assets/js/account.js?v=1"></script>
+<script src="assets/js/site.js?v=18" defer></script>
+<script src="assets/js/shop.js?v=5" defer></script>
+<script type="module" src="assets/js/account.js?v=2"></script>
 </body>
 </html>

@@ -18,3 +18,8 @@
 ## Discovery
 - Sitemap: https://asanoha.co.in/sitemap.xml
 - Robots: https://asanoha.co.in/robots.txt
+
+## Medicine use
+- Asanoha products are Ayurvedic proprietary medicines (Schedule E(1)) sold only on the prescription of a registered AYUSH practitioner to adults 18+.
+- Each pack is for the prescribed person only. Asanoha does not encourage sharing, gifting or reselling its medicines.
+- Shop: https://asanoha.co.in/#shop (prices and Noha Money rewards go live at launch).
