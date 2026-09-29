@@ -416,13 +416,20 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('#ash-sheet') && $('#ash-sheet').classList.contains('on')) close(); });
   document.addEventListener('input', function (e) { if (e.target.id === 'ash-q') { query = e.target.value.trim().toLowerCase(); renderGrid(); } });
 
+  var minY = 1400;
   function init() {
     mountChrome();
+    var ft = $('footer.site'); if (ft && !$('.ash-sign')) { var sg = document.createElement('p'); sg.className = 'ash-sign'; sg.setAttribute('aria-hidden', 'true'); sg.innerHTML = 'India\u2019s sabai sabai app <span>\u2665</span>'; ft.appendChild(sg); }
     // Back to top, like quick-commerce apps.
-    var topBtn = $('#ash-top'), ticking = false;
+    var topBtn = $('#ash-top'), ticking = false, lastY = window.scrollY;
     window.addEventListener('scroll', function () {
       if (ticking) return; ticking = true;
-      requestAnimationFrame(function () { topBtn.hidden = window.scrollY < 900; ticking = false; });
+      requestAnimationFrame(function () {
+        var y = window.scrollY;
+        // Show only when scrolling back up, well below where the visitor started.
+        topBtn.hidden = !(y < lastY - 4 && y > minY);
+        lastY = y; ticking = false;
+      });
     }, { passive: true });
     // Phones opening the home page land straight on the range.
     if ($('#shop') && !location.hash && window.matchMedia && matchMedia('(max-width: 767px)').matches) {
@@ -431,11 +438,13 @@
         var go = function () {
           if (!(window.scrollY < 50 || go.first)) return; go.first = false;
           var head = $('.top'), h = head ? head.getBoundingClientRect().height : 64;
-          var y = $('#shop').getBoundingClientRect().top + window.scrollY - h + 8;
+          var anchor = $('#shop .section-head') || $('#shop');
+          var y = anchor.getBoundingClientRect().top + window.scrollY - h - 12;
+          minY = y + 1400;
           document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, y); document.documentElement.style.scrollBehavior = '';
         };
         go.first = true; setTimeout(go, 60);
-        window.addEventListener('load', function () { go.first = true; go(); setTimeout(function () { go.first = true; go(); }, 400); });
+        window.addEventListener('load', function () { go.first = true; go(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { go.first = true; go(); }); });
       }
     }
     document.addEventListener('asanoha:auth', function () {
