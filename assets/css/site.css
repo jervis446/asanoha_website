@@ -816,3 +816,33 @@ footer.site .ash-sign span{color:var(--pink)}
 .ash-speed.quick{background:#F0C987;border-color:#F0C987;color:#1E2624}
 .ash-speed.no{background:#F6D5DE;border-color:#F6D5DE;color:#7A1F3D}
 .ash-form label>.ash-inline{display:flex;align-items:stretch}
+
+/* Pincode check button: keep it compact and aligned with the field */
+.ash-pinrow label > .ash-inline{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:stretch;
+  gap:10px;
+  width:100%;
+}
+.ash-pinrow .ash-inline input{
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.ash-pinrow .ash-inline .ash-cta.alt{
+  width:auto;
+  min-width:88px;
+  min-height:48px;
+  margin:0;
+  padding:0 20px;
+  border:0;
+  border-radius:12px;
+  background:var(--clay);
+  color:#fff;
+  font-weight:800;
+  box-sizing:border-box;
+}
+@media (max-width:360px){
+  .ash-pinrow .ash-inline .ash-cta.alt{min-width:82px;padding:0 14px}
+}
