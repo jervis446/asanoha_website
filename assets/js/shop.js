@@ -223,7 +223,7 @@
         ? '<div class="ash-box"><b>How to use</b><span>' + esc(p.use) + '</span></div><div class="ash-box"><b>Good to know</b><span>' + esc(p.caution) + ' No prescription needed.</span></div>'
         : '<div class="ash-box"><b>Prescription medicine</b><span>Get a free practitioner consult after you order, or upload your prescription at checkout. Each pack is for the prescribed person only.</span></div>') +
       '<div class="ash-box"><b>Tested every batch</b><span>Certificate of Analysis for your batch is available on request.</span></div>' +
-      '<div class="ash-box"><b>Earn 10% Noha Money</b><span>Cashback lands after delivery and can be used on your next order.</span></div>' +
+      '<div class="ash-box"><b>10% back on your first order</b><span>As Noha Money, credited after delivery, to use on your next order.</span></div>' +
       (similar.length ? '<h3 class="ash-h3">Similar products</h3><div class="ash-grid two">' + similar.map(tile).join('') + '</div>' : '') +
       (p.status === 'live' ? '<button class="ash-cta" data-ash-add="' + p.id + '" data-ash-then="cart">Add to cart</button>'
         : '<button class="ash-cta alt" data-ash-open="noha">Get notified with Noha Money</button>'), p.name);
@@ -245,6 +245,7 @@
       (hasRx() ? '<div class="ash-box"><b>Prescription</b><span>How would you like to share it?</span><div class="ash-chips" id="ash-rx">' +
       '<button class="ash-chip" aria-pressed="' + (rxChoice === 'upload') + '" data-ash-rx="upload">I have a prescription</button>' +
       '<button class="ash-chip" aria-pressed="' + (rxChoice === 'consult') + '" data-ash-rx="consult">Book a free consult</button></div></div>' : '') +
+      '<div class="ash-box ash-form"><label>A line for your friend <span class="ash-opt">(optional)</span><textarea id="ash-line" maxlength="140" rows="2" placeholder="Friend since class 6. Still owes me a samosa.">' + esc(profile.friendLine || '') + '</textarea></label><label class="ash-check"><input type="checkbox" id="ash-line-ok"' + (profile.friendLineOk ? ' checked' : '') + '> Yes, you may print it on a tin, first name and city only.</label></div>' +
       '<label class="ash-check"><input type="checkbox" id="ash-18"> ' + (hasRx() ? 'I am 18+ and each prescription item is for my own use.' : 'I am 18+ and have read the usage and safety notes.') + '</label>' +
       '<p class="ash-muted small">Prices go live at launch. We confirm your total, Noha Money savings and a secure payment link on WhatsApp' + (hasRx() ? ' after checking your prescription.' : '.') + '</p>' +
       '<p class="ash-err" id="ash-err" role="alert"></p>' +
@@ -307,21 +308,36 @@
     if (afterAddress === 'cart') { afterAddress = null; cartSheet(); } else addressSheet();
   }
 
+  var NOHA_ICONS = {"gift": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\"><rect x=\"10\" y=\"26\" width=\"44\" height=\"30\" rx=\"6\" fill=\"#A84B27\"/><rect x=\"6\" y=\"18\" width=\"52\" height=\"12\" rx=\"4\" fill=\"#C25A31\"/><rect x=\"29\" y=\"18\" width=\"6\" height=\"38\" fill=\"#F0C987\"/><path d=\"M32 18c-6-10-16-8-14-2 2 4 10 3 14 2zm0 0c6-10 16-8 14-2-2 4-10 3-14 2z\" fill=\"#F0C987\"/><circle cx=\"48\" cy=\"46\" r=\"11\" fill=\"#F4EEE3\" stroke=\"#1E2624\" stroke-width=\"2\"/><text x=\"48\" y=\"50\" text-anchor=\"middle\" font-family=\"Manrope\" font-weight=\"800\" font-size=\"10\" fill=\"#1E2624\">10%</text></svg>", "tap": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\"><rect x=\"18\" y=\"6\" width=\"28\" height=\"50\" rx=\"6\" fill=\"#1E2624\"/><rect x=\"21\" y=\"11\" width=\"22\" height=\"36\" rx=\"3\" fill=\"#F0C987\"/><circle cx=\"32\" cy=\"29\" r=\"7\" fill=\"#A84B27\"/><path d=\"M29 29l2 2 4-4\" stroke=\"#F4EEE3\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M44 40c3-1 6 1 6 4v8c0 4-3 6-6 6h-5l-6-7c-1-2 1-4 3-3l3 2V36c0-2 3-2 3 0z\" fill=\"#E7B28E\" stroke=\"#1E2624\" stroke-width=\"1.5\"/></svg>", "refund": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\"><circle cx=\"32\" cy=\"32\" r=\"22\" fill=\"#3F6B66\"/><path d=\"M20 30a12 12 0 1 1 3 11\" fill=\"none\" stroke=\"#F4EEE3\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><path d=\"M14 28l6 4 4-6\" fill=\"none\" stroke=\"#F4EEE3\" stroke-width=\"3.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"33\" y=\"37\" text-anchor=\"middle\" font-family=\"Manrope\" font-weight=\"800\" font-size=\"14\" fill=\"#F0C987\">\u20b9</text></svg>", "coins": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\"><ellipse cx=\"26\" cy=\"46\" rx=\"16\" ry=\"6\" fill=\"#B8872E\"/><rect x=\"10\" y=\"36\" width=\"32\" height=\"10\" fill=\"#C9962B\"/><ellipse cx=\"26\" cy=\"36\" rx=\"16\" ry=\"6\" fill=\"#F0C987\"/><ellipse cx=\"26\" cy=\"30\" rx=\"16\" ry=\"6\" fill=\"#B8872E\"/><rect x=\"10\" y=\"22\" width=\"32\" height=\"8\" fill=\"#C9962B\"/><ellipse cx=\"26\" cy=\"22\" rx=\"16\" ry=\"6\" fill=\"#F0C987\"/><circle cx=\"48\" cy=\"18\" r=\"10\" fill=\"#A84B27\"/><path d=\"M48 13v10M43 18h10\" stroke=\"#F4EEE3\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>", "friends": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\"><circle cx=\"22\" cy=\"24\" r=\"10\" fill=\"#C98B62\" stroke=\"#1E2624\" stroke-width=\"2\"/><path d=\"M13 20l3-9 3 6 3-8 3 7 3-5 1 9\" fill=\"#1E2624\"/><path d=\"M8 56c0-10 6-16 14-16s14 6 14 16z\" fill=\"#A84B27\"/><path d=\"M33 26c0-10 18-10 18 0v14h-18z\" fill=\"#1E2624\"/><circle cx=\"42\" cy=\"27\" r=\"7.5\" fill=\"#C98B62\" stroke=\"#1E2624\" stroke-width=\"1.5\"/><path d=\"M29 56c0-9 6-14 13-14s13 5 13 14z\" fill=\"#3F6B66\"/></svg>"};
+  function refCode() {
+    var c = store.get('refCode', '');
+    if (!c) { var base = ((profile.name || 'FRIEND').split(' ')[0] || 'FRIEND').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6) || 'FRIEND'; c = base + Math.random().toString(36).slice(2, 5).toUpperCase(); store.set('refCode', c); }
+    return c;
+  }
+  function refLink() { return location.origin + '/?ref=' + refCode(); }
+  function nohaPerk(icon, title, text) { return '<div class="ash-nperk"><span class="ash-nimg">' + NOHA_ICONS[icon] + '</span><span><b>' + title + '</b><span>' + text + '</span></span></div>'; }
   function nohaSheet() {
     var tx = wallet.txns.length ? wallet.txns.slice().reverse().map(function (t) {
       return '<div class="ash-line"><span class="ash-meta"><b>' + esc(t.note) + '</b><span>' + esc(t.date) + '</span></span><b>' + (t.amt >= 0 ? '+' : '\u2212') + inr(Math.abs(t.amt)) + '</b></div>';
-    }).join('') : '<p class="ash-muted">No activity yet. Your first cashback lands after your first delivery.</p>';
-    open('<div class="ash-wallet"><span class="ash-coin big" aria-hidden="true"></span><h2 class="ash-h">Noha Money</h2><div class="ash-bal">' + inr(wallet.balance) + '</div><span class="ash-muted">Your balance</span></div>' +
-      '<div class="ash-perk"><b>10% back on every order</b><span>Credited after delivery. It is our only discount, and it stays valid for 12 months.</span></div>' +
-      '<div class="ash-perk"><b>One-tap checkout</b><span>Pay from your balance without waiting for OTPs.</span></div>' +
-      '<div class="ash-perk"><b>Instant refunds</b><span>If an order is cancelled after verification, the amount comes back here straight away.</span></div>' +
-      '<div class="ash-perk"><b>Top-up bonus</b><span>Add \u20B92,000 and get \u20B9100 extra. Add \u20B95,000 and get \u20B9350 extra.</span></div>' +
-      '<h3 class="ash-h3">Add money</h3><div class="ash-chips" id="ash-amts"><button class="ash-chip" aria-pressed="false" data-ash-amt="1000">\u20B91,000</button><button class="ash-chip" aria-pressed="true" data-ash-amt="2000">\u20B92,000 +\u20B9100</button><button class="ash-chip" aria-pressed="false" data-ash-amt="5000">\u20B95,000 +\u20B9350</button></div>' +
-      '<button class="ash-cta" data-ash-topup>Add \u20B92,000</button>' +
-      '<h3 class="ash-h3">Claim \u20B9100 at launch</h3><p class="ash-muted">Leave your email and we add \u20B9100 Noha Money to your account on launch day.</p>' +
+    }).join('') : '<p class="ash-muted">No activity yet.</p>';
+    open('<div class="ash-nhead"><span class="ash-coin big" aria-hidden="true"></span><h2 class="ash-nlogo">asanoha<b>NOHA MONEY</b></h2>' +
+      '<div class="ash-nbal"><span>Balance</span><b>' + inr(wallet.balance) + '</b></div></div>' +
+      nohaPerk('gift', '10% back on your first order', 'Credited to Noha Money after delivery. Valid for 12 months.') +
+      nohaPerk('tap', 'One-tap checkout', 'Pay from your balance without waiting for OTPs.') +
+      nohaPerk('refund', 'Instant refunds', 'Cancelled after verification? The amount comes back here straight away.') +
+      nohaPerk('coins', 'Top-up bonus', 'Add \u20B92,000, get \u20B9100 extra. Add \u20B95,000, get \u20B9350 extra.') +
+      '<div class="ash-refer"><div class="ash-refer-top"><span class="ash-nimg big">' + NOHA_ICONS.friends + '</span><span><b>Refer a friend, earn 5%</b><span>When your friend\u2019s first order is above \u20B95,000, you get 5% of the amount above \u20B95,000 as Noha Money.</span></span></div>' +
+      '<div class="ash-refcode"><span>Your code</span><b>' + esc(refCode()) + '</b><button class="ash-link" data-ash-copyref>Copy link</button></div>' +
+      '<button class="ash-cta" data-ash-shareref>Share on WhatsApp</button>' +
+      '<p class="ash-muted small">Example: their first order is \u20B98,000. You earn 5% of \u20B93,000, which is \u20B9150.</p></div>' +
+      '<div class="ash-addmoney"><h3 class="ash-h3">Add money</h3><div class="ash-seg" role="tablist"><button role="tab" aria-selected="true" data-ash-seg="once">Add once</button><button role="tab" aria-selected="false" data-ash-seg="auto">Auto add</button></div>' +
+      '<p class="ash-muted small center" id="ash-seg-note">Enter amount to add</p><div class="ash-amt" id="ash-amt">\u20B92,000</div>' +
+      '<div class="ash-chips center" id="ash-amts"><button class="ash-chip" aria-pressed="false" data-ash-amt="1000">\u20B91,000</button><button class="ash-chip" aria-pressed="true" data-ash-amt="2000">\u20B92,000</button><button class="ash-chip" aria-pressed="false" data-ash-amt="5000">\u20B95,000</button></div>' +
+      '<button class="ash-cta" data-ash-topup>Add \u20B92,000</button></div>' +
+      '<h3 class="ash-h3">Claim \u20B9100 at launch</h3><p class="ash-muted">Leave your email and we add \u20B9100 to your Noha Money on launch day.</p>' +
       '<form id="ash-claim" class="ash-form" novalidate><input type="email" name="email" placeholder="you@email.com" autocomplete="email" aria-label="Email address" value="' + esc(profile.email || '') + '"><input type="text" name="website" tabindex="-1" autocomplete="off" class="ash-hp" aria-hidden="true"><button class="ash-cta alt" type="submit">Claim \u20B9100</button><p class="ash-muted" id="ash-claim-msg" role="status"></p></form>' +
       '<h3 class="ash-h3">Activity</h3>' + tx +
-      '<ul class="ash-notes"><li>Usable only on Asanoha, valid for 12 months from the date it is added.</li><li>Cashback can pay up to 15% of an order. Money you add can pay for the full order.</li><li>Cannot be transferred to a bank account or another person, as per RBI rules for closed-system payment instruments.</li><li>Top-ups and cashback go live with payments at launch.</li></ul>', 'Noha Money');
+      '<ul class="ash-notes"><li>Noha Money is usable only on Asanoha and is valid for 12 months from the date it is added.</li><li>Cashback can pay up to 15% of an order. Money you add can pay for the full order.</li><li>It cannot be transferred to a bank account or another person, as per RBI rules for closed-system payment instruments.</li><li>Referral rewards are credited after your friend\u2019s first order is delivered and not returned.</li></ul>', 'Noha Money');
   }
 
   function profileSheet() {
@@ -335,16 +351,10 @@
         '<span><b>' + esc(u.name || 'Your account') + '</b><span>' + esc(u.email) + '</span></span><button class="ash-link" data-ash-signout>Sign out</button></div>'
       : '<div class="ash-box"><b>Sign in to save your details</b><span>Keep your addresses, orders and Noha Money on every device.</span>' +
         (au && au.available ? '<button class="ash-google" data-ash-signin><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.8 6C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.3.8-4.7l-7.8-6C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.2-13.5-9.9l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>'
-          : '<span class="ash-muted small">' + (!au ? 'Loading sign-in\u2026' : !au.ready ? 'Loading sign-in\u2026' : 'Google sign-in couldn\u2019t load here. Open asanoha.co.in in your browser and try again. Your details are saved on this device meanwhile.') + '</span>') + '</div>';
-    var cartBox = n
-      ? '<div class="ash-box"><div class="ash-row"><b>Your cart</b><span class="ash-muted small" style="flex:0 0 auto">' + n + (n === 1 ? ' item' : ' items') + '</span></div>' +
-        Object.keys(cart).map(function (k) { var p = byId[k]; return '<div class="ash-line"><span class="ash-th"><img src="' + p.img + '" alt=""></span><span class="ash-meta"><b>' + esc(p.name) + '</b><span>' + esc(p.pack) + '</span></span>' + addBtn(p) + '</div>'; }).join('') +
-        '<button class="ash-cta" data-ash-open="cart">Go to checkout</button></div>'
-      : '<div class="ash-box"><b>Your cart is empty</b><span>Add a product from the range to get started.</span><button class="ash-link" data-ash-close data-ash-goto="#shop">Browse the range</button></div>';
+          : '<span class="ash-muted small">' + (!au ? 'Google sign-in works on asanoha.co.in. Your details are saved on this device meanwhile.' : !au.ready ? 'Loading sign-in\u2026' : 'Google sign-in couldn\u2019t load here. Open asanoha.co.in in your browser and try again. Your details are saved on this device meanwhile.') + '</span>') + '</div>';
     var menu = $$('#nav a').map(function (l) { return '<a href="' + esc(l.getAttribute('href')) + '" data-ash-close>' + esc(l.textContent) + '<span aria-hidden="true">\u203A</span></a>'; }).join('');
     open('<h2 class="ash-h">Your account</h2>' + acct +
-      '<div class="ash-tiles four"><button data-ash-open="cart"><span aria-hidden="true">\uD83D\uDECD\uFE0F</span>Cart' + (n ? ' (' + n + ')' : '') + '</button><button data-ash-open="noha"><span class="ash-coin" aria-hidden="true"></span>Noha Money</button><button data-ash-open="address"><span aria-hidden="true">\uD83D\uDCCD</span>Addresses</button><a href="' + SUPPORT + '" data-ash-close><span aria-hidden="true">\uD83D\uDCAC</span>Support</a></div>' +
-      cartBox +
+      '<div class="ash-tiles"><button data-ash-open="noha"><span class="ash-coin" aria-hidden="true"></span>Noha Money</button><button data-ash-open="address"><span aria-hidden="true">\uD83D\uDCCD</span>Addresses</button><a href="' + SUPPORT + '" data-ash-close><span aria-hidden="true">\uD83D\uDCAC</span>Support</a></div>' +
       '<div class="ash-box"><b>Delivery address</b><span>' + (a ? '<b class="ash-tag">' + esc(a.label) + '</b> ' + esc(a.name) + ', ' + esc(a.phone) + '<br>' + esc(addrLine(a)) : 'No address saved yet.') + '</span><button class="ash-link" data-ash-open="address">' + (a ? 'Edit or change' : 'Add address') + '</button></div>' +
       '<div class="ash-box"><b>Appearance</b><span>Automatic follows your phone or computer setting.</span><div class="ash-chips" id="ash-theme">' +
       ['auto', 'day', 'night'].map(function (t) { return '<button class="ash-chip" aria-pressed="' + (pref === t) + '" data-ash-theme="' + t + '">' + ({ auto: 'Automatic', day: 'Day', night: 'Night' })[t] + '</button>'; }).join('') + '</div></div>' +
@@ -371,16 +381,88 @@
       '<button class="ash-cta" data-ash-close>Got it, thanks</button>', 'Using Vijaya responsibly');
   }
 
+  /* ---------- The honest choice: detailed guides ---------- */
+  var HONEST = {
+    leaf: { t: 'Leaf only', s: 'The part of the plant decides what is legal and what you get.', p: [
+      ['Only the leaf', 'We use extract from the Vijaya (cannabis) leaf. Never the flowering tops (ganja) and never the resin (charas).'],
+      ['Why it matters', 'Indian law (the NDPS Act) prohibits flowers and resin but leaves the leaf out of that definition. Leaf-based Ayurvedic medicines are made under an AYUSH licence.'],
+      ['What you will not find', 'No smokable product, no flower, no resin, no synthetic cannabinoids.'],
+      ['On the label', 'The words "Vijaya leaf extract" and the exact amount per gummy, ml or tablet.']] },
+    spectrum: { t: 'Full spectrum', s: 'The whole leaf, not one isolated compound.', p: [
+      ['What it means', 'A full spectrum extract keeps the natural range of compounds found in the leaf, instead of pulling out one on its own.'],
+      ['How it is carried', 'Oils use MCT, a light coconut-based oil that flows well through a syringe. Gummies use a pectin base in kachcha aam and dark cocoa.'],
+      ['Honest strength', 'Every pack states the extract per unit, for example 250 mg per tablet. No vague "potency" words.'],
+      ['Pick with your practitioner', 'Low, medium and high strengths exist so your practitioner can start low and step up only if needed.']] },
+    ayurveda: { t: 'Rooted in Ayurveda', s: 'Vijaya has been part of Ayurveda for centuries.', p: [
+      ['An old name', 'Vijaya, meaning victory, is the Ayurvedic name for the cannabis leaf. Classical texts describe it in carefully prepared formulations.'],
+      ['Used with care', 'Ayurveda always paired Vijaya with a vaidya\u2019s guidance, the right preparation and the right amount. We follow the same rule.'],
+      ['A proprietary medicine', 'Our Vijaya products are Ayurvedic proprietary medicines under Schedule E(1), sold only on the prescription of a registered practitioner.'],
+      ['Everyday Ayurveda too', 'Ashwagandha, Shilajit, Isabgol and Moon Days follow classical use and need no prescription.']] },
+    ayush: { t: 'AYUSH licensed', s: 'Made and labelled the way the Ministry of AYUSH requires.', p: [
+      ['Licensed manufacturing', 'Every product is made by an AYUSH-licensed manufacturer. The licence number is printed on the pack.'],
+      ['Labelled properly', 'Schedule E(1) caution in English and Hindi, batch number, manufacturing and expiry dates, and the marketer\u2019s name.'],
+      ['Prescription first', 'For Vijaya products, a registered practitioner must prescribe. No prescription? Book a free consult at checkout.'],
+      ['Adults only', 'Sold only to adults 18+. Not for use during pregnancy or breastfeeding.']] },
+    tested: { t: 'Tested every batch', s: 'Every batch comes with a Certificate of Analysis.', p: [
+      ['What gets checked', 'Extract content, heavy metals, microbes and pesticides, tested in an accredited lab before the batch is released.'],
+      ['Match your batch', 'The batch number on your pack matches the number on its Certificate of Analysis.'],
+      ['Ask for it', 'Message us your batch number and we send the Certificate of Analysis for that exact batch.'],
+      ['Read it easily', 'Our blog explains how to read a Certificate of Analysis in five minutes.']] },
+    india: { t: 'Made in India', s: 'Made, packed and delivered from India.', p: [
+      ['Made here', 'Made in India under an AYUSH licence and marketed by Asanoha Ayurveda LLP, Bangalore.'],
+      ['Designed here', 'Our tins, syringes and friendship papers are designed by our team in Bengaluru.'],
+      ['Delivered fast', 'Quick delivery within 2 hours in Bengaluru, and 3 to 5 days everywhere else in India.'],
+      ['Plain packaging', 'Every order ships sealed and plain, and an adult signs for it.']] },
+    'step-pick': { t: 'Pick your pair', s: 'Choose what your practitioner is likely to prescribe, or something from everyday Ayurveda.', p: [
+      ['Browse the range', 'Gummies, oil and tablets in low and high strength, plus Ashwagandha, Shilajit, Isabgol and Moon Days.'],
+      ['Not sure which?', 'Most people start with a low strength. Your practitioner confirms or changes it after reading your history.'],
+      ['Add a line for a friend', 'Optional. With your yes, one line per batch is printed on our tins, first name and city only.'],
+      ['Nothing to pay yet', 'Prices go live at launch. You send the order first, we confirm the total after checking.']] },
+    'step-rx': { t: 'Share a prescription', s: 'Vijaya products need a prescription from a registered AYUSH practitioner.', p: [
+      ['Already have one?', 'Attach a photo or PDF in the WhatsApp chat or email that opens when you send your order.'],
+      ['No prescription yet?', 'Choose \u201cBook a free consult\u201d at checkout. We set up an online consultation with a registered practitioner.'],
+      ['Everyday Ayurveda', 'Ashwagandha, Shilajit, Isabgol and Moon Days need no prescription.'],
+      ['Private by default', 'Your prescription stays in your chat or email with us. It is never stored on the website.']] },
+    'step-pay': { t: 'We verify, you pay', s: 'Nothing is charged before a prescription is checked.', p: [
+      ['We check first', 'Our team reads the prescription and confirms the product and strength match it.'],
+      ['Your total, clearly', 'We send the final price, delivery charge and any Noha Money savings on WhatsApp or email.'],
+      ['Secure payment link', 'Pay by UPI, card or net banking through a secure link. No card details on our site.'],
+      ['Changed your mind?', 'Cancel before dispatch at no cost. If you paid, the refund lands in Noha Money straight away.']] },
+    'step-deliver': { t: 'It arrives', s: 'Fast in Bengaluru, reliable everywhere else.', p: [
+      ['Bengaluru in 2 hours', 'Quick delivery within 2 hours, 9 am to 9 pm, once your prescription is checked.'],
+      ['Rest of India in 3 to 5 days', 'Shipped with a tracked courier. You get the tracking link on WhatsApp.'],
+      ['Plain and sealed', 'No brand-heavy outer box. An adult signs for the parcel.'],
+      ['10% back', 'Your first order earns 10% Noha Money after delivery, to use next time.']] },
+    how: { t: 'How ordering works', s: 'Four steps from curious to delivered.', p: [
+      ['1. Pick what you need', 'Choose gummies, oil, tablets or everyday Ayurveda in the range.'],
+      ['2. Share a prescription', 'For Vijaya products, upload one from a registered practitioner or book a free online consult at checkout.'],
+      ['3. We verify, you pay', 'We check the prescription and send your price, Noha Money savings and a secure payment link.'],
+      ['4. It arrives', 'Sealed, plain packaging with tracking: 2 hours in Bengaluru, 3 to 5 days elsewhere.']] }
+  };
+  function honestSheet(key) {
+    var h = HONEST[key]; if (!h) return;
+    track('honest_view', { topic: key });
+    open('<div class="ash-aware-sheet"><span class="ash-shield big" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.2 8.5-7 10-3.8-1.5-7-5-7-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>' +
+      '<h2 class="ash-h">' + esc(h.t) + '</h2><p class="ash-muted">' + esc(h.s) + '</p></div>' +
+      '<h3 class="ash-h3">What it means for you</h3>' +
+      h.p.map(function (x) { return '<div class="ash-perk tick"><b>' + esc(x[0]) + '</b><span>' + esc(x[1]) + '</span></div>'; }).join('') +
+      '<a class="ash-cta alt" href="story.html">Read our story</a><button class="ash-cta" data-ash-close>Got it, thanks</button>', h.t);
+  }
+
   /* ---------- order ---------- */
   function place(via) {
     var a = defaultAddress(), err = $('#ash-err');
     if (!a) { afterAddress = 'cart'; addressSheet(); return; }
     if (!$('#ash-18').checked) { err.textContent = hasRx() ? 'Please confirm you are 18+ and the prescription items are for your own use.' : 'Please confirm you are 18+.'; return; }
+    var line = ($('#ash-line') && $('#ash-line').value.trim()) || '', lineOk = !!($('#ash-line-ok') && $('#ash-line-ok').checked);
+    profile.friendLine = line; profile.friendLineOk = lineOk; store.set('profile', profile);
     var id = 'ASN-' + Date.now().toString(36).toUpperCase().slice(-6);
     var items = Object.keys(cart).map(function (k) { return { p: k, q: cart[k] }; });
     var text = 'Hi Asanoha, new order ' + id + '\n\n' + items.map(function (i) { return '\u2022 ' + byId[i.p].name + ' (' + byId[i.p].pack + ') x ' + i.q; }).join('\n') +
       '\n\nUse Noha Money: ' + (useNoha ? 'Yes (balance ' + inr(wallet.balance) + ')' : 'No') +
       (hasRx() ? '\nPrescription: ' + (rxChoice === 'consult' ? 'Please book a free consultation for me' : 'I will attach it in this chat') : '') +
+      (store.get('refBy', '') && !store.get('orders2', []).length ? '\nReferred by: ' + store.get('refBy', '') : '') +
+      (line ? '\nLine for my friend: "' + line + '"' + (lineOk ? ' (OK to print, first name and city)' : ' (do not print)') : '') +
       '\nDelivery: ' + (loc && loc.quick ? 'Quick, 2 hours (Bengaluru)' : 'Standard, 3 to 5 days') +
       '\n\nDeliver to (' + a.label + '):\n' + a.name + ', ' + a.phone + '\n' + addrLine(a) +
       '\n\nI confirm I am 18+' + (hasRx() ? ' and each prescription item is for my own use' : '') + '. Please confirm the price and send a payment link.';
@@ -440,6 +522,7 @@
       else if (d.ashOpen === 'bday') bdaySheet();
       else if (d.ashOpen === 'learn') learnSheet();
       else if (d.ashOpen === 'loc') locSheet();
+      else if (d.ashOpen.indexOf('honest-') === 0) honestSheet(d.ashOpen.slice(7));
       return;
     }
     if (d.ashPick !== undefined) { profile.addressId = d.ashPick; store.set('profile', profile); paintChrome(); sync(); if (afterAddress === 'cart') { afterAddress = null; cartSheet(); } else addressSheet(); return; }
@@ -481,7 +564,15 @@
       return;
     }
     if (t.id === 'ash-top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-    if (d.ashAmt) { $$('#ash-amts .ash-chip').forEach(function (c) { c.setAttribute('aria-pressed', c === t); }); $('[data-ash-topup]').textContent = 'Add ' + inr(+d.ashAmt); return; }
+    if (d.ashSeg) { $$('[data-ash-seg]').forEach(function (b) { b.setAttribute('aria-selected', b === t); }); $('#ash-seg-note').textContent = d.ashSeg === 'auto' ? 'Automatically add this amount when your balance goes below \u20B9300' : 'Enter amount to add'; return; }
+    if (t.hasAttribute('data-ash-copyref')) { var lk = refLink(); (navigator.clipboard ? navigator.clipboard.writeText(lk) : Promise.reject()).then(function () { toast('Link copied'); }).catch(function () { prompt('Copy your link', lk); }); return; }
+    if (t.hasAttribute('data-ash-shareref')) {
+      var msg = 'I use Asanoha for Ayurveda made right. Use my code ' + refCode() + ' on your first order: ' + refLink();
+      track('share', { method: 'referral' });
+      if (navigator.share) navigator.share({ title: 'Asanoha', text: msg, url: refLink() }).catch(function () {}); else window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+      return;
+    }
+    if (d.ashAmt) { $$('#ash-amts .ash-chip').forEach(function (c) { c.setAttribute('aria-pressed', c === t); }); $('[data-ash-topup]').textContent = 'Add ' + inr(+d.ashAmt); if ($('#ash-amt')) $('#ash-amt').textContent = inr(+d.ashAmt); return; }
     if (t.hasAttribute('data-ash-topup')) { toast('Top-ups open with payments at launch. Claim your \u20B9100 below.'); return; }
     if (d.ashF) { filter = d.ashF; $$('[data-ash-f]').forEach(function (b) { b.setAttribute('aria-pressed', b === t); }); renderGrid(); return; }
     if (t.hasAttribute('data-ash-close')) {
@@ -522,6 +613,9 @@
   document.addEventListener('input', function (e) { if (e.target.id === 'ash-q') { query = e.target.value.trim().toLowerCase(); renderGrid(); } });
 
   var minY = 1400;
+  (function captureRef() {
+    try { var r = new URLSearchParams(location.search).get('ref'); if (r && /^[A-Z0-9]{3,12}$/i.test(r) && r.toUpperCase() !== store.get('refCode', '') && !store.get('orders2', []).length) store.set('refBy', r.toUpperCase()); } catch (e) {}
+  })();
   function init() {
     mountChrome();
     var ft = $('footer.site'); if (ft && !$('.ash-sign')) { var sg = document.createElement('p'); sg.className = 'ash-sign'; sg.setAttribute('aria-hidden', 'true'); sg.innerHTML = 'India\u2019s sabai sabai app <span>\u2665</span>'; ft.appendChild(sg); }
@@ -540,16 +634,19 @@
     if ($('#shop') && !location.hash && window.matchMedia && matchMedia('(max-width: 767px)').matches) {
       var landed = false; try { landed = sessionStorage.getItem('asanoha:landed'); sessionStorage.setItem('asanoha:landed', '1'); } catch (e) {}
       if (!landed) {
-        var go = function () {
-          if (!(window.scrollY < 50 || go.first)) return; go.first = false;
+        // Let the hero animation play, then glide to the range. Any touch or scroll by the visitor cancels it.
+        var cancelled = false, stop = function () { cancelled = true; };
+        ['touchstart', 'wheel', 'keydown'].forEach(function (ev) { window.addEventListener(ev, stop, { once: true, passive: true }); });
+        var glide = function () {
+          if (cancelled || window.scrollY > 80 || document.body.classList.contains('ash-open')) return;
+          var gate = document.getElementById('gate'); if (gate && !gate.hidden && getComputedStyle(gate).display !== 'none') { setTimeout(glide, 800); return; }
           var head = $('.top'), h = head ? head.getBoundingClientRect().height : 64;
           var anchor = $('#shop .section-head') || $('#shop');
           var y = anchor.getBoundingClientRect().top + window.scrollY - h - 12;
           minY = y + 1400;
-          document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, y); document.documentElement.style.scrollBehavior = '';
+          window.scrollTo({ top: y, behavior: 'smooth' });
         };
-        go.first = true; setTimeout(go, 60);
-        window.addEventListener('load', function () { go.first = true; go(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { go.first = true; go(); }); });
+        window.addEventListener('load', function () { setTimeout(glide, 2600); });
       }
     }
     document.addEventListener('asanoha:auth', function () {

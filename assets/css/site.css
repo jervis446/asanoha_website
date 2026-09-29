@@ -817,30 +817,81 @@ footer.site .ash-sign span{color:var(--pink)}
 .ash-speed.no{background:#F6D5DE;border-color:#F6D5DE;color:#7A1F3D}
 .ash-form label>.ash-inline{display:flex;align-items:stretch}
 
-/* Pincode check button: keep it compact and aligned with the field */
-.ash-pinrow label > .ash-inline{
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  gap:16px !important;
-  width:100%;
+/* The honest choice as tappable guides */
+.clear-h{text-align:center;margin:6px 0 4px}
+.clear-sub{text-align:center;color:var(--muted);margin:0 auto 18px;max-width:52ch}
+button.clear-item{cursor:pointer;font:inherit;color:inherit;transition:transform .15s,border-color .15s}
+button.clear-item:hover{transform:translateY(-2px);border-color:var(--ink)}
+.clear-item small{font-size:11.5px;font-weight:800;color:var(--accent-text);letter-spacing:.04em}
+.clear-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:18px}
+.clear-badge{display:flex;align-items:center;gap:12px;padding:10px 18px 10px 10px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.clear-badge svg{width:64px;height:64px;flex:0 0 auto}
+.clear-badge b{display:block;font-size:15px}
+.clear-badge span span{font-size:12.5px;color:var(--muted)}
+.clear-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px}
+.gift-line{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+.gift-line h3{font-family:var(--serif);font-weight:600;font-size:20px;margin:0 0 6px}
+.gift-line p{margin:0 0 8px}
+.ash-form textarea{min-height:64px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--field);color:var(--ink);font:inherit;font-size:15px;resize:vertical;width:100%;box-sizing:border-box}
+@media (max-width:640px){
+  .clear-row{grid-template-columns:repeat(3,1fr)!important;gap:8px}
+  .clear-item{padding:12px 6px!important;font-size:12.5px!important}
+  .clear-item svg{width:30px;height:30px}
+  .clear-badge{flex:1 1 100%}
 }
-.ash-pinrow .ash-inline input{
-  width:100%;
-  min-width:0;
-  box-sizing:border-box;
-}
-.ash-pinrow .ash-inline .ash-cta.alt{
-  width:max-content;
-  min-width:88px;
-  min-height:48px;
-  margin:12px 0 0 !important;
-  padding:0 20px;
-  border:0;
-  border-radius:12px;
-  background:var(--clay);
-  color:#fff;
-  font-weight:800;
-  box-sizing:border-box;
-  align-self:flex-start;
-}
+.gift-card .gift-line{display:block!important;grid-template-columns:none!important;background:none!important;padding:16px 0 0!important;min-width:0}
+.gift-card .gift-line>*{max-width:none}
+.gift-card>div{min-width:0}
+.gift-card .gift-line p{font-weight:500}
+
+
+/* Noha Money: Blinkit-style wallet icon and screen */
+.ash-coin{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23C25A31%22/%3E%3Cstop%20offset%3D%22.5%22%20stop-color%3D%22%23C25A31%22/%3E%3Cstop%20offset%3D%22.5%22%20stop-color%3D%22%23F0C987%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23E2B062%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20x%3D%226%22%20y%3D%2212%22%20width%3D%2252%22%20height%3D%2248%22%20rx%3D%2214%22%20fill%3D%22%237A3517%22/%3E%3Crect%20x%3D%226%22%20y%3D%226%22%20width%3D%2252%22%20height%3D%2248%22%20rx%3D%2214%22%20fill%3D%22url%28%23g%29%22/%3E%3Crect%20x%3D%226%22%20y%3D%226%22%20width%3D%2252%22%20height%3D%2248%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%231E2624%22%20stroke-width%3D%222.5%22/%3E%3Cpath%20d%3D%22M24%2020h18M24%2027h18M24%2020c10%200%2012%2014%200%2014l14%2012%22%20fill%3D%22none%22%20stroke%3D%22%23F7F2E9%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3Cpath%20d%3D%22M24%2020h18M24%2027h18M24%2020c10%200%2012%2014%200%2014l14%2012%22%20fill%3D%22none%22%20stroke%3D%22%231E2624%22%20stroke-width%3D%221.2%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20opacity%3D%22.35%22/%3E%3C/svg%3E") center/contain no-repeat!important;border-radius:0!important;box-shadow:none!important}
+.ash-coin.big{width:92px!important;height:92px!important;margin:6px auto 8px!important}
+.ash-ban .ash-coin{box-shadow:none!important}
+.ash-nhead{text-align:center;padding:22px 0 8px}
+.ash-nlogo{font-family:var(--display);font-weight:400;font-size:20px;margin:4px 0 0;line-height:1.1;color:var(--muted)}
+.ash-nlogo b{display:block;font-size:30px;letter-spacing:.06em;color:var(--ink)}
+.ash-nbal{display:inline-flex;align-items:baseline;gap:8px;margin:12px 0 4px;padding:8px 16px;border-radius:999px;background:var(--paper);border:1px solid var(--line)}
+.ash-nbal span{font-size:13px;color:var(--muted);font-weight:700}
+.ash-nbal b{font-family:var(--display);font-weight:400;font-size:22px}
+.ash-nperk{display:flex;align-items:center;gap:14px;margin-top:10px;padding:12px 14px;border-radius:18px;background:var(--paper);border:1px solid var(--line)}
+.ash-nimg{flex:0 0 auto;width:58px;height:58px;border-radius:14px;background:var(--ground);display:grid;place-items:center}
+.ash-nimg svg{width:48px;height:48px}
+.ash-nimg.big{width:72px;height:72px}
+.ash-nimg.big svg{width:60px;height:60px}
+.ash-nperk b{display:block;font-size:16px}
+.ash-nperk span span{display:block;font-size:13.5px;color:var(--muted);line-height:1.45;margin-top:2px}
+.ash-refer{margin-top:16px;padding:16px;border-radius:20px;background:linear-gradient(135deg,rgba(168,75,39,.14),rgba(240,201,135,.18));border:1px solid var(--line)}
+.ash-refer-top{display:flex;gap:14px;align-items:center}
+.ash-refer-top b{display:block;font-size:17px}
+.ash-refer-top span span{display:block;font-size:13.5px;color:var(--muted);line-height:1.45;margin-top:3px}
+.ash-refcode{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 14px;border-radius:12px;border:1.5px dashed var(--clay);background:var(--paper)}
+.ash-refcode span{font-size:12px;color:var(--muted);font-weight:700}
+.ash-refcode b{flex:1;font-family:var(--display);font-weight:400;font-size:18px;letter-spacing:.08em}
+.ash-refcode .ash-link{margin:0}
+.ash-addmoney{margin-top:6px}
+.ash-seg{display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:12px;background:var(--paper);border:1px solid var(--line)}
+.ash-seg button{min-height:40px;border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-weight:800;cursor:pointer}
+.ash-seg button[aria-selected="true"]{background:var(--clay);color:#fff}
+.ash-muted.center,.ash-chips.center{text-align:center;justify-content:center}
+.ash-amt{text-align:center;font-family:var(--display);font-size:40px;margin:2px 0 6px}
+
+/* location sheet: pincode and button side by side */
+#ash-pinform .ash-inline{display:flex!important;flex-direction:row!important;align-items:stretch;gap:10px;margin-top:8px}
+#ash-pinform .ash-inline input{flex:1 1 auto;min-width:0}
+#ash-pinform .ash-inline .ash-cta{flex:0 0 auto;width:auto!important;margin:0!important;padding:0 20px;min-height:48px}
+
+/* hero and honest-choice rearrangement */
+.scrollcue-bottom{position:relative;z-index:2;display:flex;width:max-content;margin:18px auto 0}
+.clear-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}
+.clear-trust span{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--ink);font-size:13px;font-weight:700}
+.clear-trust span::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.clear-item svg{width:40px;height:40px;flex:0 0 auto}
+/* profile spacing */
+.ash-sheet-body>.ash-box,.ash-sheet-body>.ash-user,.ash-sheet-body>.ash-tiles,.ash-sheet-body>.ash-bday{margin-top:12px}
+.ash-sheet-body>.ash-h+.ash-box,.ash-sheet-body>.ash-h+.ash-user{margin-top:8px}
+.ash-tiles>*>span:first-child{width:30px;height:30px;display:grid;place-items:center;font-size:24px;line-height:1}.ash-tiles .ash-coin{width:30px!important;height:30px!important}
+#how.clear{padding-top:10px}
+.clear-row.four{grid-template-columns:repeat(4,1fr)!important}
+@media (max-width:640px){.clear-row.four{grid-template-columns:repeat(2,1fr)!important}}
