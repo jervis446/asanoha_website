@@ -1,3 +1,33 @@
 User-agent: *
 Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
 Sitemap: https://asanoha.co.in/sitemap.xml

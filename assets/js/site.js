@@ -17,7 +17,7 @@
     // Without MailerLite, sign-ups are delivered to this inbox through FormSubmit (free, no account).
     newsletterInbox: 'orders@asanoha.co.in',
     // Free gift added to every order. Set to '' to switch it off everywhere in the cart and order message.
-    gift: 'Asanoha rolling paper booklet (1 per order)',
+    gift: 'Asanoha friendship paper booklet (1 per order)',
     // Analytics (loaded only after the visitor accepts). Google Analytics 4 measurement ID, e.g. 'G-XXXXXXX'.
     ga4Id: 'G-HX5RX21JLR',
     // Microsoft Clarity project ID for heatmaps and session recordings, e.g. 'abcd1234ef'.

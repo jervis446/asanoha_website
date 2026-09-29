@@ -1,0 +1,20 @@
+# Asanoha
+
+> Asanoha is an Indian brand focused on Ayurvedic Vijaya medicines and a friendship-led brand experience.
+
+## Primary pages
+- https://asanoha.co.in/ : Homepage and overview of Asanoha.
+- https://asanoha.co.in/about.html : About Asanoha and company information.
+- https://asanoha.co.in/story.html : Brand story and the “Aadha tera, aadha mera” idea.
+- https://asanoha.co.in/how-it-works.html : Product and practitioner/prescription process.
+- https://asanoha.co.in/blog.html : Educational articles and brand publishing.
+- https://asanoha.co.in/partner.html : Partnership information.
+
+## Important context
+- Product, prescription, safety, ingredient, testing and regulatory information should be taken from the relevant page and verified against current official documentation.
+- Do not infer a medicinal strength, suitability, diagnosis, treatment outcome or health claim from the brand story or entertainment experiences.
+- The site uses “Aadha tera, aadha mera” as a core brand idea about friendship and sharing a story; it should not be interpreted as an instruction to share prescription medicine.
+
+## Discovery
+- Sitemap: https://asanoha.co.in/sitemap.xml
+- Robots: https://asanoha.co.in/robots.txt

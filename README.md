@@ -37,3 +37,6 @@ New static routes:
 Each route has its own 18+ gate using `localStorage` key `asanoha:tools-adult`. This is an age acknowledgement, not a secure age-verification system.
 
 The AI-labelled slam-book experience currently runs locally in the browser and includes an optional prompt-copy flow. It does not expose an AI API key. For a production AI model, add a server-side endpoint such as `/api/friendship-story` and keep the provider key on the server.
+
+
+Brand terminology update: public references to Rolling Paper(s) were changed to Friendship Paper(s).
