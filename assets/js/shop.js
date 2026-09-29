@@ -120,11 +120,79 @@
       $('#ash-pill-n').textContent = n + (n === 1 ? ' item' : ' items');
     }
   }
+  /* ---------- location and delivery speed ---------- */
+  var BLR = { lat: 12.9716, lng: 77.5946, km: 40 };
+  var loc = store.get('loc', null);
+  function isBlr(pin, city) { return /^560/.test(String(pin || '')) || /bengaluru|bangalore/i.test(String(city || '')); }
+  function km(a, b, c, d) { var r = Math.PI / 180, x = (c - a) * r, y = (d - b) * r, h = Math.sin(x / 2) * Math.sin(x / 2) + Math.cos(a * r) * Math.cos(c * r) * Math.sin(y / 2) * Math.sin(y / 2); return 12742 * Math.asin(Math.sqrt(h)); }
+  function speed(l) { return l && l.quick ? { quick: true, label: '2-hour delivery', long: 'Quick delivery within 2 hours in Bengaluru, 9 am to 9 pm' } : { quick: false, label: 'Standard delivery', long: 'Standard delivery across India in 3 to 5 days' }; }
+  function setLoc(l) {
+    l.quick = isBlr(l.pin, l.city) || (l.lat && km(l.lat, l.lng, BLR.lat, BLR.lng) < BLR.km);
+    loc = l; store.set('loc', l); paintChrome(); checkShiprocket(l);
+    track('location_set', { quick: l.quick ? 1 : 0, source: l.source });
+  }
+  // Pincode to city/state (India Post open API). Falls back to the pincode alone.
+  function lookupPin(pin) {
+    return fetch('https://api.postalpincode.in/pincode/' + pin).then(function (r) { return r.json(); }).then(function (j) {
+      var po = j && j[0] && j[0].PostOffice && j[0].PostOffice[0];
+      if (!po) throw new Error('not found');
+      return { pin: pin, area: po.Name, city: po.District, state: po.State };
+    }).catch(function () { return { pin: pin, area: '', city: isBlr(pin) ? 'Bengaluru' : '', state: isBlr(pin) ? 'Karnataka' : '' }; });
+  }
+  // Current location: browser GPS, then a free reverse geocoder built for browsers.
+  function useGeo() {
+    return new Promise(function (res, rej) {
+      if (!navigator.geolocation) return rej(new Error('Location is not available in this browser.'));
+      navigator.geolocation.getCurrentPosition(function (pos) {
+        var la = pos.coords.latitude, ln = pos.coords.longitude;
+        fetch('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' + la + '&longitude=' + ln + '&localityLanguage=en')
+          .then(function (r) { return r.json(); })
+          .then(function (j) { res({ lat: la, lng: ln, pin: j.postcode || '', area: j.locality || '', city: j.city || j.locality || '', state: (j.principalSubdivision || '').replace(/^State of /, ''), source: 'gps' }); })
+          .catch(function () { res({ lat: la, lng: ln, pin: '', area: '', city: '', state: '', source: 'gps' }); });
+      }, function (e) { rej(new Error(e.code === 1 ? 'Location permission was denied. Enter your pincode instead.' : 'Could not get your location. Enter your pincode instead.')); }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 });
+    });
+  }
+  // Optional: live courier check through our Shiprocket worker (set shiprocketApi in site.js).
+  function checkShiprocket(l) {
+    var api = CFG.shiprocketApi; if (!api || !l || !/^\d{6}$/.test(l.pin || '')) return;
+    fetch(api.replace(/\/$/, '') + '/serviceability?pincode=' + l.pin + '&weight=0.3&cod=0').then(function (r) { return r.json(); }).then(function (j) {
+      l.serviceable = j.serviceable !== false; l.etd = j.etd || ''; store.set('loc', l); paintChrome();
+    }).catch(function () {});
+  }
+  function locLine() {
+    if (!loc) return '';
+    var sp = speed(loc), place = [loc.area, loc.city].filter(Boolean).join(', ') + (loc.pin ? ' ' + loc.pin : '');
+    if (loc.serviceable === false) return '<span class="ash-speed no">Not deliverable yet</span> <span>' + esc(place) + '</span>';
+    return '<span class="ash-speed' + (sp.quick ? ' quick' : '') + '">' + (sp.quick ? '\u26A1 ' : '') + sp.label + (!sp.quick && loc.etd ? ', by ' + esc(loc.etd) : '') + '</span> <span>' + esc(place || 'your location') + '</span>';
+  }
+  function locSheet() {
+    open('<div class="ash-locsheet"><span class="ash-pin" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>' +
+      '<h2 class="ash-h">Where should we deliver?</h2><p class="ash-muted">Bengaluru gets <b>2-hour delivery</b>. Everywhere else in India, 3 to 5 days.</p></div>' +
+      '<button class="ash-cta" data-ash-geo>Use my current location</button>' +
+      '<form class="ash-form ash-pinrow" id="ash-pinform" novalidate><label>Or enter your pincode<span class="ash-inline"><input name="pin" inputmode="numeric" maxlength="6" autocomplete="postal-code" placeholder="560035" value="' + esc(loc && loc.pin || '') + '"><button class="ash-cta alt" type="submit">Check</button></span></label></form>' +
+      '<p class="ash-err" id="ash-loc-err" role="alert"></p>' +
+      '<button class="ash-link center" data-ash-close>Skip for now</button>', 'Delivery location');
+  }
+  function maybeAskLocation() {
+    if (loc || store.get('locAsked', false)) return;
+    var ask = function () { if (loc || document.body.classList.contains('ash-open')) return; store.set('locAsked', true); locSheet(); };
+    var visible = function (id) { var el = document.getElementById(id); return el && !el.hidden && getComputedStyle(el).display !== 'none'; };
+    // Wait until the 18+ gate and the analytics banner are out of the way.
+    var tries = 0, wait = function () {
+      if (loc) return;
+      if (visible('gate') || visible('consent')) { if (tries++ < 600) setTimeout(wait, 500); return; }
+      setTimeout(ask, 700);
+    };
+    setTimeout(wait, 800);
+  }
+
   function paintChrome() {
     $$('.ash-coinbal').forEach(function (e) { e.textContent = inr(wallet.balance); });
     var a = defaultAddress(), el = $('#ash-deliver');
-    if (el) el.innerHTML = a ? '<span>Delivering to <b>' + esc(a.label) + '</b>: ' + esc(addrLine(a)) + '</span> <button data-ash-open="address" aria-label="Change or edit delivery address">Change</button>'
-      : 'Delivering across India. <button data-ash-open="address">Add your address</button>';
+    if (el) el.innerHTML = a
+      ? locLine() + '<span>Delivering to <b>' + esc(a.label) + '</b>: ' + esc(addrLine(a)) + '</span> <button data-ash-open="address" aria-label="Change or edit delivery address">Change</button>'
+      : loc ? locLine() + ' <button data-ash-open="loc" aria-label="Change delivery location">Change</button>'
+      : 'Delivering across India. <button data-ash-open="loc">Set your location</button>';
   }
 
   /* ---------- sheet ---------- */
@@ -172,6 +240,7 @@
       ids.map(function (k) { var p = byId[k]; return '<div class="ash-line"><span class="ash-th"><img src="' + p.img + '" alt=""></span><span class="ash-meta"><b>' + esc(p.name) + '</b><span>' + esc(p.pack) + '</span></span>' + addBtn(p) + '</div>'; }).join('') +
       '<div class="ash-box ash-addrbox"><div class="ash-row"><b>Delivery address</b><button class="ash-link" data-ash-open="address">' + (a ? 'Change' : 'Add') + '</button></div>' +
       (a ? '<span><b class="ash-tag">' + esc(a.label) + '</b> ' + esc(a.name) + ', ' + esc(a.phone) + '<br>' + esc(addrLine(a)) + '</span>' : '<span>Add an address so we can deliver your order.</span>') + '</div>' +
+      (loc ? '<div class="ash-box"><b>' + speed(loc).label + '</b><span>' + speed(loc).long + (loc.etd && !loc.quick ? '. Estimated by ' + esc(loc.etd) : '') + '.' + (speed(loc).quick && hasRx() ? ' The 2 hours start once your prescription is checked.' : '') + '</span></div>' : '') +
       '<div class="ash-box ash-row"><span><b>Use Noha Money</b><span>Balance ' + inr(wallet.balance) + '. Cashback covers up to 15% of an order.</span></span><button class="ash-switch" role="switch" aria-checked="' + useNoha + '" id="ash-noha-sw" aria-label="Use Noha Money"></button></div>' +
       (hasRx() ? '<div class="ash-box"><b>Prescription</b><span>How would you like to share it?</span><div class="ash-chips" id="ash-rx">' +
       '<button class="ash-chip" aria-pressed="' + (rxChoice === 'upload') + '" data-ash-rx="upload">I have a prescription</button>' +
@@ -194,16 +263,17 @@
       (afterAddress === 'cart' ? '<button class="ash-cta" data-ash-open="cart">Continue to cart</button>' : ''), 'Addresses');
   }
   function addressForm(editId) {
-    var a = addresses.filter(function (x) { return x.id === editId; })[0] || { label: 'Home', name: profile.name || '', phone: profile.phone || '' };
+    var a = addresses.filter(function (x) { return x.id === editId; })[0] || { label: 'Home', name: profile.name || '', phone: profile.phone || '', pin: loc && loc.pin || '', city: loc && loc.city || '', state: loc && loc.state || '', area: loc && loc.area || '' };
     var lab = function (l) { return '<button type="button" class="ash-chip" aria-pressed="' + (a.label === l) + '" data-ash-label="' + l + '">' + l + '</button>'; };
     open('<h2 class="ash-h">' + (editId ? 'Edit address' : 'Add delivery address') + '</h2>' +
+      '<button type="button" class="ash-geo" data-ash-geo-fill><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/></svg>Use my current location</button>' +
       '<form id="ash-addr-form" class="ash-form" novalidate data-id="' + esc(editId || '') + '">' +
       '<div class="ash-chips" id="ash-labels">' + lab('Home') + lab('Work') + lab('Other') + '</div>' +
       '<div class="ash-two"><label>Full name<input name="name" autocomplete="name" value="' + esc(a.name) + '" required></label>' +
       '<label>Mobile number<input name="phone" inputmode="tel" autocomplete="tel" maxlength="14" value="' + esc(a.phone) + '" required></label></div>' +
       '<label>Flat, house no., building<input name="house" autocomplete="address-line1" value="' + esc(a.house) + '" required></label>' +
       '<label>Area, street, sector<input name="area" autocomplete="address-line2" value="' + esc(a.area) + '" required></label>' +
-      '<label>Landmark <span class="ash-muted">(optional)</span><input name="landmark" value="' + esc(a.landmark) + '"></label>' +
+      '<label><span>Landmark <span class="ash-opt">(optional)</span></span><input name="landmark" value="' + esc(a.landmark) + '"></label>' +
       '<div class="ash-two"><label>Pincode<input name="pin" inputmode="numeric" maxlength="6" autocomplete="postal-code" value="' + esc(a.pin) + '" required></label>' +
       '<label>City<input name="city" autocomplete="address-level2" value="' + esc(a.city) + '" required></label></div>' +
       '<label>State<select name="state" required><option value="">Choose a state</option>' + STATES.map(function (s) { return '<option' + (a.state === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select></label>' +
@@ -230,7 +300,9 @@
     if (i > -1) addresses[i] = rec; else addresses.push(rec);
     if (f.elements.def.checked || addresses.length === 1) profile.addressId = id;
     if (!profile.name) profile.name = rec.name; if (!profile.phone) profile.phone = rec.phone;
-    store.set('addresses', addresses); store.set('profile', profile); paintChrome(); sync();
+    store.set('addresses', addresses); store.set('profile', profile);
+    if (profile.addressId === id) setLoc({ pin: rec.pin, area: rec.area.split(',')[0], city: rec.city, state: rec.state, source: 'address' });
+    paintChrome(); sync();
     toast('Address saved');
     if (afterAddress === 'cart') { afterAddress = null; cartSheet(); } else addressSheet();
   }
@@ -309,6 +381,7 @@
     var text = 'Hi Asanoha, new order ' + id + '\n\n' + items.map(function (i) { return '\u2022 ' + byId[i.p].name + ' (' + byId[i.p].pack + ') x ' + i.q; }).join('\n') +
       '\n\nUse Noha Money: ' + (useNoha ? 'Yes (balance ' + inr(wallet.balance) + ')' : 'No') +
       (hasRx() ? '\nPrescription: ' + (rxChoice === 'consult' ? 'Please book a free consultation for me' : 'I will attach it in this chat') : '') +
+      '\nDelivery: ' + (loc && loc.quick ? 'Quick, 2 hours (Bengaluru)' : 'Standard, 3 to 5 days') +
       '\n\nDeliver to (' + a.label + '):\n' + a.name + ', ' + a.phone + '\n' + addrLine(a) +
       '\n\nI confirm I am 18+' + (hasRx() ? ' and each prescription item is for my own use' : '') + '. Please confirm the price and send a payment link.';
     var orders = store.get('orders2', []);
@@ -366,6 +439,7 @@
       else if (d.ashOpen === 'me') profileSheet();
       else if (d.ashOpen === 'bday') bdaySheet();
       else if (d.ashOpen === 'learn') learnSheet();
+      else if (d.ashOpen === 'loc') locSheet();
       return;
     }
     if (d.ashPick !== undefined) { profile.addressId = d.ashPick; store.set('profile', profile); paintChrome(); sync(); if (afterAddress === 'cart') { afterAddress = null; cartSheet(); } else addressSheet(); return; }
@@ -390,6 +464,22 @@
     if (t.hasAttribute('data-ash-signin')) { var au1 = window.ASANOHA.auth; au1.signIn().catch(function (er) { toast(er && er.code === 'auth/unauthorized-domain' ? 'Add this website to Firebase authorised domains.' : 'Sign-in was cancelled. Try again.'); }); return; }
     if (t.hasAttribute('data-ash-signout')) { window.ASANOHA.auth.signOut().then(function () { toast('Signed out'); profileSheet(); }); return; }
     if (t.hasAttribute('data-ash-goto-grid')) { var gg = $('#ash-grid'); if (gg) { var hh = $('.top') ? $('.top').getBoundingClientRect().height : 64; window.scrollTo({ top: gg.getBoundingClientRect().top + window.scrollY - hh - 60, behavior: 'smooth' }); } return; }
+    if (t.hasAttribute('data-ash-geo')) {
+      var eg = $('#ash-loc-err'); t.disabled = true; t.textContent = 'Finding you\u2026';
+      useGeo().then(function (l) { setLoc(l); close(); toast(loc.quick ? '\u26A1 2-hour delivery available' : 'Standard delivery in 3 to 5 days'); })
+        .catch(function (er) { if (eg) eg.textContent = er.message; t.disabled = false; t.textContent = 'Use my current location'; });
+      return;
+    }
+    if (t.hasAttribute('data-ash-geo-fill')) {
+      t.disabled = true;
+      useGeo().then(function (l) {
+        var f = $('#ash-addr-form'); if (!f) return;
+        if (l.area && !f.area.value) f.area.value = l.area; if (l.pin) f.pin.value = l.pin; if (l.city) f.city.value = l.city;
+        if (l.state) { var opt = Array.prototype.filter.call(f.state.options, function (o) { return o.text.toLowerCase() === l.state.toLowerCase(); })[0]; if (opt) f.state.value = opt.value; }
+        t.textContent = 'Location added. Add your flat and street.';
+      }).catch(function (er) { t.disabled = false; toast(er.message); });
+      return;
+    }
     if (t.id === 'ash-top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     if (d.ashAmt) { $$('#ash-amts .ash-chip').forEach(function (c) { c.setAttribute('aria-pressed', c === t); }); $('[data-ash-topup]').textContent = 'Add ' + inr(+d.ashAmt); return; }
     if (t.hasAttribute('data-ash-topup')) { toast('Top-ups open with payments at launch. Claim your \u20B9100 below.'); return; }
@@ -412,6 +502,21 @@
         location.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent('Noha Money \u20B9100 claim') + '&body=' + encodeURIComponent('Please add ' + em + ' to the Noha Money launch list.'); ok();
       });
     }
+  });
+  document.addEventListener('submit', function (e) {
+    if (e.target.id !== 'ash-pinform') return;
+    e.preventDefault();
+    var pin = (e.target.pin.value || '').trim(), er = $('#ash-loc-err');
+    if (!/^[1-9]\d{5}$/.test(pin)) { er.textContent = 'Enter a 6-digit pincode.'; return; }
+    lookupPin(pin).then(function (l) { l.source = 'pincode'; setLoc(l); close(); toast(loc.quick ? '\u26A1 2-hour delivery available' : 'Standard delivery in 3 to 5 days'); });
+  });
+  // Pincode typed in the address form fills city and state.
+  document.addEventListener('input', function (e) {
+    var f = e.target.form; if (!f || f.id !== 'ash-addr-form' || e.target.name !== 'pin' || !/^[1-9]\d{5}$/.test(e.target.value)) return;
+    lookupPin(e.target.value).then(function (l) {
+      if (l.city && !f.city.value) f.city.value = l.city;
+      if (l.state && !f.state.value) { var opt = Array.prototype.filter.call(f.state.options, function (o) { return o.text.toLowerCase() === l.state.toLowerCase(); })[0]; if (opt) f.state.value = opt.value; }
+    });
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('#ash-sheet') && $('#ash-sheet').classList.contains('on')) close(); });
   document.addEventListener('input', function (e) { if (e.target.id === 'ash-q') { query = e.target.value.trim().toLowerCase(); renderGrid(); } });
@@ -454,7 +559,7 @@
       if ($('#ash-theme')) profileSheet();
     });
     $('#ash-scrim').addEventListener('click', close);
-    renderGrid(); paintChrome(); saveCart();
+    renderGrid(); paintChrome(); saveCart(); if (loc) checkShiprocket(loc); maybeAskLocation();
     if (/[#&]cart\b/.test(location.hash)) cartSheet();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
