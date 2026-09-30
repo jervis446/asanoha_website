@@ -59,10 +59,20 @@
   }
   function hasRx() { return Object.keys(cart).some(function (k) { return byId[k] && byId[k].rx !== false; }); }
   function count() { return Object.keys(cart).reduce(function (a, k) { return a + cart[k]; }, 0); }
+  function refreshSheetTiles() {
+    var root = $('#ash-sheet-body'); if (!root) return;
+    $$('.ash-p', root).forEach(function (card) {
+      var img = $('[data-ash-pd]', card); var pid = img && img.getAttribute('data-ash-pd');
+      var p = pid && byId[pid]; if (!p) return;
+      var foot = $('.ash-foot', card); if (!foot) return;
+      var price = $('.ash-price', foot);
+      foot.innerHTML = (price ? price.outerHTML : '') + addBtn(p);
+    });
+  }
   function saveCart() {
     store.set('bag', cart);
     $$('.cart-count').forEach(function (e) { e.textContent = count(); });
-    renderGrid(); renderPill();
+    renderGrid(); renderPill(); refreshSheetTiles();
   }
   function defaultAddress() { return addresses.filter(function (a) { return a.id === profile.addressId; })[0] || addresses[0] || null; }
   function addrLine(a) { return [a.house, a.area, a.landmark ? 'Near ' + a.landmark : '', a.city, a.state + ' ' + a.pin].filter(Boolean).join(', '); }
@@ -196,20 +206,35 @@
   }
 
   /* ---------- sheet ---------- */
-  var lastFocus = null;
+  var lastFocus = null, lockedY = 0;
+  // iOS Safari ignores plain overflow:hidden on the body while a fixed sheet is open, so the
+  // page behind it can still drag-scroll and bounce. Actually pinning the body in place with
+  // position:fixed stops that, and we restore the exact scroll position on close.
+  function lockScroll() {
+    lockedY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.top = -lockedY + 'px';
+    document.body.classList.add('ash-open');
+  }
+  function unlockScroll() {
+    document.body.classList.remove('ash-open');
+    document.body.style.top = '';
+    window.scrollTo(0, lockedY);
+  }
   function open(html, title) {
     lastFocus = document.activeElement;
-    $('#ash-sheet-body').innerHTML = html;
-    $('#ash-sheet').setAttribute('aria-label', title || 'Details');
-    document.body.classList.add('ash-open');
-    $('#ash-sheet').classList.add('on'); $('#ash-scrim').classList.add('on');
+    var sheet = $('#ash-sheet');
+    sheet.innerHTML !== undefined && ($('#ash-sheet-body').innerHTML = html);
+    sheet.setAttribute('aria-label', title || 'Details');
+    sheet.scrollTop = 0;
+    lockScroll();
+    sheet.classList.add('on'); $('#ash-scrim').classList.add('on');
     renderPill();
     setTimeout(function () { var c = $('#ash-close'); if (c) c.focus(); }, 60);
   }
   function close() {
     $('#ash-sheet').classList.remove('on'); $('#ash-scrim').classList.remove('on');
-    document.body.classList.remove('ash-open'); renderPill();
-    if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+    unlockScroll(); renderPill();
+    if (lastFocus && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
   }
 
   function pdSheet(id) {

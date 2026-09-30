@@ -598,7 +598,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opac
   .ash-grab{display:none}
 }
 @media (prefers-reduced-motion:reduce){.ash-sheet,.ash-scrim{transition:none}}
-body.ash-open{overflow:hidden}
+body.ash-open{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .ash-grab{width:44px;height:5px;border-radius:3px;background:var(--line);margin:10px auto 4px}
 .ash-x{position:sticky;top:8px;float:right;width:38px;height:38px;border-radius:50%;border:0;background:var(--paper);color:var(--ink);font-size:22px;cursor:pointer;z-index:2}
 .ash-h{font-family:var(--serif);font-weight:600;font-size:26px;margin:12px 0 8px;line-height:1.15}
@@ -832,7 +832,7 @@ button.clear-item:hover{transform:translateY(-2px);border-color:var(--ink)}
 .gift-line{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
 .gift-line h3{font-family:var(--serif);font-weight:600;font-size:20px;margin:0 0 6px}
 .gift-line p{margin:0 0 8px}
-.ash-form textarea{min-height:64px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--field);color:var(--ink);font:inherit;font-size:15px;resize:vertical;width:100%;box-sizing:border-box}
+.ash-form textarea{min-height:64px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--field);color:var(--ink);font:inherit;font-size:16px;resize:vertical;width:100%;box-sizing:border-box}
 @media (max-width:640px){
   .clear-row{grid-template-columns:repeat(3,1fr)!important;gap:8px}
   .clear-item{padding:12px 6px!important;font-size:12.5px!important}
@@ -895,3 +895,13 @@ button.clear-item:hover{transform:translateY(-2px);border-color:var(--ink)}
 #how.clear{padding-top:10px}
 .clear-row.four{grid-template-columns:repeat(4,1fr)!important}
 @media (max-width:640px){.clear-row.four{grid-template-columns:repeat(2,1fr)!important}}
+
+/* ===== seamless mobile: no stray zoom, sheets scroll cleanly, body never bounces ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{overscroll-behavior-y:none}
+button,a,.chip,.tab,.ash-chip,.ash-tab,.ash-add,.ash-step button,.ash-cta,.ash-ban,.clear-item,.ash-tiles button,.ash-tiles a{touch-action:manipulation}
+input,select,textarea,button{font-size:16px}
+.ash-search input,.ash-form input,.ash-form select,.ash-form textarea,.field input,.field select,.field textarea,.form input,.form select,.form textarea{font-size:16px!important}
+.ash-scrim{touch-action:none}
+.ash-sheet{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+.ash-sheet-body{overscroll-behavior:contain}
