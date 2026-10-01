@@ -218,7 +218,13 @@
   function unlockScroll() {
     document.body.classList.remove('ash-open');
     document.body.style.top = '';
+    // The site uses smooth scrolling (html{scroll-behavior:smooth}) for in-page links, but that
+    // would also animate this restore and look like the page scrolling by itself behind the sheet.
+    // Force this one jump to be instant, like closing a native app sheet.
+    var prev = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
     window.scrollTo(0, lockedY);
+    document.documentElement.style.scrollBehavior = prev;
   }
   function open(html, title) {
     lastFocus = document.activeElement;
@@ -655,24 +661,40 @@
         lastY = y; ticking = false;
       });
     }, { passive: true });
-    // Phones opening the home page land straight on the range.
-    if ($('#shop') && !location.hash && window.matchMedia && matchMedia('(max-width: 767px)').matches) {
-      var landed = false; try { landed = sessionStorage.getItem('asanoha:landed'); sessionStorage.setItem('asanoha:landed', '1'); } catch (e) {}
-      if (!landed) {
-        // Let the hero animation play, then glide to the range. Any touch or scroll by the visitor cancels it.
-        var cancelled = false, stop = function () { cancelled = true; };
-        ['touchstart', 'wheel', 'keydown'].forEach(function (ev) { window.addEventListener(ev, stop, { once: true, passive: true }); });
-        var glide = function () {
-          if (cancelled || window.scrollY > 80 || document.body.classList.contains('ash-open')) return;
-          var gate = document.getElementById('gate'); if (gate && !gate.hidden && getComputedStyle(gate).display !== 'none') { setTimeout(glide, 800); return; }
-          var head = $('.top'), h = head ? head.getBoundingClientRect().height : 64;
-          var anchor = $('#shop .section-head') || $('#shop');
-          var y = anchor.getBoundingClientRect().top + window.scrollY - h - 12;
-          minY = y + 1400;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        };
-        window.addEventListener('load', function () { setTimeout(glide, 2600); });
-      }
+    // Phones opening the home page land straight on the range. Desktop still opens at the top.
+    // This used to retry in a loop for a full second to fight an unexplained reset; the real
+    // cause was that the location prompt below could open mid-landing and lock in a half-way
+    // scroll position. Fixed by strictly sequencing the two: land first, ask for location after.
+    var isMobile = window.matchMedia && matchMedia('(max-width: 767px)').matches;
+    var shouldLand = $('#shop') && !location.hash && isMobile;
+    var landed = false;
+    if (shouldLand) { try { landed = !!sessionStorage.getItem('asanoha:landed'); sessionStorage.setItem('asanoha:landed', '1'); } catch (e) {} }
+    var afterLanding = function () { maybeAskLocation(); };
+    if (shouldLand && !landed) {
+      var gateGone = function () {
+        var gate = document.getElementById('gate');
+        return !gate || gate.hidden || getComputedStyle(gate).display === 'none';
+      };
+      var landNow = function () {
+        var head = $('.top'), h = head ? head.getBoundingClientRect().height : 64;
+        var anchor = $('#shop .section-head') || $('#shop');
+        var y = Math.max(0, anchor.getBoundingClientRect().top + window.scrollY - h - 12);
+        minY = y + 1400;
+        // One instant jump, like the app opened straight on this screen. scroll-behavior:smooth
+        // is switched off for just this call so it snaps instead of visibly gliding.
+        var prevB = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, y);
+        document.documentElement.style.scrollBehavior = prevB;
+      };
+      var waitForGate = function (tries) {
+        if (gateGone()) { landNow(); setTimeout(afterLanding, 250); return; }
+        if (tries < 30) setTimeout(function () { waitForGate(tries + 1); }, 150);
+        else afterLanding(); // give up waiting after ~4.5s rather than block location forever
+      };
+      waitForGate(0);
+    } else {
+      afterLanding();
     }
     document.addEventListener('asanoha:auth', function () {
       addresses = store.get('addresses', []); if (!Array.isArray(addresses)) addresses = [];
@@ -681,7 +703,7 @@
       if ($('#ash-theme')) profileSheet();
     });
     $('#ash-scrim').addEventListener('click', close);
-    renderGrid(); paintChrome(); saveCart(); if (loc) checkShiprocket(loc); maybeAskLocation();
+    renderGrid(); paintChrome(); saveCart(); if (loc) checkShiprocket(loc);
     if (/[#&]cart\b/.test(location.hash)) cartSheet();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
