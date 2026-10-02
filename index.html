@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Dela+Gothic+One&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=Tiro+Devanagari+Sanskrit&display=swap">
 <script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):'auto';if(t!=='day'&&t!=='night')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','day');}})();</script>
-<link rel="stylesheet" href="assets/css/site.css?v=27">
+<link rel="stylesheet" href="assets/css/site.css?v=28">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Asanoha Ayurveda LLP", "url": "https://asanoha.co.in/", "logo": "https://asanoha.co.in/assets/img/logo.png", "email": "orders@asanoha.co.in", "founder": [{"@type": "Person", "name": "Adarsh Singh"}, {"@type": "Person", "name": "Joseph John"}, {"@type": "Person", "name": "Soumyadev Banerjee"}, {"@type": "Person", "name": "Pankaj Singh"}]}</script>
 
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -127,7 +127,17 @@
   <div class="wrap">
     <div class="section-head reveal"><div><p class="kicker">The range</p><h2>Vijaya on prescription, <em>and everyday Ayurveda.</em></h2></div></div>
     <p class="ash-deliver" id="ash-deliver">Delivering across India.</p>
-    <label class="ash-search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="ash-q" type="search" placeholder="Search gummies, oil, 250 mg" aria-label="Search products"></label>
+    <div class="ash-search" id="ash-search" role="search">
+      <svg class="ash-s-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <div class="ash-s-field">
+        <input id="ash-q" type="search" placeholder="Search gummies, oil, 250 mg" aria-label="Search products" autocomplete="off" enterkeyhint="search">
+        <span class="ash-ph" id="ash-ph" aria-hidden="true" hidden><span class="ash-ph-pre">Search</span> <span class="ash-ph-win"><span class="ash-ph-word" id="ash-ph-word">"gummies"</span></span></span>
+      </div>
+      <button type="button" class="ash-s-clear" id="ash-s-clear" aria-label="Clear search" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <span class="ash-s-div" id="ash-s-div" aria-hidden="true" hidden></span>
+      <button type="button" class="ash-mic" id="ash-mic" aria-label="Search by voice" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+    </div>
+    <p class="ash-s-count" id="ash-s-count" aria-live="polite" hidden></p>
     <div class="ash-tabs" role="group" aria-label="Filter products">
       <button aria-pressed="true" data-ash-f="all">All</button>
       <button aria-pressed="false" data-ash-f="gummies">Gummies</button>
@@ -198,7 +208,7 @@
     <form class="nl-form" id="nl-form" novalidate>
       <label class="sr" for="nl-email">Email address</label>
       <input id="nl-email" name="email" type="email" autocomplete="email" placeholder="Enter your email" required>
-      <button class="btn" type="submit">Subscribe →</button>
+      <button class="btn clay" type="submit">Subscribe →</button>
     </form>
     <p class="nl-small" id="nl-msg" role="status">For adults 18+. By subscribing you agree to our <a href="privacy.html">privacy policy</a>.</p>
   </div>
@@ -260,6 +270,7 @@
 </div>
 <script src="assets/js/site.js?v=19" defer></script>
 <script src="assets/js/shop.js?v=14" defer></script>
+<script src="assets/js/search.js?v=1" defer></script>
 <script type="module" src="assets/js/account.js?v=2"></script>
 </body>
 </html>
