@@ -60,7 +60,8 @@
     }
     return navigator.clipboard ? navigator.clipboard.writeText((text ? text + '\n' : '') + (url || location.href))
       .then(function () { alert('Copied. Send it to your other half.'); })
-      .catch(function () { prompt('Copy this:', (text ? text + '\n' : '') + (url || location.href)); });
+      .catch(function () { prompt('Copy this:', (text ? text + '\n' : '') + (url || location.href)); })
+      : Promise.resolve(prompt('Copy this:', (text ? text + '\n' : '') + (url || location.href)));
   }
 
   window.AsanohaTools = {

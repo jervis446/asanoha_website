@@ -12,8 +12,10 @@ const auth = (A.auth = {
   ready: false,
   user: null,               // { uid, name, email, photo }
   onChange(fn) { listeners.push(fn); },
-  signIn() { return Promise.reject(new Error('Google sign-in is not set up yet')); },
+  signIn() { return Promise.reject(new Error('Sign-in is not set up yet')); },
+  signInApple() { return Promise.reject(new Error('Sign-in is not set up yet')); },
   signOut() { return Promise.resolve(); },
+  deleteAccount() { return Promise.reject(new Error('Sign-in is not set up yet')); },
   push() { return Promise.resolve(); }
 });
 const emit = () => {
@@ -33,20 +35,54 @@ if (cfg && cfg.apiKey) {
       import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`)
     ]);
     const app = initializeApp(cfg);
-    const fa = am.getAuth(app);
+    const native = window.AsanohaNative && window.AsanohaNative.isNative;
+    // Inside the iOS app there is no popup or redirect, so use local persistence and native sign-in credentials
+    const fa = native ? am.initializeAuth(app, { persistence: am.indexedDBLocalPersistence }) : am.getAuth(app);
     const db = fm.getFirestore(app);
     const provider = new am.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     auth.available = true;
 
+    const appleProvider = new am.OAuthProvider('apple.com');
+    appleProvider.addScope('email'); appleProvider.addScope('name');
+    const viaNative = async (kind) => {
+      const c = await window.AsanohaNative.auth[kind]();
+      const cred = kind === 'apple'
+        ? appleProvider.credential({ idToken: c.idToken, rawNonce: c.nonce })
+        : am.GoogleAuthProvider.credential(c.idToken, c.accessToken);
+      const r = await am.signInWithCredential(fa, cred);
+      if (kind === 'apple' && c.name && !r.user.displayName) { try { await am.updateProfile(r.user, { displayName: c.name }); } catch (e) {} }
+    };
+    auth.signInApple = async () => {
+      if (native) return viaNative('apple');
+      try { await am.signInWithPopup(fa, appleProvider); }
+      catch (e) { if (/popup-blocked|operation-not-supported/i.test(e.code || '')) await am.signInWithRedirect(fa, appleProvider); else throw e; }
+    };
     auth.signIn = async () => {
+      if (native) return viaNative('google');
       try { await am.signInWithPopup(fa, provider); }
       catch (e) {
         if (/popup-blocked|operation-not-supported|popup-closed-by-browser/i.test(e.code || '')) await am.signInWithRedirect(fa, provider);
         else throw e;
       }
     };
-    auth.signOut = () => am.signOut(fa);
+    auth.signOut = async () => { if (native) await window.AsanohaNative.auth.signOut(); await am.signOut(fa); };
+
+    // Permanently delete the account and its saved data. Required by the App Store.
+    auth.deleteAccount = async () => {
+      const u = fa.currentUser; if (!u) return;
+      await fm.deleteDoc(fm.doc(db, 'users', u.uid));
+      try { await am.deleteUser(u); }
+      catch (e) {
+        if ((e.code || '') !== 'auth/requires-recent-login') throw e;
+        const pid = (u.providerData[0] || {}).providerId;
+        if (native) await viaNative(pid === 'apple.com' ? 'apple' : 'google');
+        else await am.reauthenticateWithPopup(u, pid === 'apple.com' ? appleProvider : provider);
+        await am.deleteUser(fa.currentUser);
+      }
+      if (native) await window.AsanohaNative.auth.signOut();
+      ['addresses', 'profile', 'orders2', 'pushToken'].forEach((k) => { try { localStorage.removeItem('asanoha:' + k); } catch (e) {} });
+    };
 
     // Save addresses, profile and orders to the signed-in user's own document.
     auth.push = async (data) => {
@@ -73,7 +109,7 @@ if (cfg && cfg.apiKey) {
         const seen = {}; const orders = (remote.orders || []).concat(local.orders || []).filter((o) => o && o.id && !seen[o.id] && (seen[o.id] = 1)).slice(-50);
         writeLocal('addresses', addresses); writeLocal('profile', profile); writeLocal('orders2', orders);
         await fm.setDoc(ref, { name: auth.user.name, email: auth.user.email, photo: auth.user.photo, addresses, profile, orders, lastLogin: fm.serverTimestamp(), createdAt: remote.createdAt || fm.serverTimestamp() }, { merge: true });
-        if (A.track) A.track(snap.exists() ? 'login' : 'sign_up', { method: 'google' });
+        if (A.track) A.track(snap.exists() ? 'login' : 'sign_up', { method: ((u.providerData[0] || {}).providerId === 'apple.com') ? 'apple' : 'google' });
       } catch (e) { console.error('Asanoha: profile sync failed', e); }
       auth.ready = true; emit();
     });

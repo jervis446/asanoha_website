@@ -68,24 +68,32 @@
     });
     clear.addEventListener('click', function () { setQuery(''); q.focus(); });
 
-    // voice search where the browser supports it
+    // voice search: native recogniser inside the iOS app, Web Speech API in browsers that have it
+    var listenStart = function () { listening = true; box.classList.add('listening'); mic.setAttribute('aria-pressed', 'true'); setQuery(''); word.textContent = 'Listening\u2026'; };
+    var stop = function () { listening = false; box.classList.remove('listening'); mic.setAttribute('aria-pressed', 'false'); if (!q.value) setWord(TERMS[i]); };
+    var onText = function (t) { setQuery(String(t).replace(/[.?!]+$/, '').trim()); };
+    var NS = window.AsanohaNative && window.AsanohaNative.speech;
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SR) {
-      mic.hidden = false; div.hidden = false;
+    var showMic = function () { mic.hidden = false; div.hidden = false; };
+    if (NS) {
+      NS.available().then(function (ok) { if (ok) showMic(); });
+      mic.addEventListener('click', function () {
+        if (listening) { NS.stop(); stop(); return; }
+        listenStart();
+        NS.start(onText, stop).catch(function () { stop(); });
+      });
+    } else if (SR) {
+      showMic();
       var rec = new SR(); rec.lang = 'en-IN'; rec.interimResults = true; rec.maxAlternatives = 1;
-      var stop = function () { listening = false; box.classList.remove('listening'); mic.setAttribute('aria-pressed', 'false'); if (!q.value) setWord(TERMS[i]); };
       rec.onresult = function (e) {
         var t = ''; for (var k = e.resultIndex; k < e.results.length; k++) t += e.results[k][0].transcript;
-        setQuery(t.replace(/[.?!]+$/, '').trim());
+        onText(t);
       };
-      rec.onerror = function () { stop(); };
+      rec.onerror = stop;
       rec.onend = stop;
       mic.addEventListener('click', function () {
         if (listening) { rec.stop(); return; }
-        try {
-          rec.start(); listening = true; box.classList.add('listening'); mic.setAttribute('aria-pressed', 'true');
-          setQuery(''); word.textContent = 'Listening\u2026';
-        } catch (err) { stop(); }
+        try { rec.start(); listenStart(); } catch (err) { stop(); }
       });
     }
 
@@ -94,7 +102,10 @@
     function stuck() {
       ticking = false;
       var top = parseFloat(getComputedStyle(box).top) || 0;
-      box.classList.toggle('stuck', box.getBoundingClientRect().top <= top + 1 && window.scrollY > 0);
+      var on = box.getBoundingClientRect().top <= top + 1 && window.scrollY > 0;
+      box.classList.toggle('stuck', on);
+      // lets Back to top sit just below the bar instead of on top of it
+      document.documentElement.classList.toggle('ash-search-stuck', on);
     }
     window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(stuck); } }, { passive: true });
     stuck();

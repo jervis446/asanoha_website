@@ -703,6 +703,8 @@ body.ash-open{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .ash-menu a{display:flex;justify-content:space-between;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
 .ash-top{position:fixed;left:50%;top:calc(84px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:20px;border:0;background:var(--ink);color:var(--ground);font:inherit;font-weight:800;font-size:13.5px;box-shadow:0 8px 22px rgba(0,0,0,.25);cursor:pointer}
 .ash-top[hidden]{display:none}
+.ash-top{transition:top .2s ease}
+.ash-search-stuck .ash-top{top:calc(144px + env(safe-area-inset-top,0px))}
 body.ash-open .ash-top{display:none}
 .ash-deliver span{min-width:0}
 
@@ -813,6 +815,7 @@ footer.site .ash-sign span{color:var(--pink)}
   .ash-aware-row{gap:8px}
   .ash-aware-row span{font-size:12px;padding:10px 6px}
   .ash-top{top:calc(76px + env(safe-area-inset-top,0px));min-height:36px;font-size:13px;padding:0 14px}
+  .ash-search-stuck .ash-top{top:calc(142px + env(safe-area-inset-top,0px))}
   .ash-pill{font-size:14px}
 }
 
@@ -927,3 +930,11 @@ input,select,textarea,button{font-size:16px}
 .ash-scrim{touch-action:none}
 .ash-sheet{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
 .ash-sheet-body{overscroll-behavior:contain}
+
+/* Sign in with Apple and account deletion */
+.ash-apple{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:48px;margin-top:12px;border-radius:var(--r-btn);border:0;background:#000;color:#fff;font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+:root[data-theme="night"] .ash-apple{background:#fff;color:#000}
+.ash-danger{color:#B3261E!important;margin-top:10px}
+:root[data-theme="night"] .ash-danger{color:#F2B8B5!important}
+/* inside the iOS app */
+.in-app .scrollcue{display:none}
