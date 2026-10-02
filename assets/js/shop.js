@@ -108,12 +108,98 @@
       '<div class="ash-b"><span class="ash-pack">' + esc(p.pack) + '</span><span class="ash-n">' + esc(p.name) + '</span><span class="ash-dose ' + p.dose + '">' + esc(p.strength) + '</span>' +
       '<div class="ash-foot"><span class="ash-price"><span class="ash-blur" aria-hidden="true">\u20B98,888</span><span>at launch</span></span>' + addBtn(p) + '</div></div></article>';
   }
-  function filtered() {
-    return P.filter(function (p) {
-      var f = filter === 'all' || p.type === filter || p.dose === filter;
-      var q = !query || (p.name + ' ' + p.type + ' ' + p.strength + ' ' + p.pack).toLowerCase().indexOf(query) > -1;
-      return f && q;
+  /* ---------- forgiving search: plurals, typos, partial words, everyday words ---------- */
+  // each line: the word we index on the left, the words people actually type on the right
+  var SYN = {
+    gummy: 'gummies gummi gumy candy candies chew chewable chewables edible edibles jelly jellies toffee',
+    tablet: 'tab tabs pill pills capsule capsules goli tabelt',
+    oil: 'oils tincture tinctures drop drops dropper syringe syringes tel',
+    vijaya: 'cannabis hemp bhang cbd thc prescription rx',
+    low: 'mild gentle light beginner beginners starter first',
+    medium: 'mid moderate',
+    high: 'strong stronger strongest max',
+    ashwagandha: 'ashwa ashvagandha aswagandha asgandh stress calm sleep relax',
+    shilajit: 'shilajeet silajit shilajith energy stamina',
+    isabgol: 'isabgul isapgol psyllium fibre fiber digestion constipation gut',
+    moondays: 'moon period periods cramp cramps menstrual pms rollon roll',
+    wellness: 'ayurveda ayurvedic everyday daily'
+  };
+  var STOP = { a: 1, an: 1, the: 1, and: 1, or: 1, for: 1, of: 1, with: 1, to: 1, in: 1, me: 1, my: 1, show: 1, buy: 1, need: 1, want: 1, strength: 1, dose: 1, product: 1 };
+  var ALIAS = {};
+  Object.keys(SYN).forEach(function (k) { SYN[k].split(' ').forEach(function (w) { ALIAS[stem(w)] = k; }); });
+  function norm(t) {
+    return String(t || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/(\d)([a-z])/g, '$1 $2').replace(/([a-z])(\d)/g, '$1 $2').replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+  function stem(w) {
+    if (w.length > 4 && /ies$/.test(w)) return w.slice(0, -3) + 'y';
+    if (w.length > 4 && /(ss|x|ch|sh)es$/.test(w)) return w.slice(0, -2);
+    if (w.length > 3 && /s$/.test(w) && !/(ss|us|is)$/.test(w)) return w.slice(0, -1);
+    return w;
+  }
+  function words(t) { return norm(t).split(' ').filter(Boolean).map(stem); }
+  // edit distance with an early exit, counting a swapped pair of letters as one typo
+  function near(a, b, max) {
+    if (Math.abs(a.length - b.length) > max) return false;
+    var prev2 = null, prev = [], cur, i, j;
+    for (j = 0; j <= b.length; j++) prev[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      cur = [i]; var low = i;
+      for (j = 1; j <= b.length; j++) {
+        var c = a[i - 1] === b[j - 1] ? 0 : 1;
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + c);
+        if (prev2 && i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) cur[j] = Math.min(cur[j], prev2[j - 2] + 1);
+        if (cur[j] < low) low = cur[j];
+      }
+      if (low > max) return false;
+      prev2 = prev; prev = cur;
+    }
+    return prev[b.length] <= max;
+  }
+  var DOSES = { low: 1, medium: 1, high: 1 };
+  var INDEX = P.map(function (p) {
+    var tags = [p.type, p.dose, p.strength, p.pack, p.id.replace(/-/g, ' ')];
+    if (p.rx !== false) tags.push('vijaya');
+    var uniq = function (l) { var o = {}; l.forEach(function (w) { o[w] = 1; }); return Object.keys(o); };
+    return { p: p, name: uniq(words(p.name)), tags: uniq(words(tags.join(' '))), desc: uniq(words(p.desc)) };
+  });
+  // name and tags allow partial words and typos, the description only counts whole words so it can't add noise
+  function scoreWord(e, q) {
+    var targets = [q]; if (ALIAS[q]) targets.push(ALIAS[q]);
+    // strength words filter on the product's actual strength, not on any sentence that says "lower"
+    var dose = targets.filter(function (t) { return DOSES[t]; })[0];
+    if (dose) return e.p.dose === dose ? 7 : 0;
+    var best = 0;
+    targets.forEach(function (t) {
+      [[e.name, 8], [e.tags, 6]].forEach(function (f) {
+        f[0].forEach(function (w) {
+          var sc = 0;
+          if (w === t) sc = f[1];
+          else if (t.length >= 2 && w.indexOf(t) === 0) sc = f[1] - 2;
+          else if (!/\d/.test(t) && t.length >= 4) {
+            var max = t.length >= 7 ? 2 : 1;
+            if (near(t, w, max) || (w.length > t.length && near(t, w.slice(0, t.length), max))) sc = f[1] - 4;
+          }
+          if (sc > best) best = sc;
+        });
+      });
+      if (!best && e.desc.indexOf(t) > -1) best = 3;
     });
+    return best;
+  }
+  function filtered() {
+    var base = P.filter(function (p) { return filter === 'all' || p.type === filter || p.dose === filter; });
+    var qs = words(query).filter(function (w) { return !STOP[w]; });
+    if (!qs.length) return base;
+    var ok = {}; base.forEach(function (p) { ok[p.id] = 1; });
+    var rows = INDEX.filter(function (e) { return ok[e.p.id]; }).map(function (e, i) {
+      var parts = qs.map(function (q) { return scoreWord(e, q); });
+      return { p: e.p, i: i, hit: parts.filter(Boolean).length, score: parts.reduce(function (a, b) { return a + b; }, 0) };
+    });
+    // every word should match; if nothing does, show the closest partial matches instead of an empty grid
+    var full = rows.filter(function (r) { return r.hit === qs.length; });
+    var out = full.length ? full : rows.filter(function (r) { return r.hit > 0; });
+    return out.sort(function (a, b) { return b.score - a.score || a.i - b.i; }).map(function (r) { return r.p; });
   }
   function renderGrid() {
     var g = $('#ash-grid'); if (!g) return;

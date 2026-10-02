@@ -102,12 +102,16 @@
     function stuck() {
       ticking = false;
       var top = parseFloat(getComputedStyle(box).top) || 0;
-      var on = box.getBoundingClientRect().top <= top + 1 && window.scrollY > 0;
-      box.classList.toggle('stuck', on);
-      // lets Back to top sit just below the bar instead of on top of it
-      document.documentElement.classList.toggle('ash-search-stuck', on);
+      var r = box.getBoundingClientRect(), root = document.documentElement;
+      box.classList.toggle('stuck', Math.abs(r.top - top) <= 1 && window.scrollY > 0);
+      // Back to top sits just below the bar while the bar is on screen, otherwise it keeps its usual spot
+      var head = document.querySelector('.top'), hb = head ? head.getBoundingClientRect().bottom : 0;
+      var shown = r.bottom > hb && r.top < window.innerHeight;
+      root.classList.toggle('ash-search-shown', shown);
+      if (shown) root.style.setProperty('--ash-top-y', Math.round(r.bottom + 10) + 'px'); else root.style.removeProperty('--ash-top-y');
     }
     window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(stuck); } }, { passive: true });
+    window.addEventListener('resize', stuck);
     stuck();
 
     // keep the results in view while typing
