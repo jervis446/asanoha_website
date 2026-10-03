@@ -221,18 +221,74 @@
   var loc = store.get('loc', null);
   function isBlr(pin, city) { return /^560/.test(String(pin || '')) || /bengaluru|bangalore/i.test(String(city || '')); }
   function km(a, b, c, d) { var r = Math.PI / 180, x = (c - a) * r, y = (d - b) * r, h = Math.sin(x / 2) * Math.sin(x / 2) + Math.cos(a * r) * Math.cos(c * r) * Math.sin(y / 2) * Math.sin(y / 2); return 12742 * Math.asin(Math.sqrt(h)); }
-  function speed(l) { return l && l.quick ? { quick: true, label: '2-hour delivery', long: 'Quick delivery within 2 hours in Bengaluru, 9 am to 9 pm' } : { quick: false, label: 'Standard delivery', long: 'Standard delivery across India in 3 to 5 days' }; }
+  /* ---------- delivery zones ----------
+     30 min: within 5 km of a store AND in one of the express localities
+     1 hr 15 min: within 15 km of a store
+     2 hours: rest of Bengaluru
+     3 to 5 days: rest of India                                                     */
+  var STORES = [
+    { name: 'Sarjapur Road', lat: 12.9179279, lng: 77.6982763 },   // Sri Sai Ikon, Doddakannelli
+    { name: 'Koramangala', lat: 12.9217136, lng: 77.6136503 }      // near Mizpah Fitness
+  ];
+  var EXPRESS_AREAS = /hsr|koramangala|kormangala|marathahalli|marathalli|sarjapur|sarjapura/i;
+  var EXPRESS_PINS = { '560102': 1, '560034': 1, '560095': 1, '560037': 1, '560035': 1 }; // HSR, Koramangala x2, Marathahalli, Sarjapur Road
+  // rough centres for local pincodes, used only when a pincode can't be placed on the map
+  var PIN_AT = { '560102': [12.9116, 77.6389], '560034': [12.9352, 77.6245], '560095': [12.9369, 77.6158], '560037': [12.9569, 77.7011], '560035': [12.9105, 77.6930], '560103': [12.9260, 77.6762], '560068': [12.9081, 77.6247], '560076': [12.9166, 77.6101] };
+  function nearestStore(lat, lng) {
+    return STORES.map(function (st) { return { store: st, km: km(lat, lng, st.lat, st.lng) }; }).sort(function (a, b) { return a.km - b.km; })[0];
+  }
+  function zone(l) {
+    var blr = isBlr(l.pin, l.city) || (l.lat && km(l.lat, l.lng, BLR.lat, BLR.lng) < BLR.km);
+    if (!blr) return { tier: 'std' };
+    var lat = l.lat, lng = l.lng;
+    if (!lat && PIN_AT[l.pin]) { lat = PIN_AT[l.pin][0]; lng = PIN_AT[l.pin][1]; }
+    if (!lat) return { tier: 'blr' };
+    var n = nearestStore(lat, lng);
+    var inArea = EXPRESS_AREAS.test([l.area, l.areas, l.city].join(' ')) || !!EXPRESS_PINS[l.pin];
+    if (n.km <= 5 && inArea) return { tier: 'x30', km: n.km, store: n.store.name };
+    if (n.km <= 15) return { tier: 'x75', km: n.km, store: n.store.name };
+    return { tier: 'blr', km: n.km };
+  }
+  var TIERS = {
+    x30: { quick: true, eta: '30 minutes', label: '30-minute delivery', long: 'Express delivery in 30 minutes from our nearby store, 8 am to 12 am' },
+    x75: { quick: true, eta: '1 hr 15 min', label: '1 hr 15 min delivery', long: 'Fast delivery in about 1 hour 15 minutes from our nearest store, 8 am to 12 am' },
+    blr: { quick: true, eta: '2 hours', label: '2-hour delivery', long: 'Quick delivery within 2 hours in Bengaluru, 8 am to 12 am' },
+    std: { quick: false, eta: '3 to 5 days', label: 'Standard delivery', long: 'Standard delivery across India in 3 to 5 days' }
+  };
+  function speed(l) {
+    if (!l) return TIERS.std;
+    var t = l.tier || (l.quick ? 'blr' : 'std');
+    return TIERS[t] || TIERS.std;
+  }
+  // pincodes have no coordinates, so place them on the map once (OpenStreetMap), then settle the zone
+  function placePin(l) {
+    if (l.lat || !/^\d{6}$/.test(l.pin || '') || !isBlr(l.pin, l.city)) return;
+    fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=in&postalcode=' + l.pin + '&city=Bengaluru')
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (!j || !j[0] || loc !== l) return;
+        var la = +j[0].lat, ln = +j[0].lon;
+        if (!la || km(la, ln, BLR.lat, BLR.lng) > BLR.km) return;
+        l.lat = la; l.lng = ln; l.geo = 'pincode';
+        var z = zone(l); l.tier = z.tier; l.km = z.km; l.store = z.store;
+        store.set('loc', l); paintChrome();
+      }).catch(function () {});
+  }
+  // locations saved before delivery zones existed get their zone now
+  if (loc && !loc.tier) { (function (z) { loc.tier = z.tier; loc.km = z.km; loc.store = z.store; loc.quick = z.tier !== 'std'; store.set('loc', loc); })(zone(loc)); }
+  if (loc) placePin(loc);
   function setLoc(l) {
-    l.quick = isBlr(l.pin, l.city) || (l.lat && km(l.lat, l.lng, BLR.lat, BLR.lng) < BLR.km);
-    loc = l; store.set('loc', l); paintChrome(); checkShiprocket(l);
-    track('location_set', { quick: l.quick ? 1 : 0, source: l.source });
+    var z = zone(l);
+    l.tier = z.tier; l.km = z.km; l.store = z.store; l.quick = z.tier !== 'std';
+    loc = l; store.set('loc', l); paintChrome(); checkShiprocket(l); placePin(l);
+    track('location_set', { quick: l.quick ? 1 : 0, tier: l.tier, source: l.source });
   }
   // Pincode to city/state (India Post open API). Falls back to the pincode alone.
   function lookupPin(pin) {
     return fetch('https://api.postalpincode.in/pincode/' + pin).then(function (r) { return r.json(); }).then(function (j) {
-      var po = j && j[0] && j[0].PostOffice && j[0].PostOffice[0];
+      var all = (j && j[0] && j[0].PostOffice) || [], po = all[0];
       if (!po) throw new Error('not found');
-      return { pin: pin, area: po.Name, city: po.District, state: po.State };
+      return { pin: pin, area: po.Name, areas: all.map(function (o) { return o.Name; }).join(', '), city: po.District, state: po.State };
     }).catch(function () { return { pin: pin, area: '', city: isBlr(pin) ? 'Bengaluru' : '', state: isBlr(pin) ? 'Karnataka' : '' }; });
   }
   // Current location: browser GPS, then a free reverse geocoder built for browsers.
@@ -263,7 +319,7 @@
   }
   function locSheet() {
     open('<div class="ash-locsheet"><span class="ash-pin" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>' +
-      '<h2 class="ash-h">Where should we deliver?</h2><p class="ash-muted">Bengaluru gets <b>2-hour delivery</b>. Everywhere else in India, 3 to 5 days.</p></div>' +
+      '<h2 class="ash-h">Where should we deliver?</h2><p class="ash-muted"><b>30 minutes</b> in HSR, Koramangala, Marathahalli and Sarjapur Road near our stores, <b>1 hr 15 min</b> within 15 km, <b>2 hours</b> across Bengaluru. Everywhere else in India, 3 to 5 days.</p></div>' +
       '<button class="ash-cta" data-ash-geo>Use my current location</button>' +
       '<form class="ash-form ash-pinrow" id="ash-pinform" novalidate><label>Or enter your pincode<span class="ash-inline"><input name="pin" inputmode="numeric" maxlength="6" autocomplete="postal-code" placeholder="560035" value="' + esc(loc && loc.pin || '') + '"><button class="ash-cta alt" type="submit">Check</button></span></label></form>' +
       '<p class="ash-err" id="ash-loc-err" role="alert"></p>' +
@@ -285,10 +341,19 @@
   function paintChrome() {
     $$('.ash-coinbal').forEach(function (e) { e.textContent = inr(wallet.balance); });
     var a = defaultAddress(), el = $('#ash-deliver');
-    if (el) el.innerHTML = a
-      ? locLine() + '<span>Delivering to <b>' + esc(a.label) + '</b>: ' + esc(addrLine(a)) + '</span> <button data-ash-open="address" aria-label="Change or edit delivery address">Change</button>'
-      : loc ? locLine() + ' <button data-ash-open="loc" aria-label="Change delivery location">Change</button>'
-      : 'Delivering across India. <button data-ash-open="loc">Set your location</button>';
+    if (!el) return;
+    // Quick-commerce style header: what speed, then where, the whole block opens the picker
+    var k, eta, pill = '', where, caret = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6z"/></svg>';
+    var place = loc ? [loc.area, loc.city].filter(Boolean).join(', ') + (loc.pin ? ' ' + loc.pin : '') : '';
+    if (!loc && !a) { k = '<span class="ash-dl-brand">asanoha<sup>\u2122</sup></span> delivers to'; eta = 'All of India'; }
+    else if (loc && loc.serviceable === false) { k = 'Sorry, we can\u2019t deliver to'; eta = 'This pincode yet'; }
+    else if (loc && loc.quick) { k = '<span class="ash-dl-brand">asanoha<sup>\u2122</sup></span> delivery in'; eta = speed(loc).eta; pill = '<span class="ash-dl-pill">\u26A1 8 am to 12 am</span>'; }
+    else { k = '<span class="ash-dl-brand">asanoha<sup>\u2122</sup></span> delivery in'; eta = loc && loc.etd ? 'By ' + esc(loc.etd) : '3 to 5 days'; }
+    if (a) where = '<b>' + esc(String(a.label || 'Home').toUpperCase()) + '</b> - ' + esc([a.house, a.area, a.city].filter(Boolean).join(', ') + (a.pin ? ' ' + a.pin : ''));
+    else where = loc ? esc(place || 'Your location') : 'Set your location';
+    el.setAttribute('data-ash-open', a ? 'address' : 'loc');
+    el.setAttribute('aria-label', k.replace(/<[^>]+>/g, '').replace('\u2122', '') + ' ' + eta.replace(/<[^>]+>/g, '') + '. ' + (a || loc ? 'Change delivery address' : 'Set your delivery location'));
+    el.innerHTML = '<span class="ash-dl-k">' + k + '</span><span class="ash-dl-eta"><span class="ash-dl-time">' + eta + '</span>' + pill + '</span><span class="ash-dl-addr"><span>' + where + '</span>' + caret + '</span>';
   }
 
   /* ---------- sheet ---------- */
@@ -357,7 +422,7 @@
       ids.map(function (k) { var p = byId[k]; return '<div class="ash-line"><span class="ash-th"><img src="' + p.img + '" alt=""></span><span class="ash-meta"><b>' + esc(p.name) + '</b><span>' + esc(p.pack) + '</span></span>' + addBtn(p) + '</div>'; }).join('') +
       '<div class="ash-box ash-addrbox"><div class="ash-row"><b>Delivery address</b><button class="ash-link" data-ash-open="address">' + (a ? 'Change' : 'Add') + '</button></div>' +
       (a ? '<span><b class="ash-tag">' + esc(a.label) + '</b> ' + esc(a.name) + ', ' + esc(a.phone) + '<br>' + esc(addrLine(a)) + '</span>' : '<span>Add an address so we can deliver your order.</span>') + '</div>' +
-      (loc ? '<div class="ash-box"><b>' + speed(loc).label + '</b><span>' + speed(loc).long + (loc.etd && !loc.quick ? '. Estimated by ' + esc(loc.etd) : '') + '.' + (speed(loc).quick && hasRx() ? ' The 2 hours start once your prescription is checked.' : '') + '</span></div>' : '') +
+      (loc ? '<div class="ash-box"><b>' + speed(loc).label + '</b><span>' + speed(loc).long + (loc.etd && !loc.quick ? '. Estimated by ' + esc(loc.etd) : '') + '.' + (speed(loc).quick && hasRx() ? ' The clock starts once your prescription is checked.' : '') + '</span></div>' : '') +
       '<div class="ash-box ash-row"><span><b>Use Noha Money</b><span>Balance ' + inr(wallet.balance) + '. Cashback covers up to 15% of an order.</span></span><button class="ash-switch" role="switch" aria-checked="' + useNoha + '" id="ash-noha-sw" aria-label="Use Noha Money"></button></div>' +
       (hasRx() ? '<div class="ash-box"><b>Prescription</b><span>How would you like to share it?</span><div class="ash-chips" id="ash-rx">' +
       '<button class="ash-chip" aria-pressed="' + (rxChoice === 'upload') + '" data-ash-rx="upload">I have a prescription</button>' +
@@ -529,7 +594,7 @@
     india: { t: 'Made in India', s: 'Made, packed and delivered from India.', p: [
       ['Made here', 'Made in India under an AYUSH licence and marketed by Asanoha Ayurveda LLP, Bangalore.'],
       ['Designed here', 'Our tins, syringes and friendship papers are designed by our team in Bengaluru.'],
-      ['Delivered fast', 'Quick delivery within 2 hours in Bengaluru, and 3 to 5 days everywhere else in India.'],
+      ['Delivered fast', '30 minutes near our Koramangala and Sarjapur Road stores, 2 hours across Bengaluru, and 3 to 5 days everywhere else in India.'],
       ['Plain packaging', 'Every order ships sealed and plain, and an adult signs for it.']] },
     'step-pick': { t: 'Pick your pair', s: 'Choose what your practitioner is likely to prescribe, or something from everyday Ayurveda.', p: [
       ['Browse the range', 'Gummies, oil and tablets in low and high strength, plus Ashwagandha, Shilajit, Isabgol and Moon Days.'],
@@ -547,7 +612,7 @@
       ['Secure payment link', 'Pay by UPI, card or net banking through a secure link. No card details on our site.'],
       ['Changed your mind?', 'Cancel before dispatch at no cost. If you paid, the refund lands in Noha Money straight away.']] },
     'step-deliver': { t: 'It arrives', s: 'Fast in Bengaluru, reliable everywhere else.', p: [
-      ['Bengaluru in 2 hours', 'Quick delivery within 2 hours, 9 am to 9 pm, once your prescription is checked.'],
+      ['Bengaluru in 30 minutes to 2 hours', '30 minutes in HSR, Koramangala, Marathahalli and Sarjapur Road, about 1 hr 15 min within 15 km of our stores, 2 hours elsewhere in Bengaluru. 8 am to 12 am, once your prescription is checked.'],
       ['Rest of India in 3 to 5 days', 'Shipped with a tracked courier. You get the tracking link on WhatsApp.'],
       ['Plain and sealed', 'No brand-heavy outer box. An adult signs for the parcel.'],
       ['10% back', 'Your first order earns 10% Noha Money after delivery, to use next time.']] },
@@ -555,7 +620,7 @@
       ['1. Pick what you need', 'Choose gummies, oil, tablets or everyday Ayurveda in the range.'],
       ['2. Share a prescription', 'For Vijaya products, upload one from a registered practitioner or book a free online consult at checkout.'],
       ['3. We verify, you pay', 'We check the prescription and send your price, Noha Money savings and a secure payment link.'],
-      ['4. It arrives', 'Sealed, plain packaging with tracking: 2 hours in Bengaluru, 3 to 5 days elsewhere.']] }
+      ['4. It arrives', 'Sealed, plain packaging with tracking: 30 minutes to 2 hours in Bengaluru, 3 to 5 days elsewhere.']] }
   };
   function honestSheet(key) {
     var h = HONEST[key]; if (!h) return;
@@ -581,7 +646,7 @@
       (hasRx() ? '\nPrescription: ' + (rxChoice === 'consult' ? 'Please book a free consultation for me' : 'I will attach it in this chat') : '') +
       (store.get('refBy', '') && !store.get('orders2', []).length ? '\nReferred by: ' + store.get('refBy', '') : '') +
       (line ? '\nLine for my friend: "' + line + '"' + (lineOk ? ' (OK to print, first name and city)' : ' (do not print)') : '') +
-      '\nDelivery: ' + (loc && loc.quick ? 'Quick, 2 hours (Bengaluru)' : 'Standard, 3 to 5 days') +
+      '\nDelivery: ' + speed(loc).label + (loc && loc.store ? ' from ' + loc.store + ' store' : '') + (loc && loc.km ? ' (' + loc.km.toFixed(1) + ' km)' : '') +
       '\n\nDeliver to (' + a.label + '):\n' + a.name + ', ' + a.phone + '\n' + addrLine(a) +
       '\n\nI confirm I am 18+' + (hasRx() ? ' and each prescription item is for my own use' : '') + '. Please confirm the price and send a payment link.';
     var orders = store.get('orders2', []);
@@ -676,7 +741,7 @@
     if (t.hasAttribute('data-ash-goto-grid')) { var gg = $('#ash-grid'); if (gg) { var hh = $('.top') ? $('.top').getBoundingClientRect().height : 64; window.scrollTo({ top: gg.getBoundingClientRect().top + window.scrollY - hh - 60, behavior: 'smooth' }); } return; }
     if (t.hasAttribute('data-ash-geo')) {
       var eg = $('#ash-loc-err'); t.disabled = true; t.textContent = 'Finding you\u2026';
-      useGeo().then(function (l) { setLoc(l); close(); toast(loc.quick ? '\u26A1 2-hour delivery available' : 'Standard delivery in 3 to 5 days'); })
+      useGeo().then(function (l) { setLoc(l); close(); toast(loc.quick ? '\u26A1 ' + speed(loc).label + ' available' : 'Standard delivery in 3 to 5 days'); })
         .catch(function (er) { if (eg) eg.textContent = er.message; t.disabled = false; t.textContent = 'Use my current location'; });
       return;
     }
@@ -726,7 +791,7 @@
     e.preventDefault();
     var pin = (e.target.pin.value || '').trim(), er = $('#ash-loc-err');
     if (!/^[1-9]\d{5}$/.test(pin)) { er.textContent = 'Enter a 6-digit pincode.'; return; }
-    lookupPin(pin).then(function (l) { l.source = 'pincode'; setLoc(l); close(); toast(loc.quick ? '\u26A1 2-hour delivery available' : 'Standard delivery in 3 to 5 days'); });
+    lookupPin(pin).then(function (l) { l.source = 'pincode'; setLoc(l); close(); toast(loc.quick ? '\u26A1 ' + speed(loc).label + ' available' : 'Standard delivery in 3 to 5 days'); });
   });
   // Pincode typed in the address form fills city and state.
   document.addEventListener('input', function (e) {
@@ -762,7 +827,9 @@
     // cause was that the location prompt below could open mid-landing and lock in a half-way
     // scroll position. Fixed by strictly sequencing the two: land first, ask for location after.
     var isMobile = window.matchMedia && matchMedia('(max-width: 767px)').matches;
-    var shouldLand = $('#shop') && !location.hash && isMobile;
+    // phones up to 640px get the app bar at the top instead, so they open at the top like a shop app
+    var appBar = window.matchMedia && matchMedia('(max-width: 640px)').matches;
+    var shouldLand = $('#shop') && !location.hash && isMobile && !appBar;
     var landed = false;
     if (shouldLand) { try { landed = !!sessionStorage.getItem('asanoha:landed'); sessionStorage.setItem('asanoha:landed', '1'); } catch (e) {} }
     var afterLanding = function () { maybeAskLocation(); };

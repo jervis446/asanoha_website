@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Dela+Gothic+One&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=Tiro+Devanagari+Sanskrit&display=swap">
 <script>(function(){try{var t=localStorage.getItem('asanoha:theme');t=t?JSON.parse(t):'auto';if(t!=='day'&&t!=='night')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'night':'day');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','day');}})();</script>
-<link rel="stylesheet" href="assets/css/site.css?v=30">
+<link rel="stylesheet" href="assets/css/site.css?v=34">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Asanoha Ayurveda LLP", "url": "https://asanoha.co.in/", "logo": "https://asanoha.co.in/assets/img/logo.png", "email": "orders@asanoha.co.in", "founder": [{"@type": "Person", "name": "Adarsh Singh"}, {"@type": "Person", "name": "Joseph John"}, {"@type": "Person", "name": "Soumyadev Banerjee"}, {"@type": "Person", "name": "Pankaj Singh"}]}</script>
 
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -125,8 +125,8 @@
 </div></section>
 <section class="section ash-shop" id="shop">
   <div class="wrap">
-    <div class="section-head reveal"><div><p class="kicker">The range</p><h2>Vijaya on prescription, <em>and everyday Ayurveda.</em></h2></div></div>
-    <p class="ash-deliver" id="ash-deliver">Delivering across India.</p>
+    <div class="section-head reveal ash-shop-title"><div><p class="kicker">The range</p><h2>Vijaya on prescription, <em>and everyday Ayurveda.</em></h2></div></div>
+    <button type="button" class="ash-deliver" id="ash-deliver" data-ash-open="loc" aria-label="Set your delivery location"><span class="ash-dl-k"><span class="ash-dl-brand">asanoha<sup>™</sup></span> delivers to</span><span class="ash-dl-eta">All of India</span><span class="ash-dl-addr"><span>Set your location</span><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6z"/></svg></span></button>
     <div class="ash-search" id="ash-search" role="search">
       <svg class="ash-s-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <div class="ash-s-field">
@@ -137,7 +137,6 @@
       <span class="ash-s-div" id="ash-s-div" aria-hidden="true" hidden></span>
       <button type="button" class="ash-mic" id="ash-mic" aria-label="Search by voice" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
     </div>
-    <p class="ash-s-count" id="ash-s-count" aria-live="polite" hidden></p>
     <div class="ash-tabs" role="group" aria-label="Filter products">
       <button aria-pressed="true" data-ash-f="all">All</button>
       <button aria-pressed="false" data-ash-f="gummies">Gummies</button>
@@ -147,6 +146,7 @@
       <button aria-pressed="false" data-ash-f="low">Low strength</button>
       <button aria-pressed="false" data-ash-f="high">High strength</button>
     </div>
+    <p class="ash-s-count" id="ash-s-count" aria-live="polite" hidden></p>
     <div class="ash-hero" role="region" aria-label="Featured">
       <div class="ash-hero-t">
         <span class="ash-hero-pill">Free consult after ordering</span>
@@ -269,8 +269,9 @@
   <div><button class="btn small clay" id="consent-yes">Accept</button><button class="btn small ghost" id="consent-no">No thanks</button></div>
 </div>
 <script src="assets/js/site.js?v=19" defer></script>
-<script src="assets/js/shop.js?v=16" defer></script>
-<script src="assets/js/search.js?v=4" defer></script>
+<script src="assets/js/shop.js?v=21" defer></script>
+<script src="assets/js/appbar.js?v=2" defer></script>
+<script src="assets/js/search.js?v=5" defer></script>
 <script type="module" src="assets/js/account.js?v=3"></script>
 </body>
 </html>

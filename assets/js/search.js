@@ -51,6 +51,7 @@
       if (has) {
         // if the matching tiles have scrolled up behind the sticky bar, bring them back under it
         requestAnimationFrame(function () {
+          if (window.AsanohaAppbar && window.AsanohaAppbar.toGrid()) return;
           var g = document.getElementById('ash-grid'); if (!g) return;
           var gap = g.getBoundingClientRect().top - box.getBoundingClientRect().bottom - 14;
           if (gap < 0) window.scrollTo({ top: window.scrollY + gap, behavior: 'auto' });
@@ -102,7 +103,17 @@
     function stuck() {
       ticking = false;
       var top = parseFloat(getComputedStyle(box).top) || 0;
-      var r = box.getBoundingClientRect(), root = document.documentElement;
+      var root = document.documentElement, bar = box.closest('.ash-appbar');
+      if (bar) {
+        // phone app bar: the whole bar pins, Back to top goes under the categories
+        var br = bar.getBoundingClientRect();
+        bar.classList.toggle('stuck', br.top < -1);
+        box.classList.remove('stuck');
+        root.classList.add('ash-search-shown');
+        root.style.setProperty('--ash-top-y', Math.round(br.bottom + 10) + 'px');
+        return;
+      }
+      var r = box.getBoundingClientRect();
       box.classList.toggle('stuck', Math.abs(r.top - top) <= 1 && window.scrollY > 0);
       // Back to top sits just below the bar while the bar is on screen, otherwise it keeps its usual spot
       var head = document.querySelector('.top'), hb = head ? head.getBoundingClientRect().bottom : 0;
@@ -116,6 +127,7 @@
 
     // keep the results in view while typing
     q.addEventListener('focus', function () {
+      if (box.closest('.ash-appbar')) return;
       var r = box.getBoundingClientRect();
       if (r.top > window.innerHeight * 0.5) box.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
     });

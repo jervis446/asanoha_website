@@ -937,3 +937,76 @@ input,select,textarea,button{font-size:16px}
 :root[data-theme="night"] .ash-danger{color:#F2B8B5!important}
 /* inside the iOS app */
 .in-app .scrollcue{display:none}
+
+/* ===== shop header, quick-commerce style: speed, address, search, categories ===== */
+/* theme tokens, so day and night both follow the site palette */
+:root{--band:#F7F2E9;--band-glass:rgba(247,242,233,.78);--band-line:rgba(30,38,36,.10);--band-soft:rgba(30,38,36,.06);--band-pill:#F0C987;--band-pill-ink:#1E2624}
+:root[data-theme="night"]{--band:#18211F;--band-glass:rgba(15,22,21,.72);--band-line:rgba(244,238,227,.10);--band-soft:rgba(244,238,227,.10);--band-pill:rgba(240,201,135,.16);--band-pill-ink:#F0C987}
+
+.ash-deliver{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin:0;padding:18px 24px 82px;border:1px solid var(--band-line);border-bottom:0;border-radius:24px 24px 0 0;
+  background:var(--band);color:var(--ink);font:inherit;text-align:left;cursor:pointer;line-height:1.25}
+.ash-deliver .ash-dl-k{font-size:13px;font-weight:800;letter-spacing:.01em;color:var(--muted)}
+.ash-deliver .ash-dl-eta{display:flex;align-items:center;gap:10px;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:var(--ink)}
+.ash-dl-pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:var(--band-pill);color:var(--band-pill-ink);font-size:12.5px;font-weight:800;letter-spacing:0;white-space:nowrap}
+.ash-deliver .ash-dl-addr{display:flex;align-items:center;gap:4px;max-width:100%;font-size:15px;font-weight:600;color:var(--ink-2)}
+.ash-dl-addr span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ash-deliver .ash-dl-addr b{font-weight:800;letter-spacing:.02em;color:var(--ink)}
+.ash-dl-addr svg{flex:0 0 auto}
+.ash-deliver:hover .ash-dl-addr span{text-decoration:underline;text-underline-offset:3px}
+.ash-deliver:focus-visible{outline:3px solid var(--accent-text);outline-offset:3px}
+/* the search bar sits inside the band; it stays a sibling so it can still stick under the header */
+.ash-search{margin-top:-66px;margin-left:24px;max-width:min(640px,calc(100% - 48px));border-color:var(--line);box-shadow:0 1px 2px rgba(30,38,36,.06)}
+.ash-search:focus-within{border-color:var(--ink)}
+.ash-shop .ash-tabs{margin:0 0 16px;padding:14px 24px 14px;background:var(--band);border:1px solid var(--band-line);border-top:0;border-radius:0 0 24px 24px}
+.ash-shop .ash-s-count{margin:-4px 0 12px}
+
+/* category tabs with icons, used in the phone app bar */
+.ash-tab-ico{display:none}
+.ash-tab-ico svg{display:block}
+
+@media (max-width:640px){
+  .ash-shop.section{padding-top:10px}
+  /* phones get the app layout: the band leads, the long heading stays for search engines and screen readers */
+  .ash-shop-title{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0}
+  .ash-deliver{margin:0 -22px;width:calc(100% + 44px);border-radius:0;border-left:0;border-right:0;padding:14px 22px 78px}
+  .ash-deliver .ash-dl-eta{font-size:28px}
+  .ash-search{margin:-64px 0 0;max-width:none}
+  .ash-shop .ash-tabs{margin:0 -22px 14px;border-radius:0 0 22px 22px;border-left:0;border-right:0;padding:12px 22px 14px}
+}
+
+/* ===== phone app bar (assets/js/appbar.js): replaces the header on the home page under 641px ===== */
+@media (max-width:640px){
+  html.ash-appmode{scroll-padding-top:150px}
+  .ash-appmode .top{display:none}
+  .ash-appbar{position:sticky;top:calc(env(safe-area-inset-top,0px) - var(--ab-collapse,0px));z-index:45;padding:14px 16px 0;
+    background:var(--band-glass);-webkit-backdrop-filter:saturate(170%) blur(18px);backdrop-filter:saturate(170%) blur(18px);
+    border-bottom:1px solid var(--band-line);color:var(--ink);transition:box-shadow .2s}
+  .ash-appbar.stuck{box-shadow:0 10px 24px rgba(15,20,19,.10)}
+  :root[data-theme="night"] .ash-appbar.stuck{box-shadow:0 10px 24px rgba(0,0,0,.35)}
+  .ash-ab-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px}
+  .ash-appbar .ash-deliver{flex:1;min-width:0;width:auto;margin:0;padding:0;border:0;border-radius:0;background:none}
+  .ash-ab-acts{display:flex;gap:10px;flex:0 0 auto;padding-top:4px}
+  .ash-ab-acts .ash-coinbtn,.ash-ab-acts .ash-mebtn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid var(--band-line);border-radius:50%;background:var(--band-soft);color:var(--ink)}
+  .ash-ab-acts .ash-coinbal{display:none}
+  .ash-ab-acts .ash-coin{width:24px;height:24px;box-shadow:0 0 0 1.5px var(--ink)}
+  .ash-appbar .ash-search{position:relative;top:auto;margin:0;max-width:none;background:var(--field);border:1px solid var(--line);box-shadow:0 1px 2px rgba(30,38,36,.06)}
+  .ash-appbar .ash-search.stuck{box-shadow:0 1px 2px rgba(30,38,36,.06)}
+  /* Blinkit-style categories: icon over label, underline on the active one */
+  .ash-appbar .ash-tabs{display:flex;gap:4px;margin:0 -16px;padding:10px 12px 0;border:0;border-radius:0;background:none;overflow-x:auto;scrollbar-width:none}
+  .ash-appbar .ash-tabs::-webkit-scrollbar{display:none}
+  .ash-appbar .ash-tabs button{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;flex:0 0 auto;min-width:68px;min-height:0;height:auto;padding:4px 10px 10px;border:0;border-radius:0;background:none;color:var(--muted);font-size:12.5px;font-weight:700;line-height:1.2;white-space:nowrap}
+  .ash-appbar .ash-tab-ico{display:block}
+  .ash-appbar .ash-tabs button[aria-pressed="true"]{background:none;color:var(--ink);font-weight:800}
+  .ash-appbar .ash-tabs button[aria-pressed="true"]::after{content:"";position:absolute;left:12px;right:12px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:var(--accent-text)}
+  .ash-appmode .ash-shop.section{padding-top:18px}
+  .ash-appmode .ash-shop .ash-s-count{margin:0 0 12px}
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  @media (max-width:640px){.ash-appbar{background:var(--band)}}
+}
+
+/* brand wordmark inside the delivery line, same face as the header logo */
+.ash-dl-brand{font-family:var(--display);font-weight:400;font-size:1.22em;letter-spacing:0;color:var(--ink);line-height:1}
+.ash-dl-brand sup{font-family:var(--sans);font-size:.5em;font-weight:700;margin-left:1px;vertical-align:super}
+.ash-deliver .ash-dl-eta{flex-wrap:wrap;row-gap:6px}
+.ash-dl-time{white-space:nowrap}
