@@ -838,7 +838,7 @@
   })();
   function init() {
     mountChrome();
-    var ft = $('footer.site'); if (ft && !$('.ash-sign')) { var sg = document.createElement('p'); sg.className = 'ash-sign'; sg.setAttribute('aria-hidden', 'true'); sg.innerHTML = 'India\u2019s sabai sabai app <span>\u2665</span>'; ft.appendChild(sg); }
+    var ft = $('footer.site'); if (ft && !$('.ash-sign')) { var sg = document.createElement('p'); sg.className = 'ash-sign'; sg.setAttribute('aria-hidden', 'true'); sg.setAttribute('translate', 'no'); sg.setAttribute('lang', 'en'); sg.innerHTML = 'India\u2019s sabai sabai app <span>\u2665</span>'; ft.appendChild(sg); }
     // Back to top, like quick-commerce apps.
     var topBtn = $('#ash-top'), ticking = false, lastY = window.scrollY;
     window.addEventListener('scroll', function () {
