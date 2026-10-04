@@ -63,8 +63,12 @@
     apply();
     (mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply));
     window.addEventListener('resize', function () { if (bar.isConnected) measure(); });
-    // the address line changes length after a location is set
-    if (window.MutationObserver) new MutationObserver(function () { if (bar.isConnected) measure(); }).observe(del, { childList: true, subtree: true });
+    // the delivery row changes height when a location is set, when a language is applied and when
+    // its font (Kannada, Tamil, Telugu, Malayalam) finishes loading, so re-measure on any of those
+    if (window.ResizeObserver) new ResizeObserver(function () { if (bar.isConnected) measure(); }).observe(row);
+    if (window.MutationObserver) new MutationObserver(function () { if (bar.isConnected) measure(); }).observe(row, { childList: true, subtree: true, characterData: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (bar.isConnected) measure(); });
+    document.addEventListener('asanoha:i18n', function () { if (bar.isConnected) requestAnimationFrame(measure); });
 
     // puts the first product row right under the pinned search and categories
     function toGrid() {
