@@ -1,7 +1,9 @@
 /* Asanoha shop search: rotating placeholder, voice, clear, sticky bar, result count */
 (function () {
   'use strict';
-  var TERMS = ['gummies', 'oil', 'ashwagandha', '250 mg', 'shilajit', 'low strength', 'isabgol', 'roll-on', 'tablets', 'sunset'];
+  var EN_TERMS = ['gummies', 'oil', 'ashwagandha', '250 mg', 'shilajit', 'low strength', 'isabgol', 'roll-on', 'tablets', 'sunset'];
+  // the chosen language's file (assets/js/i18n/<lang>.js) brings its own rotating words
+  function terms() { var d = window.ASANOHA_I18N_DATA; return (d && d.terms && d.terms.length) ? d.terms : EN_TERMS; }
   var EVERY = 2600, SWAP = 260;
 
   function init() {
@@ -21,17 +23,19 @@
     function setWord(t) { word.textContent = '\u201C' + t + '\u201D'; }
     function tick() {
       if (document.hidden || q.value || listening) return;
-      i = (i + 1) % TERMS.length;
-      if (still) { setWord(TERMS[i]); return; }
+      i = (i + 1) % terms().length;
+      if (still) { setWord(terms()[i % terms().length]); return; }
       word.classList.add('out');
       setTimeout(function () {
-        setWord(TERMS[i]);
+        setWord(terms()[i % terms().length]);
         word.classList.remove('out'); word.classList.add('pre');
         void word.offsetWidth;
         word.classList.remove('pre');
       }, SWAP);
     }
-    setWord(TERMS[0]);
+    setWord(terms()[0]);
+    // the language file can arrive after this runs; show its words as soon as it does
+    document.addEventListener('asanoha:i18n', function () { if (!listening) setWord(terms()[i % terms().length]); });
     timer = setInterval(tick, EVERY);
 
     function sync() {
@@ -70,8 +74,8 @@
     clear.addEventListener('click', function () { setQuery(''); q.focus(); });
 
     // voice search: native recogniser inside the iOS app, Web Speech API in browsers that have it
-    var listenStart = function () { listening = true; box.classList.add('listening'); mic.setAttribute('aria-pressed', 'true'); setQuery(''); word.textContent = 'Listening\u2026'; };
-    var stop = function () { listening = false; box.classList.remove('listening'); mic.setAttribute('aria-pressed', 'false'); if (!q.value) setWord(TERMS[i]); };
+    var listenStart = function () { listening = true; box.classList.add('listening'); mic.setAttribute('aria-pressed', 'true'); setQuery(''); word.textContent = (window.ASANOHA_T || String)('Listening\u2026'); };
+    var stop = function () { listening = false; box.classList.remove('listening'); mic.setAttribute('aria-pressed', 'false'); if (!q.value) setWord(terms()[i % terms().length]); };
     var onText = function (t) { setQuery(String(t).replace(/[.?!]+$/, '').trim()); };
     var NS = window.AsanohaNative && window.AsanohaNative.speech;
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -85,7 +89,7 @@
       });
     } else if (SR) {
       showMic();
-      var rec = new SR(); rec.lang = 'en-IN'; rec.interimResults = true; rec.maxAlternatives = 1;
+      var rec = new SR(); rec.lang = window.ASANOHA_VOICE || 'en-IN'; rec.interimResults = true; rec.maxAlternatives = 1;
       rec.onresult = function (e) {
         var t = ''; for (var k = e.resultIndex; k < e.results.length; k++) t += e.results[k][0].transcript;
         onText(t);

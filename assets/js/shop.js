@@ -122,14 +122,35 @@
     shilajit: 'shilajeet silajit shilajith energy stamina',
     isabgol: 'isabgul isapgol psyllium fibre fiber digestion constipation gut',
     moondays: 'moon period periods cramp cramps menstrual pms rollon roll',
-    wellness: 'ayurveda ayurvedic everyday daily'
+    wellness: 'ayurveda ayurvedic everyday daily',
+    sunset: '\u0938\u0928\u0938\u0947\u091F', rooftop: '\u0930\u0942\u092B\u091F\u0949\u092A', summit: '\u0938\u092E\u093F\u091F', untrippy: '\u0905\u0928\u091F\u094D\u0930\u093F\u092A\u0940'
   };
-  var STOP = { a: 1, an: 1, the: 1, and: 1, or: 1, for: 1, of: 1, with: 1, to: 1, in: 1, me: 1, my: 1, show: 1, buy: 1, need: 1, want: 1, strength: 1, dose: 1, product: 1 };
+  // what people type in Hindi, mapped onto the same index words
+  var SYN_IN = {
+    gummy: 'गमी गमीज़ गमीज गम्मी टॉफ़ी टॉफी', tablet: 'टैबलेट टेबलेट गोली गोलियाँ', oil: 'तेल ऑयल आयल सिरिंज',
+    vijaya: 'विजया भांग कैनबिस', low: 'कम हल्का हल्की', medium: 'मध्यम', high: 'ज़्यादा ज्यादा तेज़ तेज स्ट्रॉन्ग',
+    ashwagandha: 'अश्वगंधा अश्वगन्धा असगंध तनाव नींद', shilajit: 'शिलाजीत शिलाजित ऊर्जा', isabgol: 'इसबगोल ईसबगोल भूसी कब्ज पाचन',
+    moondays: 'पीरियड माहवारी मासिक दर्द रोल', wellness: 'आयुर्वेद आयुर्वेदिक'
+  };
+  // Kannada, Tamil, Malayalam and Telugu words for the same things
+  var SYN_SOUTH = {
+    gummy: 'ಗಮ್ಮಿ ಗಮ್ಮೀಸ್ ಗಮ್ಮಿಗಳು கம்மி கம்மீஸ் ഗമ്മി ഗമ്മീസ് గమ్మీ గమ్మీస్',
+    tablet: 'ಮಾತ್ರೆ ಮಾತ್ರೆಗಳು ಟ್ಯಾಬ್ಲೆಟ್ மாத்திரை மாத்திரைகள் ഗുളിക ഗുളികകൾ మాత్ర మాత్రలు టాబ్లెట్',
+    oil: 'ಎಣ್ಣೆ எண்ணெய் എണ്ണ నూనె', vijaya: 'ವಿಜಯ விஜயா വിജയ విజయ',
+    low: 'ಕಡಿಮೆ குறைந்த குறைவு കുറഞ്ഞ తక్కువ', medium: 'ಮಧ್ಯಮ நடுத்தர ഇടത്തരം మధ్యస్థ',
+    high: 'ಹೆಚ್ಚು ಹೆಚ್ಚಿನ அதிக അധികം കൂടിയ ఎక్కువ',
+    ashwagandha: 'ಅಶ್ವಗಂಧ அஸ்வகந்தா അശ്വഗന്ധ అశ్వగంధ', shilajit: 'ಶಿಲಾಜಿತ್ ஷிலாஜித் ശിലാജിത്ത് శిలాజిత్',
+    isabgol: 'ಇಸಬ್ಗೋಲ್ இசப்கோல் ഇസബ്ഗോൾ ఇసబ్‌గోల్',
+    moondays: 'ಮುಟ್ಟು ಪೀರಿಯಡ್ ರೋಲ್ மாதவிடாய் ரோல் ആർത്തവം പീരിയഡ് റോൾ నెలసరి పీరియడ్ రోల్',
+    wellness: 'ಆಯುರ್ವೇದ ஆயுர்வேதம் ആയുർവേദം ఆయుర్వేదం'
+  };
+  [SYN_IN, SYN_SOUTH].forEach(function (o) { Object.keys(o).forEach(function (k) { SYN[k] = (SYN[k] || '') + ' ' + o[k]; }); });
+  var STOP = { a: 1, an: 1, the: 1, and: 1, or: 1, for: 1, of: 1, with: 1, to: 1, in: 1, me: 1, my: 1, show: 1, buy: 1, need: 1, want: 1, strength: 1, dose: 1, product: 1, 'स्ट्रेंथ': 1, 'ऑन': 1, 'ಶಕ್ತಿ': 1, 'ಆನ್': 1, 'வலிமை': 1, 'ஆன்': 1, 'വീര്യം': 1, 'ഓൺ': 1, 'బలం': 1, 'ఆన్': 1, 'का': 1, 'की': 1, 'के': 1, 'में': 1, 'और': 1, 'वाला': 1, 'वाली': 1 };
   var ALIAS = {};
-  Object.keys(SYN).forEach(function (k) { SYN[k].split(' ').forEach(function (w) { ALIAS[stem(w)] = k; }); });
+  Object.keys(SYN).forEach(function (k) { SYN[k].split(' ').forEach(function (w) { w = norm(w); if (w) ALIAS[stem(w)] = k; }); });
   function norm(t) {
     return String(t || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/(\d)([a-z])/g, '$1 $2').replace(/([a-z])(\d)/g, '$1 $2').replace(/[^a-z0-9]+/g, ' ').trim();
+      .replace(/(\d)([a-z])/g, '$1 $2').replace(/([a-z])(\d)/g, '$1 $2').replace(/[\u200c\u200d]/g, '').replace(/[^a-z0-9\u0900-\u0dff]+/g, ' ').trim();
   }
   function stem(w) {
     if (w.length > 4 && /ies$/.test(w)) return w.slice(0, -3) + 'y';
@@ -541,6 +562,8 @@
       '<div class="ash-box"><b>Delivery address</b><span>' + (a ? '<b class="ash-tag">' + esc(a.label) + '</b> ' + esc(a.name) + ', ' + esc(a.phone) + '<br>' + esc(addrLine(a)) : 'No address saved yet.') + '</span><button class="ash-link" data-ash-open="address">' + (a ? 'Edit or change' : 'Add address') + '</button></div>' +
       '<div class="ash-box"><b>Appearance</b><span>Automatic follows your phone or computer setting.</span><div class="ash-chips" id="ash-theme">' +
       ['auto', 'day', 'night'].map(function (t) { return '<button class="ash-chip" aria-pressed="' + (pref === t) + '" data-ash-theme="' + t + '">' + ({ auto: 'Automatic', day: 'Day', night: 'Night' })[t] + '</button>'; }).join('') + '</div></div>' +
+      '<div class="ash-box"><b>Language</b><span>Choose the language for the app.</span><div class="ash-chips" id="ash-lang" translate="no">' +
+      (window.ASANOHA_LANGS || [['en', 'English']]).map(function (l) { return '<button class="ash-chip" lang="' + l[0] + '" aria-pressed="' + ((window.ASANOHA_LANG || 'en') === l[0]) + '" data-ash-lang="' + l[0] + '">' + l[1] + '</button>'; }).join('') + '</div></div>' +
       '<div class="ash-bday"><span aria-hidden="true">\uD83C\uDF82</span><span><b>' + (profile.bday ? 'Birthday saved' : 'Add your birthday') + '</b><span>Get \u20B9150 Noha Money every birthday.</span></span>' + (profile.bday ? '' : '<button class="ash-add" data-ash-open="bday">Add</button>') + '</div>' +
       '<h3 class="ash-h3">Your orders</h3>' + (orders.length ? orders.slice().reverse().map(function (o) {
         return '<div class="ash-box"><b>' + esc(o.id) + '</b><span>' + esc(o.date) + ', ' + o.items.map(function (i) { return i.q + ' x ' + esc(byId[i.p] ? byId[i.p].name : i.p); }).join(', ') + '</span><button class="ash-link" data-ash-reorder="' + esc(o.id) + '">Order again</button></div>';
@@ -729,6 +752,11 @@
     }
     if (d.ashTheme) { applyThemePref(d.ashTheme); $$('#ash-theme .ash-chip').forEach(function (c) { c.setAttribute('aria-pressed', c === t); }); return; }
     if (t.hasAttribute('data-ash-signin')) { var au1 = window.ASANOHA.auth; au1.signIn().catch(function (er) { toast(er && er.code === 'auth/unauthorized-domain' ? 'Add this website to Firebase authorised domains.' : 'Sign-in was cancelled. Try again.'); }); return; }
+    if (t.hasAttribute('data-ash-lang')) {
+      var lg = t.getAttribute('data-ash-lang');
+      if (lg !== (window.ASANOHA_LANG || 'en')) { store.set('lang', lg); track('language_set', { lang: lg }); location.reload(); }
+      return;
+    }
     if (t.hasAttribute('data-ash-signin-apple')) { window.ASANOHA.auth.signInApple().catch(function (er) { toast(er && er.code === 'auth/unauthorized-domain' ? 'Add this website to Firebase authorised domains.' : 'Sign-in was cancelled. Try again.'); }); return; }
     if (t.hasAttribute('data-ash-delete')) {
       if (!window.confirm('Delete your Asanoha account? Your saved addresses, orders and Noha Money will be removed permanently. This cannot be undone.')) return;
