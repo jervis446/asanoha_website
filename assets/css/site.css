@@ -1010,3 +1010,17 @@ input,select,textarea,button{font-size:16px}
 .ash-dl-brand sup{font-family:var(--sans);font-size:.5em;font-weight:700;margin-left:1px;vertical-align:super}
 .ash-deliver .ash-dl-eta{flex-wrap:wrap;row-gap:6px}
 .ash-dl-time{white-space:nowrap}
+
+/* order status and tracking */
+.ash-status{display:inline-block;padding:4px 11px;border-radius:999px;font-size:12.5px;font-weight:800;background:var(--paper);border:1px solid var(--line);color:var(--ink)}
+.ash-status.paid,.ash-status.packed,.ash-status.dispatched,.ash-status.delivered{background:rgba(63,143,107,.18);border-color:transparent;color:#2E7D5B}
+:root[data-theme="night"] .ash-status.paid,:root[data-theme="night"] .ash-status.packed,:root[data-theme="night"] .ash-status.dispatched,:root[data-theme="night"] .ash-status.delivered{color:#7FC8A9}
+.ash-status.rx_review,.ash-status.requested,.ash-status.awaiting_payment,.ash-status.payment_review{background:rgba(240,201,135,.22);border-color:transparent;color:#8A6414}
+:root[data-theme="night"] .ash-status.rx_review,:root[data-theme="night"] .ash-status.requested,:root[data-theme="night"] .ash-status.awaiting_payment,:root[data-theme="night"] .ash-status.payment_review{color:#F0C987}
+.ash-status.cancelled{background:rgba(179,38,30,.12);border-color:transparent;color:#B3261E}
+.ash-row .ash-status{flex:0 0 auto}
+.ash-tl{list-style:none;margin:6px 0 0;padding:0}
+.ash-tl li{position:relative;padding:0 0 16px 24px;border-left:2px solid var(--line);margin-left:6px;font-size:14.5px}
+.ash-tl li:last-child{border-left-color:transparent;padding-bottom:4px}
+.ash-tl li::before{content:"";position:absolute;left:-7px;top:5px;width:12px;height:12px;border-radius:50%;background:#3F8F6B}
+.ash-tl small{display:block;color:var(--muted);font-size:12.5px}

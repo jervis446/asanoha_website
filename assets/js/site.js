@@ -28,6 +28,9 @@
     // Google sign-in via Firebase. Paste the web app config from Firebase console > Project settings.
     // Shiprocket: paste your Cloudflare Worker URL (see server/shiprocket-worker). Empty = rules only (Bengaluru 2 hours, rest 3 to 5 days).
     shiprocketApi: '',
+    // Order, payment and tracking service (apps/asanoha-orders on your gateway server), for example
+    // 'https://orders.asanoha.co.in'. Leave empty to keep ordering through WhatsApp and email only.
+    ordersApi: '',
     firebase: {
       apiKey: 'AIzaSyDt1TJEaqKMIwmBSz8THpMjGJUFWl_yc3Y',
       authDomain: 'asanoha-1420b.firebaseapp.com',

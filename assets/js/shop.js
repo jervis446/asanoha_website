@@ -383,6 +383,9 @@
   // page behind it can still drag-scroll and bounce. Actually pinning the body in place with
   // position:fixed stops that, and we restore the exact scroll position on close.
   function lockScroll() {
+    // Already locked: a sheet is being swapped for another one. The body is position:fixed now, so
+    // window.scrollY reads 0 and would overwrite the real position we must restore on close.
+    if (document.body.classList.contains('ash-open')) return;
     lockedY = window.scrollY || window.pageYOffset || 0;
     document.body.style.top = -lockedY + 'px';
     document.body.classList.add('ash-open');
@@ -399,7 +402,7 @@
     document.documentElement.style.scrollBehavior = prev;
   }
   function open(html, title) {
-    lastFocus = document.activeElement;
+    if (!$('#ash-sheet').classList.contains('on')) lastFocus = document.activeElement;
     var sheet = $('#ash-sheet');
     sheet.innerHTML !== undefined && ($('#ash-sheet-body').innerHTML = html);
     sheet.setAttribute('aria-label', title || 'Details');
@@ -450,9 +453,13 @@
       '<button class="ash-chip" aria-pressed="' + (rxChoice === 'consult') + '" data-ash-rx="consult">Book a free consult</button></div></div>' : '') +
       '<div class="ash-box ash-form"><label>A line for your friend <span class="ash-opt">(optional)</span><textarea id="ash-line" maxlength="140" rows="2" placeholder="Friend since class 6. Still owes me a samosa.">' + esc(profile.friendLine || '') + '</textarea></label><label class="ash-check"><input type="checkbox" id="ash-line-ok"' + (profile.friendLineOk ? ' checked' : '') + '> Yes, you may print it on a tin, first name and city only.</label></div>' +
       '<label class="ash-check"><input type="checkbox" id="ash-18"> ' + (hasRx() ? 'I am 18+ and each prescription item is for my own use.' : 'I am 18+ and have read the usage and safety notes.') + '</label>' +
-      '<p class="ash-muted small">Prices go live at launch. We confirm your total, Noha Money savings and a secure payment link on WhatsApp' + (hasRx() ? ' after checking your prescription.' : '.') + '</p>' +
+      (apiBase()
+        ? '<p class="ash-muted small">' + (hasRx() ? 'We check your prescription first. ' : '') + 'Then you pay securely by UPI and can follow every step of your order here.</p>'
+        : '<p class="ash-muted small">Prices go live at launch. We confirm your total, Noha Money savings and a secure payment link on WhatsApp' + (hasRx() ? ' after checking your prescription.' : '.') + '</p>') +
       '<p class="ash-err" id="ash-err" role="alert"></p>' +
-      '<button class="ash-cta" data-ash-place="wa">Send order on WhatsApp</button><button class="ash-cta alt" data-ash-place="mail">Send by email</button>', 'Cart');
+      (apiBase()
+        ? '<button class="ash-cta" id="ash-place-api" data-ash-place="api">Place order</button><button class="ash-cta alt" data-ash-place="wa">Order on WhatsApp instead</button>'
+        : '<button class="ash-cta" data-ash-place="wa">Send order on WhatsApp</button><button class="ash-cta alt" data-ash-place="mail">Send by email</button>'), 'Cart');
   }
 
   function addressSheet(editId) {
@@ -566,7 +573,8 @@
       (window.ASANOHA_LANGS || [['en', 'English']]).map(function (l) { return '<button class="ash-chip" lang="' + l[0] + '" aria-pressed="' + ((window.ASANOHA_LANG || 'en') === l[0]) + '" data-ash-lang="' + l[0] + '">' + l[1] + '</button>'; }).join('') + '</div></div>' +
       '<div class="ash-bday"><span aria-hidden="true">\uD83C\uDF82</span><span><b>' + (profile.bday ? 'Birthday saved' : 'Add your birthday') + '</b><span>Get \u20B9150 Noha Money every birthday.</span></span>' + (profile.bday ? '' : '<button class="ash-add" data-ash-open="bday">Add</button>') + '</div>' +
       '<h3 class="ash-h3">Your orders</h3>' + (orders.length ? orders.slice().reverse().map(function (o) {
-        return '<div class="ash-box"><b>' + esc(o.id) + '</b><span>' + esc(o.date) + ', ' + o.items.map(function (i) { return i.q + ' x ' + esc(byId[i.p] ? byId[i.p].name : i.p); }).join(', ') + '</span><button class="ash-link" data-ash-reorder="' + esc(o.id) + '">Order again</button></div>';
+        return '<div class="ash-box"><div class="ash-row"><b>' + esc(o.id) + '</b>' + (o.statusLabel ? '<span class="ash-status ' + esc(o.status || '') + '">' + esc(o.statusLabel) + '</span>' : '') + '</div><span>' + esc(o.date) + ', ' + o.items.map(function (i) { return i.q + ' x ' + esc(byId[i.p] ? byId[i.p].name : i.p); }).join(', ') + '</span>' +
+          (o.token && apiBase() ? '<button class="ash-link" data-ash-order="' + esc(o.id) + '">Track order</button> ' : '') + '<button class="ash-link" data-ash-reorder="' + esc(o.id) + '">Order again</button></div>';
       }).join('') : '<p class="ash-muted">No orders yet. Orders you send show up here so you can reorder in one tap.</p>') +
       (menu ? '<div class="ash-menu"><h3 class="ash-h3">Menu</h3>' + menu + '</div>' : '') +
       '<a class="ash-cta alt" href="' + SUPPORT + '" data-ash-close>Contact support</a>', 'Account');
@@ -657,6 +665,7 @@
 
   /* ---------- order ---------- */
   function place(via) {
+    if (via === 'api') return placeViaApi();
     var a = defaultAddress(), err = $('#ash-err');
     if (!a) { afterAddress = 'cart'; addressSheet(); return; }
     if (!$('#ash-18').checked) { err.textContent = hasRx() ? 'Please confirm you are 18+ and the prescription items are for your own use.' : 'Please confirm you are 18+.'; return; }
@@ -681,6 +690,141 @@
     if (via === 'wa') window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
     else location.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent('New order ' + id) + '&body=' + encodeURIComponent(text);
     toast('Order ' + id + ' is ready to send');
+  }
+
+  /* ---------- order service: place, track and pay ---------- */
+  function apiBase() { return String(CFG.ordersApi || '').replace(/\/+$/, ''); }
+  function apiFetch(path, opts) {
+    return fetch(apiBase() + path, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) { var e = new Error(j.error || 'Something went wrong. Please try again.'); e.status = r.status; e.body = j; throw e; }
+        return j;
+      });
+    });
+  }
+  function orderRec(id) { return store.get('orders2', []).filter(function (o) { return o.id === id; })[0] || null; }
+  function saveOrderRec(id, patch) {
+    var all = store.get('orders2', []);
+    for (var i = 0; i < all.length; i++) if (all[i].id === id) { for (var k in patch) all[i][k] = patch[k]; }
+    store.set('orders2', all);
+  }
+  var ORDER_DONE = { delivered: 1, cancelled: 1 };
+
+  function placeViaApi() {
+    var a = defaultAddress(), err = $('#ash-err');
+    if (!a) { afterAddress = 'cart'; addressSheet(); return; }
+    if (!$('#ash-18').checked) { err.textContent = hasRx() ? 'Please confirm you are 18+ and the prescription items are for your own use.' : 'Please confirm you are 18+.'; return; }
+    var line = ($('#ash-line') && $('#ash-line').value.trim()) || '', lineOk = !!($('#ash-line-ok') && $('#ash-line-ok').checked);
+    profile.friendLine = line; profile.friendLineOk = lineOk; store.set('profile', profile);
+    var au = window.ASANOHA && window.ASANOHA.auth;
+    var email = (au && au.user && au.user.email) || profile.email || '';
+    var first = !store.get('orders2', []).length;
+    var items = Object.keys(cart).map(function (k) { return { p: k, q: cart[k] }; });
+    var btn = $('#ash-place-api');
+    if (btn) { btn.disabled = true; btn.textContent = 'Placing your order\u2026'; }
+    err.textContent = '';
+    apiFetch('/api/orders', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: items.map(function (i) { return { id: i.p, qty: i.q }; }),
+        customer: { name: a.name, phone: a.phone, email: email },
+        address: { label: a.label, name: a.name, phone: a.phone, house: a.house, area: a.area, landmark: a.landmark, city: a.city, state: a.state, pin: a.pin },
+        rx: rxChoice, consent18: true, friendLine: line, friendLineOk: lineOk,
+        referredBy: first ? store.get('refBy', '') : ''
+      })
+    }).then(function (o) {
+      var all = store.get('orders2', []);
+      all.push({ id: o.id, rx: rxChoice, token: o.token, date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }), items: items, addressId: a.id, status: o.status, statusLabel: o.statusLabel });
+      store.set('orders2', all); sync();
+      try { document.dispatchEvent(new CustomEvent('asanoha:order', { detail: { id: o.id, items: items } })); } catch (e) {}
+      track('generate_lead', { order_id: o.id, items: items.length, rx: rxChoice });
+      cart = {}; saveCart();
+      orderSheet(o.id);
+    }).catch(function (e) {
+      if (btn) { btn.disabled = false; btn.textContent = 'Place order'; }
+      err.textContent = e.status ? e.message : 'We could not reach our order service. Check your connection, or send the order on WhatsApp instead.';
+    });
+  }
+
+  function orderHtml(o, rec) {
+    var tl = (o.timeline || []).map(function (e) {
+      return '<li>' + esc(e.label) + '<small>' + esc(new Date(e.at).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })) + '</small></li>';
+    }).join('');
+    var action = '';
+    if (o.next === 'pay') action = '<button class="ash-cta" data-ash-pay="' + esc(o.id) + '">Pay ' + (o.amount != null ? inr(o.amount) : '') + ' with UPI</button>';
+    else if (o.next === 'upload_rx') action = '<div class="ash-box"><b>' + (rec && rec.rx === 'consult' ? 'Your free consultation' : 'Send your prescription') + '</b><span>Message us on WhatsApp with your order number' + (rec && rec.rx === 'consult' ? ' and we will set up the consultation.' : ' and a photo or PDF of the prescription.') + ' Payment opens as soon as it is verified.</span></div>' +
+      '<a class="ash-cta alt" target="_blank" rel="noopener" href="https://wa.me/' + WA + '?text=' + encodeURIComponent('Hi Asanoha, prescription for order ' + o.id) + '">Open WhatsApp</a>';
+    else if (o.next === 'wait' && o.status === 'requested') action = '<div class="ash-box"><b>We are confirming your total</b><span>We will message you with the amount and a payment link.</span></div>';
+    if (o.trackingUrl) action += '<a class="ash-cta alt" target="_blank" rel="noopener" href="' + esc(o.trackingUrl) + '">Track the courier' + (o.courier ? ' (' + esc(o.courier) + ')' : '') + '</a>';
+    return '<div id="ash-order-view" data-id="' + esc(o.id) + '" data-status="' + esc(o.status) + '"><h2 class="ash-h">Order ' + esc(o.id) + '</h2>' +
+      '<span class="ash-status ' + esc(o.status) + '">' + esc(o.statusLabel) + '</span>' +
+      '<p class="ash-muted">' + o.items.map(function (i) { return esc(i.qty + ' x ' + i.name); }).join(', ') + (o.amount != null ? ' \u00B7 ' + inr(o.amount) : '') + '</p>' +
+      action + '<h3 class="ash-h3">Progress</h3><ol class="ash-tl">' + tl + '</ol>' +
+      '<a class="ash-cta alt" href="' + SUPPORT + '" data-ash-close>Need help?</a></div>';
+  }
+
+  var pollTimer = null, payingFor = null;
+  function orderSheet(id) {
+    var rec = orderRec(id);
+    if (!rec || !rec.token || !apiBase()) { profileSheet(); return; }
+    open('<h2 class="ash-h">Order ' + esc(id) + '</h2><p class="ash-muted">Loading your order\u2026</p>', 'Order');
+    loadOrder(id);
+  }
+  function loadOrder(id) {
+    clearTimeout(pollTimer);
+    var rec = orderRec(id); if (!rec) return;
+    apiFetch('/api/orders/' + encodeURIComponent(id) + '?t=' + encodeURIComponent(rec.token)).then(function (o) {
+      saveOrderRec(id, { status: o.status, statusLabel: o.statusLabel });
+      var view = $('#ash-order-view');
+      var body = $('#ash-sheet-body');
+      if (!body || !$('#ash-sheet').classList.contains('on')) return;
+      var showing = view ? view.getAttribute('data-id') : null;
+      // Only repaint when this order is the one on screen (the customer may have navigated away).
+      if (view && showing !== id) return;
+      if (!view && body.textContent.indexOf('Order ' + id) === -1) return;
+      var scroll = $('#ash-sheet').scrollTop;
+      body.innerHTML = orderHtml(o, rec);
+      $('#ash-sheet').scrollTop = scroll;
+      if (!ORDER_DONE[o.status]) pollTimer = setTimeout(function () { loadOrder(id); }, payingFor === id ? 3000 : 8000);
+    }).catch(function (e) {
+      var body = $('#ash-sheet-body');
+      if (body && body.textContent.indexOf('Order ' + id) > -1 && !$('#ash-order-view')) body.innerHTML = '<h2 class="ash-h">Order ' + esc(id) + '</h2><p class="ash-err">' + esc(e.status === 404 ? 'We could not find this order on this device.' : 'We could not load your order. Please try again in a moment.') + '</p><button class="ash-cta" data-ash-order="' + esc(id) + '">Try again</button>';
+    });
+  }
+
+  function loadYoupi(checkoutUrl, key) {
+    return new Promise(function (resolve, reject) {
+      if (window.Youpi && window.Youpi.pay) return resolve();
+      var s = document.createElement('script');
+      s.src = checkoutUrl.replace(/\/+$/, '') + '/youpi.js'; s.async = true;
+      s.setAttribute('data-youpi-key', key); s.setAttribute('data-currency', 'INR');
+      var t = setTimeout(function () { reject(new Error('timeout')); }, 10000);
+      s.onload = function () { clearTimeout(t); window.Youpi && window.Youpi.pay ? resolve() : reject(new Error('missing')); };
+      s.onerror = function () { clearTimeout(t); reject(new Error('load')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function startPayment(id) {
+    var rec = orderRec(id); if (!rec) return;
+    var btn = $('[data-ash-pay="' + id + '"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Opening payment\u2026'; }
+    var hosted = apiBase() + '/pay/' + encodeURIComponent(id) + '?t=' + encodeURIComponent(rec.token);
+    apiFetch('/api/orders/' + encodeURIComponent(id) + '/pay-session?t=' + encodeURIComponent(rec.token), { method: 'POST' }).then(function (ps) {
+      return loadYoupi(ps.checkoutUrl, ps.merchantKey).then(function () {
+        payingFor = id; track('begin_checkout', { order_id: id, value: ps.amount, currency: 'INR' });
+        window.Youpi.pay({
+          order_id: ps.orderId, amount: ps.amount, currency: 'INR', name: ps.name, description: ps.description,
+          customer: ps.customer, metadata: { asanoha_order: ps.orderId },
+          handler: function () { toast('Payment received. Confirming with the bank\u2026'); loadOrder(id); },
+          onClose: function () { payingFor = null; if (btn) { btn.disabled = false; btn.textContent = 'Pay ' + inr(ps.amount) + ' with UPI'; } loadOrder(id); }
+        });
+      }, function () { window.open(hosted, '_blank', 'noopener'); });
+    }).catch(function (e) {
+      if (btn) { btn.disabled = false; btn.textContent = 'Pay with UPI'; }
+      toast(e.status === 409 ? 'This order is not ready for payment yet.' : 'Could not start payment. Please try again.');
+      loadOrder(id);
+    });
   }
 
   /* ---------- chrome injected on every page ---------- */
@@ -745,6 +889,8 @@
     if (t.id === 'ash-noha-sw') { useNoha = !useNoha; t.setAttribute('aria-checked', useNoha); return; }
     if (d.ashRx) { rxChoice = d.ashRx; $$('#ash-rx .ash-chip').forEach(function (c) { c.setAttribute('aria-pressed', c === t); }); return; }
     if (d.ashPlace) { place(d.ashPlace); return; }
+    if (d.ashOrder) { orderSheet(d.ashOrder); return; }
+    if (d.ashPay) { startPayment(d.ashPay); return; }
     if (d.ashReorder) {
       var o = store.get('orders2', []).filter(function (x) { return x.id === d.ashReorder; })[0];
       if (o) { o.items.forEach(function (i) { if (byId[i.p] && byId[i.p].status === 'live') cart[i.p] = (cart[i.p] || 0) + i.q; }); saveCart(); cartSheet(); }
