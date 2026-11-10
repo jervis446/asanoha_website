@@ -181,10 +181,38 @@ async function startSupabase(sc) {
       fail(error);
       if (kind === 'apple' && c.name && !(data.user.user_metadata || {}).full_name) { try { await sb.auth.updateUser({ data: { full_name: c.name } }); } catch (e) {} }
     };
-    auth.signIn = async () => {
-      if (native) return viaNative('google');
+    // Google's own sign-in sheet (Google Identity Services) names Asanoha instead of the Supabase server
+    // and needs no redirect. If it can't show (blocked, dismissed recently), fall back to the redirect flow.
+    const redirectGoogle = async () => {
       const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: back(), queryParams: { prompt: 'select_account' } } });
       fail(error);
+    };
+    let gsi = null;
+    const loadGsi = () => gsi || (gsi = new Promise((ok, bad) => {
+      if (!sc.googleClientId) return bad(new Error('no client id'));
+      const s = document.createElement('script'); s.src = 'https://accounts.google.com/gsi/client'; s.async = true;
+      s.onload = () => ok(window.google.accounts.id); s.onerror = bad; document.head.appendChild(s);
+    }));
+    auth.signIn = async () => {
+      if (native) return viaNative('google');
+      let id;
+      try { id = await loadGsi(); } catch (e) { return redirectGoogle(); }
+      const raw = crypto.randomUUID() + crypto.randomUUID();
+      const hashed = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw)))].map((b) => b.toString(16).padStart(2, '0')).join('');
+      return new Promise((resolve, reject) => {
+        id.initialize({
+          client_id: sc.googleClientId,
+          nonce: hashed,
+          use_fedcm_for_prompt: true,
+          callback: async ({ credential }) => {
+            try { const { error } = await sb.auth.signInWithIdToken({ provider: 'google', token: credential, nonce: raw }); fail(error); resolve(); }
+            catch (e) { reject(e); }
+          }
+        });
+        id.prompt((n) => {
+          if ((n.isNotDisplayed && n.isNotDisplayed()) || (n.isSkippedMoment && n.isSkippedMoment())) redirectGoogle().then(resolve, reject);
+        });
+      });
     };
     auth.signInApple = async () => {
       if (native) return viaNative('apple');

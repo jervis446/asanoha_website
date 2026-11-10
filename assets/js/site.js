@@ -37,7 +37,9 @@
     // Shared Asanoha account (Supabase). Public client values, safe to publish.
     supabase: {
       url: 'https://fkhxgkscnkxtwnvecoyv.supabase.co',
-      key: 'sb_publishable_kJghZQlNmpuy-NAGfUm4Dg_EHybViX9'
+      key: 'sb_publishable_kJghZQlNmpuy-NAGfUm4Dg_EHybViX9',
+      // Web OAuth client ID used for Google's sign-in sheet (public). Same one as in Supabase > Providers > Google.
+      googleClientId: '318149293979-3sc40vsvh13ufntf8uiutkmmj10hmted.apps.googleusercontent.com'
     },
     // Google sign-in via Firebase. The web app config from Firebase console > Project settings.
     firebase: {
