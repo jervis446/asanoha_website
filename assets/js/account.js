@@ -1,8 +1,13 @@
-/* Asanoha accounts: "Continue with Google" sign-in (Firebase Auth) and profile sync (Firestore).
+/* Asanoha accounts: "Continue with Google / Apple" sign-in and profile sync.
    Exposes window.ASANOHA.auth for the profile page in shop.js.
-   Switched off until CONFIG.firebase is filled in (assets/js/site.js). */
+   Two back ends, chosen by CONFIG.authProvider in assets/js/site.js:
+   - 'firebase' (current): Firebase Auth + Firestore users/<uid>.
+   - 'supabase': the shared Asanoha account, also used by Wearday (wearday.asanoha.co.in and the app),
+     with Noha Money from the shared wallet. Sign-in is shared across *.asanoha.co.in. */
 const A = (window.ASANOHA = window.ASANOHA || {});
-const cfg = A.config && A.config.firebase;
+const provider = (A.config && A.config.authProvider) || 'firebase';
+const cfg = provider === 'firebase' && A.config && A.config.firebase;
+const sbCfg = provider === 'supabase' && A.config && A.config.supabase;
 const oldBtn = document.getElementById('account-btn');
 if (oldBtn) oldBtn.remove();
 
@@ -26,7 +31,9 @@ const emit = () => {
 const readLocal = (k, d) => { try { const v = localStorage.getItem('asanoha:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
 const writeLocal = (k, v) => { try { localStorage.setItem('asanoha:' + k, JSON.stringify(v)); } catch (e) {} };
 
-if (cfg && cfg.apiKey) {
+if (sbCfg && sbCfg.url) {
+  await startSupabase(sbCfg);
+} else if (cfg && cfg.apiKey) {
   try {
     const V = '10.12.2';
     const [{ initializeApp }, am, fm] = await Promise.all([
@@ -119,4 +126,161 @@ if (cfg && cfg.apiKey) {
   }
 } else {
   auth.ready = true; emit();
+}
+
+
+/* ---------- Supabase (shared Asanoha account) ---------- */
+
+// Keeps the sign-in in cookies on .asanoha.co.in so asanoha.co.in and wearday.asanoha.co.in share it.
+// Elsewhere (local testing) it uses localStorage. Cookies hold about 4 KB, so the session is split.
+function sharedStorage() {
+  const host = location.hostname;
+  if (!/(^|\.)asanoha\.co\.in$/.test(host)) return undefined;
+  const CHUNK = 3500, YEAR = 31536000;
+  const read = (n) => { const m = document.cookie.match('(?:^|; )' + n.replace(/\./g, '\\.') + '=([^;]*)'); return m ? m[1] : null; };
+  const write = (n, v, age) => { document.cookie = n + '=' + v + '; Domain=.asanoha.co.in; Path=/; Max-Age=' + age + '; SameSite=Lax; Secure'; };
+  return {
+    getItem(k) {
+      const n = Number(read(k + '.n') || 0); if (!n) return null;
+      let s = ''; for (let i = 0; i < n; i++) { const p = read(k + '.' + i); if (p == null) return null; s += p; }
+      try { return decodeURIComponent(s); } catch (e) { return null; }
+    },
+    setItem(k, v) {
+      const enc = encodeURIComponent(v), old = Number(read(k + '.n') || 0), parts = [];
+      for (let i = 0; i < enc.length; i += CHUNK) parts.push(enc.slice(i, i + CHUNK));
+      parts.forEach((p, i) => write(k + '.' + i, p, YEAR));
+      write(k + '.n', String(parts.length), YEAR);
+      for (let i = parts.length; i < old; i++) write(k + '.' + i, '', 0);
+    },
+    removeItem(k) {
+      const old = Number(read(k + '.n') || 0);
+      for (let i = 0; i < old; i++) write(k + '.' + i, '', 0);
+      write(k + '.n', '', 0);
+    }
+  };
+}
+
+async function startSupabase(sc) {
+  try {
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/+esm');
+    const native = window.AsanohaNative && window.AsanohaNative.isNative;
+    const sb = createClient(sc.url, sc.key, {
+      auth: { flowType: 'pkce', storageKey: 'asanoha-auth', storage: sharedStorage(), persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
+    A.supabase = sb;
+    auth.available = true;
+    const back = () => location.origin + location.pathname;
+    const fail = (error) => { if (error) { const e = new Error(error.message); e.code = 'auth/' + (error.code || error.status || 'error'); throw e; } };
+
+    // Inside the iOS app: native Google / Apple sheets hand us an ID token.
+    const viaNative = async (kind) => {
+      const c = await window.AsanohaNative.auth[kind]();
+      const { data, error } = await sb.auth.signInWithIdToken(kind === 'apple'
+        ? { provider: 'apple', token: c.idToken, nonce: c.nonce }
+        : { provider: 'google', token: c.idToken, access_token: c.accessToken });
+      fail(error);
+      if (kind === 'apple' && c.name && !(data.user.user_metadata || {}).full_name) { try { await sb.auth.updateUser({ data: { full_name: c.name } }); } catch (e) {} }
+    };
+    auth.signIn = async () => {
+      if (native) return viaNative('google');
+      const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: back(), queryParams: { prompt: 'select_account' } } });
+      fail(error);
+    };
+    auth.signInApple = async () => {
+      if (native) return viaNative('apple');
+      const { error } = await sb.auth.signInWithOAuth({ provider: 'apple', options: { redirectTo: back() } });
+      fail(error);
+    };
+    const forget = () => ['addresses', 'profile', 'orders2', 'pushToken', 'noha'].forEach((k) => { try { localStorage.removeItem('asanoha:' + k); } catch (e) {} });
+    auth.signOut = async () => {
+      if (native) await window.AsanohaNative.auth.signOut();
+      await sb.auth.signOut();
+      try { localStorage.removeItem('asanoha:noha'); } catch (e) {}
+    };
+
+    // Permanently delete the account. Removes Wearday photos too, then the account and everything linked to it.
+    // Noha Money payment records are kept for 8 years, as the law requires.
+    auth.deleteAccount = async () => {
+      const { data: s } = await sb.auth.getSession(); const u = s.session && s.session.user; if (!u) return;
+      try {
+        for (;;) {
+          const { data: files } = await sb.storage.from('photos').list(u.id, { limit: 100 });
+          if (!files || !files.length) break;
+          await sb.storage.from('photos').remove(files.map((f) => u.id + '/' + f.name));
+          if (files.length < 100) break;
+        }
+      } catch (e) { console.error('Asanoha: photo clean-up failed', e); }
+      const { error } = await sb.rpc('delete_my_account'); fail(error);
+      if (native) await window.AsanohaNative.auth.signOut();
+      await sb.auth.signOut({ scope: 'local' });
+      forget();
+    };
+
+    // Save addresses, profile and orders to the signed-in account (merged like Firestore's merge: true).
+    let remote = {};
+    auth.push = async (data) => {
+      const { data: s } = await sb.auth.getSession(); const u = s.session && s.session.user; if (!u) return;
+      remote = Object.assign({}, remote, JSON.parse(JSON.stringify(data || {})));
+      const { error } = await sb.from('asanoha_profiles').upsert({ user_id: u.id, data: remote, updated_at: new Date().toISOString() });
+      fail(error);
+    };
+
+    // Noha Money comes from the shared wallet, so it matches Wearday. Stored where shop.js reads it.
+    const loadWallet = async () => {
+      const [bal, tx] = await Promise.all([
+        sb.rpc('noha_balance'),
+        sb.from('noha_transactions').select('amount_paise,description,created_at').order('created_at', { ascending: false }).limit(50)
+      ]);
+      if (bal.error || tx.error) return; // wallet not set up on the server yet
+      const b = (bal.data || [])[0] || { total_paise: 0 };
+      writeLocal('noha', {
+        balance: b.total_paise / 100,
+        txns: (tx.data || []).slice().reverse().map((t) => ({
+          note: t.description,
+          date: new Date(t.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+          amt: t.amount_paise / 100
+        }))
+      });
+    };
+    A.refreshNoha = async () => { await loadWallet(); emit(); };
+
+    const onUser = async (u) => {
+      const meta = u.user_metadata || {};
+      const via = (u.app_metadata && u.app_metadata.provider) || 'email';
+      auth.user = { uid: u.id, name: meta.full_name || meta.name || '', email: u.email || '', photo: meta.avatar_url || meta.picture || '' };
+      try {
+        const { data: row, error } = await sb.from('asanoha_profiles').select('data, created_at').eq('user_id', u.id).maybeSingle();
+        if (error) throw error;
+        remote = (row && row.data) || {};
+        const local = { addresses: readLocal('addresses', []), profile: readLocal('profile', {}), orders: readLocal('orders2', []) };
+        const byId = {};
+        (remote.addresses || []).concat(local.addresses || []).forEach((a) => { if (a && a.id) byId[a.id] = a; });
+        const addresses = Object.values(byId);
+        const profile = Object.assign({}, remote.profile || {}, local.profile || {});
+        if (!profile.name) profile.name = auth.user.name;
+        profile.email = auth.user.email;
+        const seen = {}; const orders = (remote.orders || []).concat(local.orders || []).filter((o) => o && o.id && !seen[o.id] && (seen[o.id] = 1)).slice(-50);
+        writeLocal('addresses', addresses); writeLocal('profile', profile); writeLocal('orders2', orders);
+        await auth.push({ name: auth.user.name, email: auth.user.email, photo: auth.user.photo, addresses, profile, orders, lastLogin: new Date().toISOString() });
+        if (A.track) A.track(row ? 'login' : 'sign_up', { method: via });
+      } catch (e) { console.error('Asanoha: profile sync failed', e); }
+      try { await loadWallet(); } catch (e) { console.error('Asanoha: Noha Money failed to load', e); }
+    };
+
+    let last = null;
+    sb.auth.onAuthStateChange((event, session) => {
+      const u = session && session.user;
+      if (event === 'TOKEN_REFRESHED' || (u && last === u.id && event !== 'USER_UPDATED')) return;
+      last = u ? u.id : null;
+      // Supabase calls must not run inside this callback, so continue on the next tick.
+      setTimeout(async () => {
+        if (!u) { auth.user = null; auth.ready = true; emit(); return; }
+        await onUser(u);
+        auth.ready = true; emit();
+      }, 0);
+    });
+  } catch (e) {
+    console.error('Asanoha: sign-in could not load', e);
+    auth.ready = true; emit();
+  }
 }

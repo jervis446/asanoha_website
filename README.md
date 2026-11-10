@@ -40,3 +40,16 @@ The AI-labelled slam-book experience currently runs locally in the browser and i
 
 
 Brand terminology update: public references to Rolling Paper(s) were changed to Friendship Paper(s).
+
+## Shared Asanoha login (Supabase)
+Sign-in can run on Firebase (current) or on the shared Asanoha account in Supabase, which Wearday also uses. With Supabase, one Google or Apple sign-in works on asanoha.co.in, wearday.asanoha.co.in and the Wearday app, and Noha Money is one wallet with one history.
+
+The switch is authProvider in assets/js/site.js. Before setting it to 'supabase':
+1. Supabase > Authentication > Providers > Google: turn on, paste the Client ID and secret of a Web OAuth client from Google Cloud project asanoha-1420b. Its authorised redirect URI is https://fkhxgkscnkxtwnvecoyv.supabase.co/auth/v1/callback. Add the iOS app's Google client ID under Authorized Client IDs so native sign-in in the app works.
+2. Supabase > Authentication > Providers > Apple: turn on, add the Services ID, key and team ID, and the app bundle ID under Client IDs.
+3. Supabase > Authentication > URL Configuration > Redirect URLs: add https://asanoha.co.in/** and https://wearday.asanoha.co.in/**.
+4. Apply the database changes from the Wearday repo (supabase/migrations: noha_money and asanoha_profiles).
+5. Set authProvider: 'supabase', bump CACHE in sw.js, and deploy.
+
+What moves: addresses, profile and recent orders saved on each device merge into the new account at the first sign-in. Data stored only in Firestore does not move automatically.
+Rolling back: set authProvider back to 'firebase'.

@@ -1034,6 +1034,7 @@
       afterLanding();
     }
     document.addEventListener('asanoha:auth', function () {
+      wallet = store.get('noha', { balance: 0, txns: [] }); if (!wallet || typeof wallet.balance !== 'number') wallet = { balance: 0, txns: [] };
       addresses = store.get('addresses', []); if (!Array.isArray(addresses)) addresses = [];
       profile = store.get('profile', {}) || {};
       paintChrome();

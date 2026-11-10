@@ -25,12 +25,21 @@
     ga4Id: 'G-HX5RX21JLR',
     // Microsoft Clarity project ID for heatmaps and session recordings, e.g. 'abcd1234ef'.
     clarityId: '',
-    // Google sign-in via Firebase. Paste the web app config from Firebase console > Project settings.
     // Shiprocket: paste your Cloudflare Worker URL (see server/shiprocket-worker). Empty = rules only (Bengaluru 2 hours, rest 3 to 5 days).
     shiprocketApi: '',
     // Order, payment and tracking service (apps/asanoha-orders on your gateway server), for example
     // 'https://orders.asanoha.co.in'. Leave empty to keep ordering through WhatsApp and email only.
     ordersApi: '',
+    // Sign-in back end: 'firebase' (current) or 'supabase' (the shared Asanoha account, also used by
+    // Wearday, with Noha Money from the shared wallet). Switch to 'supabase' only after Google and Apple
+    // are turned on in Supabase (see the shared-login notes in README.md).
+    authProvider: 'firebase',
+    // Shared Asanoha account (Supabase). Public client values, safe to publish.
+    supabase: {
+      url: 'https://fkhxgkscnkxtwnvecoyv.supabase.co',
+      key: 'sb_publishable_kJghZQlNmpuy-NAGfUm4Dg_EHybViX9'
+    },
+    // Google sign-in via Firebase. The web app config from Firebase console > Project settings.
     firebase: {
       apiKey: 'AIzaSyDt1TJEaqKMIwmBSz8THpMjGJUFWl_yc3Y',
       authDomain: 'asanoha-1420b.firebaseapp.com',
