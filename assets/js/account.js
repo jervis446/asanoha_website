@@ -162,7 +162,14 @@ function sharedStorage() {
 
 async function startSupabase(sc) {
   try {
-    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/+esm');
+    // Plain prebuilt file (window.supabase), the same one wearday.asanoha.co.in uses.
+    await new Promise((ok, bad) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js';
+      s.onload = ok; s.onerror = () => bad(new Error('Supabase library failed to load'));
+      document.head.appendChild(s);
+    });
+    const createClient = window.supabase.createClient;
     const native = window.AsanohaNative && window.AsanohaNative.isNative;
     const sb = createClient(sc.url, sc.key, {
       auth: { flowType: 'pkce', storageKey: 'asanoha-auth', storage: sharedStorage(), persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
@@ -217,6 +224,18 @@ async function startSupabase(sc) {
     auth.signInApple = async () => {
       if (native) return viaNative('apple');
       const { error } = await sb.auth.signInWithOAuth({ provider: 'apple', options: { redirectTo: back() } });
+      fail(error);
+    };
+    // Email sign-in with a 6-digit code, same as Wearday (the email also has a one-tap link).
+    auth.emailAvailable = true;
+    // Apple shows only once it's turned on in Supabase (CONFIG.supabase.apple = true).
+    auth.appleAvailable = !!sc.apple || !!native;
+    auth.sendCode = async (email) => {
+      const { error } = await sb.auth.signInWithOtp({ email: String(email).trim(), options: { emailRedirectTo: back() } });
+      fail(error);
+    };
+    auth.verifyCode = async (email, code) => {
+      const { error } = await sb.auth.verifyOtp({ email: String(email).trim(), token: String(code).trim(), type: 'email' });
       fail(error);
     };
     const forget = () => ['addresses', 'profile', 'orders2', 'pushToken', 'noha'].forEach((k) => { try { localStorage.removeItem('asanoha:' + k); } catch (e) {} });

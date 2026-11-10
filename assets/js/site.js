@@ -33,13 +33,15 @@
     // Sign-in back end: 'firebase' (current) or 'supabase' (the shared Asanoha account, also used by
     // Wearday, with Noha Money from the shared wallet). Switch to 'supabase' only after Google and Apple
     // are turned on in Supabase (see the shared-login notes in README.md).
-    authProvider: 'firebase',
+    authProvider: 'supabase',
     // Shared Asanoha account (Supabase). Public client values, safe to publish.
     supabase: {
       url: 'https://fkhxgkscnkxtwnvecoyv.supabase.co',
       key: 'sb_publishable_kJghZQlNmpuy-NAGfUm4Dg_EHybViX9',
       // Web OAuth client ID used for Google's sign-in sheet (public). Same one as in Supabase > Providers > Google.
-      googleClientId: '318149293979-3sc40vsvh13ufntf8uiutkmmj10hmted.apps.googleusercontent.com'
+      googleClientId: '318149293979-3sc40vsvh13ufntf8uiutkmmj10hmted.apps.googleusercontent.com',
+      // Set to true after turning on Apple in Supabase > Authentication > Providers.
+      apple: false
     },
     // Google sign-in via Firebase. The web app config from Firebase console > Project settings.
     firebase: {

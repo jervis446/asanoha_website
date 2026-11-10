@@ -53,6 +53,16 @@
   var filter = 'all', query = '', useNoha = true, rxChoice = 'upload', afterAddress = null;
 
   /* ---------- helpers ---------- */
+  // Email code sign-in (shared Asanoha account). codeFor holds the address a code was sent to.
+  var codeFor = '';
+  function emailSignIn() {
+    return '<p class="ash-muted small center" style="margin:12px 0 6px">or with email</p>' + (codeFor
+      ? '<form id="ash-code-form" class="ash-form" novalidate><p class="ash-muted small">We emailed a 6-digit code to <b>' + esc(codeFor) + '</b>. Type it here, or tap the button in the email.</p>' +
+        '<input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code" aria-label="6-digit code">' +
+        '<button class="ash-cta" type="submit">Sign in</button><button class="ash-link" type="button" data-ash-email-restart>Use a different email</button><p class="ash-muted small" id="ash-email-msg" role="status"></p></form>'
+      : '<form id="ash-email-form" class="ash-form" novalidate><input type="email" name="email" placeholder="you@email.com" autocomplete="email" aria-label="Email address" value="' + esc(profile.email || '') + '">' +
+        '<button class="ash-cta alt" type="submit">Email me a code</button><p class="ash-muted small" id="ash-email-msg" role="status"></p></form>');
+  }
   function toast(t) {
     var el = $('#ash-toast'); if (!el) return; el.textContent = t; el.classList.add('on');
     clearTimeout(toast.t); toast.t = setTimeout(function () { el.classList.remove('on'); }, 2400);
@@ -561,7 +571,7 @@
         '<span><b>' + esc(u.name || 'Your account') + '</b><span>' + esc(u.email) + '</span></span><button class="ash-link" data-ash-signout>Sign out</button></div>' +
         '<button class="ash-link ash-danger" data-ash-delete>Delete account</button>'
       : '<div class="ash-box"><b>Sign in to save your details</b><span>Keep your addresses, orders and Noha Money on every device.</span>' +
-        (au && au.available ? '<button class="ash-apple" data-ash-signin-apple><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 5c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/></svg>Continue with Apple</button>' + '<button class="ash-google" data-ash-signin><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.8 6C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.3.8-4.7l-7.8-6C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.2-13.5-9.9l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>'
+        (au && au.available ? (au.appleAvailable === false ? '' : '<button class="ash-apple" data-ash-signin-apple><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 5c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/></svg>Continue with Apple</button>') + '<button class="ash-google" data-ash-signin><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.8 6C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.3.8-4.7l-7.8-6C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.2-13.5-9.9l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>' + (au.emailAvailable ? emailSignIn() : '')
           : '<span class="ash-muted small">' + (!au ? 'Google sign-in works on asanoha.co.in. Your details are saved on this device meanwhile.' : !au.ready ? 'Loading sign-in\u2026' : 'Google sign-in couldn\u2019t load here. Open asanoha.co.in in your browser and try again. Your details are saved on this device meanwhile.') + '</span>') + '</div>';
     var menu = $$('#nav a').map(function (l) { return '<a href="' + esc(l.getAttribute('href')) + '" data-ash-close>' + esc(l.textContent) + '<span aria-hidden="true">\u203A</span></a>'; }).join('');
     open('<h2 class="ash-h">Your account</h2>' + acct +
@@ -897,13 +907,14 @@
       return;
     }
     if (d.ashTheme) { applyThemePref(d.ashTheme); $$('#ash-theme .ash-chip').forEach(function (c) { c.setAttribute('aria-pressed', c === t); }); return; }
-    if (t.hasAttribute('data-ash-signin')) { var au1 = window.ASANOHA.auth; au1.signIn().catch(function (er) { toast(er && er.code === 'auth/unauthorized-domain' ? 'Add this website to Firebase authorised domains.' : 'Sign-in was cancelled. Try again.'); }); return; }
+    if (t.hasAttribute('data-ash-email-restart')) { codeFor = ''; profileSheet(); return; }
+    if (t.hasAttribute('data-ash-signin')) { var au1 = window.ASANOHA.auth; au1.signIn().catch(function (er) { toast(er && er.code === 'auth/unauthorized-domain' ? 'Add this website to Firebase authorised domains.' : 'Sign-in didn\u2019t finish. Try again or use your email.'); }); return; }
     if (t.hasAttribute('data-ash-lang')) {
       var lg = t.getAttribute('data-ash-lang');
       if (lg !== (window.ASANOHA_LANG || 'en')) { store.set('lang', lg); track('language_set', { lang: lg }); location.reload(); }
       return;
     }
-    if (t.hasAttribute('data-ash-signin-apple')) { window.ASANOHA.auth.signInApple().catch(function (er) { toast(er && er.code === 'auth/unauthorized-domain' ? 'Add this website to Firebase authorised domains.' : 'Sign-in was cancelled. Try again.'); }); return; }
+    if (t.hasAttribute('data-ash-signin-apple')) { window.ASANOHA.auth.signInApple().catch(function (er) { toast(er && er.code === 'auth/unauthorized-domain' ? 'Add this website to Firebase authorised domains.' : 'Sign-in didn\u2019t finish. Try again or use your email.'); }); return; }
     if (t.hasAttribute('data-ash-delete')) {
       if (!window.confirm('Delete your Asanoha account? Your saved addresses, orders and Noha Money will be removed permanently. This cannot be undone.')) return;
       t.disabled = true; t.textContent = 'Deleting\u2026';
@@ -948,6 +959,20 @@
   });
   document.addEventListener('submit', function (e) {
     var f = e.target;
+    if (f.id === 'ash-email-form' || f.id === 'ash-code-form') {
+      e.preventDefault();
+      var au2 = window.ASANOHA.auth, msg2 = $('#ash-email-msg');
+      if (f.id === 'ash-email-form') {
+        var em2 = f.email.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em2)) { msg2.textContent = 'That email looks incomplete. Check it and try again.'; return; }
+        msg2.textContent = 'Sending\u2026';
+        au2.sendCode(em2).then(function () { codeFor = em2; profileSheet(); }).catch(function (er) { msg2.textContent = /rate|many/i.test(er && er.message) ? 'Too many tries. Wait a minute and try again.' : 'Couldn\u2019t send the email. Try again.'; });
+      } else {
+        msg2.textContent = 'Checking\u2026';
+        au2.verifyCode(codeFor, f.code.value).then(function () { codeFor = ''; toast('Signed in'); }).catch(function () { msg2.textContent = 'That code is wrong or has expired. Request a new one.'; });
+      }
+      return;
+    }
     if (f.id === 'ash-addr-form') { e.preventDefault(); saveAddress(f); }
     if (f.id === 'ash-bday') { e.preventDefault(); if (!f.d.value) return; profile.bday = f.d.value; store.set('profile', profile); sync(); toast('Birthday saved'); profileSheet(); }
     if (f.id === 'ash-claim') {
