@@ -141,7 +141,7 @@
   if (pre) { window.ASANOHA_I18N_LOAD(pre); if (!domReady) document.addEventListener('DOMContentLoaded', function () { domReady = true; start(); }); return; }
   var me = document.currentScript && document.currentScript.src;
   var s = document.createElement('script');
-  s.src = (me ? me.replace(/i18n\.js(\?.*)?$/, '') : 'assets/js/') + 'i18n/' + lang + '.js?v=3';
+  s.src = (me ? me.replace(/i18n\.js(\?.*)?$/, '') : 'assets/js/') + 'i18n/' + lang + '.js?v=4';
   s.onerror = function () { root.classList.remove('i18n-wait'); };
   document.head.appendChild(s);
   if (!domReady) document.addEventListener('DOMContentLoaded', function () { domReady = true; start(); });
