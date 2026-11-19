@@ -4,7 +4,6 @@
 
 ## Primary pages
 - https://asanoha.co.in/ : Homepage and overview of Asanoha.
-- https://asanoha.co.in/about.html : About Asanoha and company information.
 - https://asanoha.co.in/story.html : Brand story and the “Aadha tera, aadha mera” idea.
 - https://asanoha.co.in/how-it-works.html : Product and practitioner/prescription process.
 - https://asanoha.co.in/blog.html : Educational articles and brand publishing.

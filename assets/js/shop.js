@@ -4,7 +4,7 @@
   'use strict';
   var CFG = (window.ASANOHA && window.ASANOHA.config) || {};
   var WA = CFG.whatsapp || '919893453114', MAIL = CFG.orderEmail || 'orders@asanoha.co.in';
-  var SUPPORT = 'about.html#contact';
+  var SUPPORT = 'terms.html#contact';
   // status: 'live' = orderable, 'soon' = shown but not orderable yet
   var P = [
     { id: 'gum-high', type: 'gummies', dose: 'high', name: 'Rooftop Duo gummies', pack: '2 tins, 20 gummies', img: 'assets/img/tins-high.webp', strength: 'High strength', status: 'live', desc: 'Kachcha aam and dark cocoa, 10 gummies per tin. Our strongest gummy, only on a practitioner\u2019s prescription.' },
@@ -633,7 +633,7 @@
       ['Ask for it', 'Message us your batch number and we send the Certificate of Analysis for that exact batch.'],
       ['Read it easily', 'Our blog explains how to read a Certificate of Analysis in five minutes.']] },
     india: { t: 'Made in India', s: 'Made, packed and delivered from India.', p: [
-      ['Made here', 'Made in India under an AYUSH licence and marketed by Asanoha Ayurveda LLP, Bangalore.'],
+      ['Made here', 'Made in India under an AYUSH licence and marketed by Asanoha LLP, Bengaluru.'],
       ['Designed here', 'Our tins, syringes and friendship papers are designed by our team in Bengaluru.'],
       ['Delivered fast', '30 minutes near our Koramangala and Sarjapur Road stores, 2 hours across Bengaluru, and 3 to 5 days everywhere else in India.'],
       ['Plain packaging', 'Every order ships sealed and plain, and an adult signs for it.']] },
