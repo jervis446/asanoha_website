@@ -46,7 +46,7 @@
       var m = k.match(PATTERNS[i][0]);
       if (m && PAT[PATTERNS[i][1]]) return fill(PAT[PATTERNS[i][1]], PATTERNS[i][2](m));
     }
-    // "High strength, 2 tins, 20 gummies" style lists: take the longest known run of parts each time
+    // "Strength 3, 2 tins, 20 gummies" style lists: take the longest known run of parts each time
     if (k.indexOf(', ') > 0) {
       var parts = k.split(', '), out = [], p = 0;
       while (p < parts.length) {
@@ -141,7 +141,7 @@
   if (pre) { window.ASANOHA_I18N_LOAD(pre); if (!domReady) document.addEventListener('DOMContentLoaded', function () { domReady = true; start(); }); return; }
   var me = document.currentScript && document.currentScript.src;
   var s = document.createElement('script');
-  s.src = (me ? me.replace(/i18n\.js(\?.*)?$/, '') : 'assets/js/') + 'i18n/' + lang + '.js?v=2';
+  s.src = (me ? me.replace(/i18n\.js(\?.*)?$/, '') : 'assets/js/') + 'i18n/' + lang + '.js?v=3';
   s.onerror = function () { root.classList.remove('i18n-wait'); };
   document.head.appendChild(s);
   if (!domReady) document.addEventListener('DOMContentLoaded', function () { domReady = true; start(); });

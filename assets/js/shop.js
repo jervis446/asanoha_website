@@ -7,13 +7,13 @@
   var SUPPORT = 'terms.html#contact';
   // status: 'live' = orderable, 'soon' = shown but not orderable yet
   var P = [
-    { id: 'gum-high', type: 'gummies', dose: 'high', name: 'Rooftop Duo gummies', pack: '2 tins, 20 gummies', img: 'assets/img/tins-high.webp', strength: 'High strength', status: 'live', desc: 'Kachcha aam and dark cocoa, 10 gummies per tin. Our strongest gummy, only on a practitioner\u2019s prescription.' },
-    { id: 'tab-250', type: 'tablets', dose: 'high', name: 'unTrippy tablets', pack: '2 strips, 20 tablets', img: 'assets/img/tablets.webp', strength: '250 mg per tablet', status: 'live', desc: '250 mg Vijaya leaf extract per tablet. No taste, no measuring. Usually prescribed after a lower dose.' },
-    { id: 'oil-high', type: 'oil', dose: 'high', name: 'Rooftop oil', pack: '2 x 1 ml syringes', img: 'assets/img/oil-high.webp', strength: 'High strength', status: 'live', desc: 'Full spectrum Vijaya leaf extract in MCT oil, in graduated 1 ml oral syringes for exact dosing.' },
-    { id: 'gum-low', type: 'gummies', dose: 'low', name: 'Sunset Duo gummies', pack: '2 tins, 20 gummies', img: 'assets/img/tins-low.webp', strength: 'Low strength', status: 'live', desc: 'Our gentlest gummy and where most people start. Kachcha aam and dark cocoa.' },
-    { id: 'oil-low', type: 'oil', dose: 'low', name: 'Sunset oil', pack: '2 x 1 ml syringes', img: 'assets/img/oil-low.webp', strength: 'Low strength', status: 'live', desc: 'Gentle full spectrum oil in 1 ml oral syringes. A careful first step.' },
-    { id: 'gum-medium', type: 'gummies', dose: 'medium', name: 'Summit Duo gummies', pack: '2 tins, 20 gummies', img: 'assets/img/tins-medium.webp', strength: 'Medium strength', status: 'soon', desc: 'Our medium strength joins after launch.' },
-    { id: 'oil-medium', type: 'oil', dose: 'medium', name: 'Summit oil', pack: '2 x 1 ml syringes', img: 'assets/img/oil-medium.webp', strength: 'Medium strength', status: 'soon', desc: 'Our medium strength joins after launch.' },
+    { id: 'gum-high', type: 'gummies', dose: 'high', name: 'Rooftop Duo gummies', pack: '2 tins, 20 gummies', img: 'assets/img/tins-high.webp', strength: 'Strength 3', status: 'live', desc: 'Kachcha aam and dark cocoa, 10 gummies per tin. Our strongest gummy, only on a practitioner\u2019s prescription.' },
+    { id: 'tab-250', type: 'tablets', dose: 'high', name: 'Vijaya leaf tablets', pack: '2 strips, 20 tablets', img: 'assets/img/tablets.webp', strength: '250 mg per tablet', status: 'live', desc: '250 mg Vijaya leaf extract per tablet. No taste, no measuring. Usually prescribed after a lower dose.' },
+    { id: 'oil-high', type: 'oil', dose: 'high', name: 'Rooftop oil', pack: '2 x 1 ml syringes', img: 'assets/img/oil-high.webp', strength: 'Strength 3', status: 'live', desc: 'Full spectrum Vijaya leaf extract in MCT oil, in graduated 1 ml oral syringes for exact dosing.' },
+    { id: 'gum-low', type: 'gummies', dose: 'low', name: 'Sunset Duo gummies', pack: '2 tins, 20 gummies', img: 'assets/img/tins-low.webp', strength: 'Strength 1', status: 'live', desc: 'Our gentlest gummy and where most people start. Kachcha aam and dark cocoa.' },
+    { id: 'oil-low', type: 'oil', dose: 'low', name: 'Sunset oil', pack: '2 x 1 ml syringes', img: 'assets/img/oil-low.webp', strength: 'Strength 1', status: 'live', desc: 'Gentle full spectrum oil in 1 ml oral syringes. A careful first step.' },
+    { id: 'gum-medium', type: 'gummies', dose: 'medium', name: 'Summit Duo gummies', pack: '2 tins, 20 gummies', img: 'assets/img/tins-medium.webp', strength: 'Strength 2', status: 'soon', desc: 'Our medium strength joins after launch.' },
+    { id: 'oil-medium', type: 'oil', dose: 'medium', name: 'Summit oil', pack: '2 x 1 ml syringes', img: 'assets/img/oil-medium.webp', strength: 'Strength 2', status: 'soon', desc: 'Our medium strength joins after launch.' },
     // Everyday Ayurveda: no prescription needed. Claims kept to traditional use, as AYUSH advertising rules require.
     { id: 'ashwagandha', type: 'wellness', dose: 'none', rx: false, name: 'Ashwagandha tablets', pack: '60 tablets, 500 mg', img: 'assets/img/ashwagandha.webp', strength: 'Everyday Ayurveda', status: 'live',
       desc: 'Standardised Ashwagandha (Withania somnifera) root extract. A classical rasayana, traditionally used in Ayurveda to support calm, steady energy and restful sleep during busy weeks.',
@@ -439,7 +439,7 @@
         ? '<div class="ash-box"><b>How to use</b><span>' + esc(p.use) + '</span></div><div class="ash-box"><b>Good to know</b><span>' + esc(p.caution) + ' No prescription needed.</span></div>'
         : '<div class="ash-box"><b>Prescription medicine</b><span>Get a free practitioner consult after you order, or upload your prescription at checkout. Each pack is for the prescribed person only.</span></div>') +
       '<div class="ash-box"><b>Tested every batch</b><span>Certificate of Analysis for your batch is available on request.</span></div>' +
-      '<div class="ash-box"><b>10% back on your first order</b><span>As Noha Money, credited after delivery, to use on your next order.</span></div>' +
+      (p.rx === false ? '<div class="ash-box"><b>10% back on your first order</b><span>As Noha Money, credited after delivery, to use on your next order.</span></div>' : '') +
       (similar.length ? '<h3 class="ash-h3">Similar products</h3><div class="ash-grid two">' + similar.map(tile).join('') + '</div>' : '') +
       (p.status === 'live' ? '<button class="ash-cta" data-ash-add="' + p.id + '" data-ash-then="cart">Add to cart</button>'
         : '<button class="ash-cta alt" data-ash-open="noha">Get notified with Noha Money</button>'), p.name);
@@ -542,7 +542,7 @@
     }).join('') : '<p class="ash-muted">No activity yet.</p>';
     open('<div class="ash-nhead"><span class="ash-coin big" aria-hidden="true"></span><h2 class="ash-nlogo">asanoha<b>NOHA MONEY</b></h2>' +
       '<div class="ash-nbal"><span>Balance</span><b>' + inr(wallet.balance) + '</b></div></div>' +
-      nohaPerk('gift', '10% back on your first order', 'Credited to Noha Money after delivery. Valid for 12 months.') +
+      nohaPerk('gift', '10% back on everyday Ayurveda', 'Credited to Noha Money after delivery. Valid for 12 months. Prescription Vijaya medicines don\u2019t earn cashback.') +
       nohaPerk('tap', 'One-tap checkout', 'Pay from your balance without waiting for OTPs.') +
       nohaPerk('refund', 'Instant refunds', 'Cancelled after verification? The amount comes back here straight away.') +
       nohaPerk('coins', 'Top-up bonus', 'Add \u20B92,000, get \u20B9100 extra. Add \u20B95,000, get \u20B9350 extra.') +
@@ -557,7 +557,7 @@
       '<h3 class="ash-h3">Claim \u20B9100 at launch</h3><p class="ash-muted">Leave your email and we add \u20B9100 to your Noha Money on launch day.</p>' +
       '<form id="ash-claim" class="ash-form" novalidate><input type="email" name="email" placeholder="you@email.com" autocomplete="email" aria-label="Email address" value="' + esc(profile.email || '') + '"><input type="text" name="website" tabindex="-1" autocomplete="off" class="ash-hp" aria-hidden="true"><button class="ash-cta alt" type="submit">Claim \u20B9100</button><p class="ash-muted" id="ash-claim-msg" role="status"></p></form>' +
       '<h3 class="ash-h3">Activity</h3>' + tx +
-      '<ul class="ash-notes"><li>Noha Money is usable only on Asanoha and is valid for 12 months from the date it is added.</li><li>Cashback can pay up to 15% of an order. Money you add can pay for the full order.</li><li>It cannot be transferred to a bank account or another person, as per RBI rules for closed-system payment instruments.</li><li>Referral rewards are credited after your friend\u2019s first order is delivered and not returned.</li></ul>', 'Noha Money');
+      '<ul class="ash-notes"><li>Noha Money is usable only on Asanoha and is valid for 12 months from the date it is added.</li><li>Cashback can pay up to 15% of an order. Money you add can pay for the full order.</li><li>It cannot be transferred to a bank account or another person, as per RBI rules for closed-system payment instruments.</li><li>Referral rewards are credited after your friend\u2019s first order is delivered and not returned.</li><li>Prescription Vijaya medicines don\u2019t earn cashback or referral rewards and don\u2019t count towards them.</li></ul>', 'Noha Money');
   }
 
   function profileSheet() {
@@ -616,7 +616,7 @@
       ['What it means', 'A full spectrum extract keeps the natural range of compounds found in the leaf, instead of pulling out one on its own.'],
       ['How it is carried', 'Oils use MCT, a light coconut-based oil that flows well through a syringe. Gummies use a pectin base in kachcha aam and dark cocoa.'],
       ['Honest strength', 'Every pack states the extract per unit, for example 250 mg per tablet. No vague "potency" words.'],
-      ['Pick with your practitioner', 'Low, medium and high strengths exist so your practitioner can start low and step up only if needed.']] },
+      ['Pick with your practitioner', 'Strengths 1, 2 and 3 exist so your practitioner can start low and step up only if needed.']] },
     ayurveda: { t: 'Rooted in Ayurveda', s: 'Vijaya has been part of Ayurveda for centuries.', p: [
       ['An old name', 'Vijaya, meaning victory, is the Ayurvedic name for the cannabis leaf. Classical texts describe it in carefully prepared formulations.'],
       ['Used with care', 'Ayurveda always paired Vijaya with a vaidya\u2019s guidance, the right preparation and the right amount. We follow the same rule.'],
@@ -634,11 +634,11 @@
       ['Read it easily', 'Our blog explains how to read a Certificate of Analysis in five minutes.']] },
     india: { t: 'Made in India', s: 'Made, packed and delivered from India.', p: [
       ['Made here', 'Made in India under an AYUSH licence and marketed by Asanoha LLP, Bengaluru.'],
-      ['Designed here', 'Our tins, syringes and friendship papers are designed by our team in Bengaluru.'],
+      ['Designed here', 'Our tins and syringes are designed by our team in Bengaluru.'],
       ['Delivered fast', '30 minutes near our Koramangala and Sarjapur Road stores, 2 hours across Bengaluru, and 3 to 5 days everywhere else in India.'],
       ['Plain packaging', 'Every order ships sealed and plain, and an adult signs for it.']] },
     'step-pick': { t: 'Pick your pair', s: 'Choose what your practitioner is likely to prescribe, or something from everyday Ayurveda.', p: [
-      ['Browse the range', 'Gummies, oil and tablets in low and high strength, plus Ashwagandha, Shilajit, Isabgol and Moon Days.'],
+      ['Browse the range', 'Gummies, oil and tablets in three strengths, plus Ashwagandha, Shilajit, Isabgol and Moon Days.'],
       ['Not sure which?', 'Most people start with a low strength. Your practitioner confirms or changes it after reading your history.'],
       ['Add a line for a friend', 'Optional. With your yes, one line per batch is printed on our tins, first name and city only.'],
       ['Nothing to pay yet', 'Prices go live at launch. You send the order first, we confirm the total after checking.']] },
@@ -656,7 +656,7 @@
       ['Bengaluru in 30 minutes to 2 hours', '30 minutes in HSR, Koramangala, Marathahalli and Sarjapur Road, about 1 hr 15 min within 15 km of our stores, 2 hours elsewhere in Bengaluru. 8 am to 12 am, once your prescription is checked.'],
       ['Rest of India in 3 to 5 days', 'Shipped with a tracked courier. You get the tracking link on WhatsApp.'],
       ['Plain and sealed', 'No brand-heavy outer box. An adult signs for the parcel.'],
-      ['10% back', 'Your first order earns 10% Noha Money after delivery, to use next time.']] },
+      ['10% back', 'Your first order of everyday Ayurveda earns 10% Noha Money after delivery. Prescription Vijaya medicines don\u2019t earn cashback.']] },
     how: { t: 'How ordering works', s: 'Four steps from curious to delivered.', p: [
       ['1. Pick what you need', 'Choose gummies, oil, tablets or everyday Ayurveda in the range.'],
       ['2. Share a prescription', 'For Vijaya products, upload one from a registered practitioner or book a free online consult at checkout.'],

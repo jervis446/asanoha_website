@@ -20,7 +20,7 @@
     // When set, every sign-up is saved to your Google Sheet and visible on your subscriber dashboard.
     newsletterSheet: '',
     // Free gift added to every order. Set to '' to switch it off everywhere in the cart and order message.
-    gift: 'Asanoha friendship paper booklet (1 per order)',
+    gift: '',
     // Analytics (loaded only after the visitor accepts). Google Analytics 4 measurement ID, e.g. 'G-XXXXXXX'.
     ga4Id: 'G-HX5RX21JLR',
     // Microsoft Clarity project ID for heatmaps and session recordings, e.g. 'abcd1234ef'.
@@ -56,9 +56,9 @@
   window.ASANOHA = { config: CONFIG };
 
   var DOSE = {
-    low:    { name: 'Low',    theme: 'Beach' },
-    medium: { name: 'Medium', theme: 'Mountain' },
-    high:   { name: 'High',   theme: 'Rooftop' }
+    low:    { name: 'Strength 1',    theme: 'Beach' },
+    medium: { name: 'Strength 2', theme: 'Mountain' },
+    high:   { name: 'Strength 3',   theme: 'Rooftop' }
   };
 
   // Prices are placeholders. Replace with your final MRP before launch.
@@ -74,13 +74,13 @@
                   { id: 'aam', label: 'Single tin: Kachcha aam', price: 749 },
                   { id: 'cocoa', label: 'Single tin: Dark cocoa', price: 749 } ] },
     { id: 'gum-high', type: 'gummies', dose: 'high', name: 'Rooftop Duo gummies', short: 'Two tins, 10 gummies each',
-      img: 'assets/img/tins-high.webp', alt: 'Asanoha high dose gummy tins with an anime rooftop night illustration',
+      img: 'assets/img/tins-high.webp', alt: 'Asanoha Strength 3 gummy tins with a rooftop night illustration',
       variants: [ { id: 'duo', label: 'Duo: Kachcha aam + Dark cocoa', price: 1599 },
                   { id: 'aam', label: 'Single tin: Kachcha aam', price: 849 },
                   { id: 'cocoa', label: 'Single tin: Dark cocoa', price: 849 } ] },
-    { id: 'tab-250', type: 'tablets', dose: 'high', name: 'unTrippy tablets', short: '250 mg Vijaya leaf extract per tablet',
-      img: 'assets/img/tablets.webp', alt: 'unTrippy tablets carton with two blister strips of 10 tablets',
-      story: 'Our high-strength tablet. Two strips of 10, both for you, on your own prescription. Same rooftop, fewer crumbs.',
+    { id: 'tab-250', type: 'tablets', dose: 'high', name: 'Vijaya leaf tablets', short: '250 mg Vijaya leaf extract per tablet',
+      img: 'assets/img/tablets.webp', alt: 'Vijaya leaf tablets carton with two blister strips of 10 tablets',
+      story: 'Our Strength 3 tablet. Two strips of 10, both for you, on your own prescription.',
       variants: [ { id: 'duo', label: 'Duo carton: 2 strips x 10 tablets', price: 1799 },
                   { id: 'strip', label: 'Single strip: 10 tablets', price: 949 } ] },
     { id: 'oil-low', type: 'oil', dose: 'low', name: 'Sunset oil syringes', short: '2 x 1 ml oral syringes',
@@ -90,7 +90,7 @@
       img: 'assets/img/oil-medium.webp', alt: 'Asanoha medium dose oil sleeve with two oral syringes',
       variants: [ { id: 'duo', label: 'Syringe duo, 2 x 1 ml', price: 1699 } ] },
     { id: 'oil-high', type: 'oil', dose: 'high', name: 'Rooftop oil syringes', short: '2 x 1 ml oral syringes',
-      img: 'assets/img/oil-high.webp', alt: 'Asanoha high dose oil sleeve with two oral syringes',
+      img: 'assets/img/oil-high.webp', alt: 'Asanoha Strength 3 oil sleeve with two oral syringes',
       variants: [ { id: 'duo', label: 'Syringe duo, 2 x 1 ml', price: 1899 } ] }
   ];
 
@@ -204,7 +204,7 @@
       var from = Math.min.apply(null, p.variants.map(function (v) { return v.price; }));
       return '<article class="card">' +
         '<button class="pic" data-open="' + p.id + '" aria-label="View ' + esc(p.name) + '"><img src="' + p.img + '" alt="' + esc(p.alt) + '" loading="lazy" width="1400" height="980"></button>' +
-        '<div class="body"><span class="badge ' + p.dose + '">' + DOSE[p.dose].name + ' dose</span>' +
+        '<div class="body"><span class="badge ' + p.dose + '">' + DOSE[p.dose].name + '</span>' +
         '<h3>' + esc(p.name) + '</h3><p class="meta">' + esc(p.short) + '. ' + esc(p.story || STORY[p.dose]) + '</p>' +
         (inCart(p.id) ? '<span class="incart">\u2713 ' + inCart(p.id) + ' in your cart</span>' : '') +
         '<div class="row"><span class="price">' + (p.variants.length > 1 && !CONFIG.hidePrices ? '<small>from </small>' : '') + money(from) + (CONFIG.hidePrices ? '<span class="lockchip">\uD83D\uDD12 after launch</span>' : '') + '</span>' +
@@ -239,14 +239,14 @@
     lastFocus = from || document.activeElement;
     var imgs = [p.img].concat(p.type === 'gummies' ? ['assets/img/tinback.webp', 'assets/img/foil.webp'] : ['assets/img/foil.webp']);
     var inside = p.type === 'tablets'
-      ? ['250 mg full spectrum Vijaya (cannabis) leaf extract per tablet', 'Blister strips of 10, printed aadha tera and aadha mera', 'High strength: usually prescribed after a lower dose, never as a first try', 'unTrippy is a name, not a promise. Some people feel drowsy, dizzy or mildly high, so take only what is prescribed']
+      ? ['250 mg full spectrum Vijaya (cannabis) leaf extract per tablet', 'Blister strips of 10, printed aadha tera and aadha mera', 'Strength 3: usually prescribed after a lower strength, never as a first try', 'Some people feel drowsy or dizzy, so take only what is prescribed']
       : p.type === 'gummies'
       ? ['10 gummies per tin, Vijaya leaf extract, strength as printed on the label', 'Kachcha aam: raw mango, a little salt, a little sour', 'Dark cocoa: bittersweet, grown-up chocolate', 'A reusable woven cord with every duo']
       : ['Two graduated 1 ml oral syringes of full spectrum Vijaya leaf oil', 'Strength per ml as printed on the label', 'Different plunger colours so nobody takes the other one\u2019s', 'Reusable sleeve with a woven cord'];
     $('#pm-body').innerHTML =
       '<div class="gallery"><img id="pm-main" src="' + imgs[0] + '" alt="' + esc(p.alt) + '">' +
       '<div class="thumbs">' + imgs.map(function (s, i) { return '<button type="button" data-src="' + s + '" aria-current="' + (i === 0) + '" aria-label="Image ' + (i + 1) + '"><img src="' + s + '" alt=""></button>'; }).join('') + '</div></div>' +
-      '<div class="info"><span class="badge ' + p.dose + '">' + DOSE[p.dose].name + ' dose \u00B7 ' + (p.type === 'tablets' ? 'Tablets' : DOSE[p.dose].theme) + '</span>' +
+      '<div class="info"><span class="badge ' + p.dose + '">' + DOSE[p.dose].name + ' \u00B7 ' + (p.type === 'tablets' ? 'Tablets' : DOSE[p.dose].theme) + '</span>' +
       '<h2 id="pm-title">' + esc(p.name) + '</h2><p>' + esc(p.story || STORY[p.dose]) + '</p>' +
       (inCart(p.id) ? '<p class="incart">\u2713 Already in your cart: ' + cart.filter(function (l) { return l.p === p.id; }).map(function (l) { return l.q + ' x ' + esc(variantOf(l.p, l.v).label); }).join(', ') + '</p>' : '') +
       '<div class="variants" role="radiogroup" aria-label="Choose a pack">' + p.variants.map(function (v, i) {
@@ -321,7 +321,7 @@
     title.textContent = 'Your cart';
     body.innerHTML = cart.map(function (l, i) {
       var p = byId[l.p], v = variantOf(l.p, l.v);
-      return '<div class="line"><img src="' + p.img + '" alt=""><div><b>' + esc(p.name) + '</b><small>' + esc(v.label) + '</small><small>' + DOSE[p.dose].name + ' dose \u00B7 ' + money(v.price) + '</small><button class="rm" data-rm="' + i + '">Remove</button></div>' +
+      return '<div class="line"><img src="' + p.img + '" alt=""><div><b>' + esc(p.name) + '</b><small>' + esc(v.label) + '</small><small>' + DOSE[p.dose].name + ' \u00B7 ' + money(v.price) + '</small><button class="rm" data-rm="' + i + '">Remove</button></div>' +
         '<div class="qty" role="group" aria-label="Quantity for ' + esc(p.name) + '"><button data-dq="-1" data-i="' + i + '" aria-label="One less">\u2212</button><output>' + l.q + '</output><button data-dq="1" data-i="' + i + '" aria-label="One more">+</button></div></div>';
     }).join('');
     foot.innerHTML = (CONFIG.hidePrices ? '<p class="hint" style="margin:0">\uD83D\uDD12 Prices go live at launch. Send your order now and we\u2019ll confirm the price and delivery charge before you pay.</p>' : '') +
@@ -348,7 +348,7 @@
     store.set('details', d);
     var now = new Date(), id = 'ASN-' + String(now.getFullYear()).slice(2) + ('0' + (now.getMonth() + 1)).slice(-2) + ('0' + now.getDate()).slice(-2) + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
     var s = subtotal(), sh = shippingFor(s);
-    var lines = cart.map(function (l) { var p = byId[l.p], v = variantOf(l.p, l.v); return '\u2022 ' + p.name + ' (' + DOSE[p.dose].name + ' dose), ' + v.label + ' x ' + l.q + (CONFIG.hidePrices ? '' : ' = ' + inr(v.price * l.q)); });
+    var lines = cart.map(function (l) { var p = byId[l.p], v = variantOf(l.p, l.v); return '\u2022 ' + p.name + ' (' + DOSE[p.dose].name + '), ' + v.label + ' x ' + l.q + (CONFIG.hidePrices ? '' : ' = ' + inr(v.price * l.q)); });
     var text = 'Hi Asanoha, new order ' + id + '\n\n' + lines.join('\n') + (CONFIG.gift ? '\n\u2022 Free gift: ' + CONFIG.gift : '') + (CONFIG.hidePrices ? '\n\nPlease confirm the price and send a payment link once you launch.' : '\n\nSubtotal: ' + inr(s) + '\nDelivery: ' + (sh ? inr(sh) : 'Free') + '\nTotal: ' + inr(s + sh)) +
       '\n\nName: ' + d.name + '\nPhone: ' + d.phone + (d.email ? '\nEmail: ' + d.email : '') + '\nAddress: ' + d.addr + ', ' + d.city + ' - ' + d.pin +
       '\nPrescription: ' + (rx === 'upload' ? 'attached (' + file.name + ')' : 'need a consultation') +

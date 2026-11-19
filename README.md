@@ -39,7 +39,7 @@ Each route has its own 18+ gate using `localStorage` key `asanoha:tools-adult`. 
 The AI-labelled slam-book experience currently runs locally in the browser and includes an optional prompt-copy flow. It does not expose an AI API key. For a production AI model, add a server-side endpoint such as `/api/friendship-story` and keep the provider key on the server.
 
 
-Brand terminology update: public references to Rolling Paper(s) were changed to Friendship Paper(s).
+Rolling papers ("friendship papers") were removed from the site and from orders on 19 Nov 2026 on legal advice: giving them away with cannabis-leaf medicines suggests smoking. Do not bring them back. Vijaya medicines also stay out of Noha Money cashback and referral rewards, and doses are named Strength 1, 2 and 3.
 
 ## Shared Asanoha login (Supabase)
 Sign-in can run on Firebase (current) or on the shared Asanoha account in Supabase, which Wearday also uses. With Supabase, one Google or Apple sign-in works on asanoha.co.in, wearday.asanoha.co.in and the Wearday app, and Noha Money is one wallet with one history.
