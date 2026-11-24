@@ -1,0 +1,12 @@
+{
+  "name": "asanoha-investors",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/logic.test.ts",
+    "dev": "wrangler dev --local --port 8799",
+    "migrate:local": "wrangler d1 migrations apply asanoha-investors --local",
+    "migrate": "wrangler d1 migrations apply asanoha-investors --remote",
+    "deploy": "wrangler deploy"
+  }
+}

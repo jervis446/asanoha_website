@@ -1,0 +1,24 @@
+{
+  // Investor contact API for asanoha.co.in/investors.
+  // Email is checked by the shared Asanoha sign-in (Supabase emails the code).
+  // WhatsApp is checked with a code sent through the Noha Pay WhatsApp relay.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "asanoha-investors",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "observability": { "enabled": true },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "asanoha-investors", "database_id": "REPLACE_AFTER_CREATE", "migrations_dir": "migrations" }
+  ],
+  "vars": {
+    "SUPABASE_URL": "https://fkhxgkscnkxtwnvecoyv.supabase.co",
+    "SUPABASE_ANON_KEY": "sb_publishable_kJghZQlNmpuy-NAGfUm4Dg_EHybViX9",
+    "WA_RELAY_URL": "https://wa.peoplepitchers.com/send",
+    "ALLOWED_ORIGINS": "https://asanoha.co.in,http://localhost:4410",
+    "EMAIL_FROM": "Asanoha <founders@asanoha.co.in>",
+    "TEAM_EMAIL": "orders@asanoha.co.in",
+    "TEAM_WHATSAPP": ""
+  }
+  // Secrets (wrangler secret put): WA_RELAY_TOKEN, CODE_SALT, RESEND_API_KEY (optional until the
+  // asanoha.co.in domain is verified in Resend; without it, no emails are sent and the lead is still saved).
+}
