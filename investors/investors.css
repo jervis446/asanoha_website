@@ -113,6 +113,7 @@ img, svg { display: block; }
 .btn-quiet:hover { background: var(--surface-2); }
 .btn-sm { height: 36px; padding: 0 14px; font-size: 14px; border-radius: 8px; }
 .btn-wide { width: 100%; }
+.btn .short { display: none; }
 .btn[disabled] { opacity: 0.6; cursor: progress; }
 
 .icon-btn {
@@ -448,6 +449,7 @@ h3 { font: 500 18px/1.35 var(--sans); }
 @media (max-width: 400px) {
   .nav-actions .btn-sm { font-size: 13px; }
   .nav-actions .btn-sm span.long { display: none; }
+  .nav-actions .btn-sm span.short { display: inline; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -564,3 +566,44 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 
 .c-note { font-size: 13px; color: var(--muted); text-align: center; }
 .c-note a { color: var(--text-2); }
+
+/* Language menu */
+.lang-menu { position: relative; }
+.lang-list {
+  position: absolute; top: calc(100% + 8px); inset-inline-end: 0; z-index: 60; margin: 0; padding: 6px; list-style: none;
+  min-width: 168px; max-height: min(70vh, 520px); overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--line-2); border-radius: 12px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+}
+.lang-list[hidden] { display: none; }
+.lang-list a { font-family: 'Manrope', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Telugu', 'Noto Sans Tamil', 'Noto Sans Gujarati', 'Noto Sans Kannada', 'Noto Sans Malayalam', 'Noto Sans Gurmukhi', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans Arabic', system-ui, sans-serif; display: block; padding: 8px 12px; border-radius: 8px; color: var(--text); text-decoration: none; font-size: 15px; line-height: 1.4; }
+.lang-list a:hover, .lang-list a:focus-visible { background: var(--surface-2); }
+.lang-list a[aria-current='page'] { color: var(--accent-ink); font-weight: 500; }
+
+/* Translated pages: longer words, so the nav collapses earlier and the nav button uses its short label */
+:root[lang]:not([lang|='en']) .nav-actions .btn-sm span.long { display: none; }
+:root[lang]:not([lang|='en']) .nav-actions .btn-sm span.short { display: inline; }
+@media (max-width: 1320px) {
+  :root[lang]:not([lang|='en']) .brand-tag { display: none; }
+  :root[lang]:not([lang|='en']) .nav-links { display: none; }
+  :root[lang]:not([lang|='en']) .menu-btn { display: inline-flex; }
+  :root[lang]:not([lang|='en']) .nav-links + .nav-actions { margin-left: auto; }
+  :root[lang]:not([lang|='en']) .nav.open .nav-links {
+    display: flex; flex-direction: column; gap: 2px; position: absolute; left: 0; right: 0; top: 64px;
+    padding: 8px 16px 16px; background: var(--bg); border-bottom: 1px solid var(--line);
+  }
+  :root[lang]:not([lang|='en']) .nav.open .nav-links a { padding: 12px; font-size: 16px; }
+}
+:root[lang]:not([lang|='en']) .status { white-space: normal; text-align: end; flex: 0 1 auto; min-width: 0; }
+:root[lang]:not([lang|='en']) main { overflow-wrap: break-word; }
+:root[lang]:not([lang|='en']) main p, :root[lang]:not([lang|='en']) main dd, :root[lang]:not([lang|='en']) main span { overflow-wrap: anywhere; }
+:root[lang]:not([lang|='en']) .receipt { align-items: flex-start; }
+@media (max-width: 680px) {
+  :root[lang]:not([lang|='en']) h1 { font-size: clamp(24px, 7vw, 34px); }
+  :root[lang]:not([lang|='en']) h2 { font-size: clamp(22px, 6.4vw, 28px); }
+}
+@media (max-width: 480px) {
+  :root[lang]:not([lang|='en']) .nav-actions .btn-sm { display: none; }
+}
+
+/* Theme reveal (same as Kosmik): the browser's default cross-fade is replaced by a growing circle */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }

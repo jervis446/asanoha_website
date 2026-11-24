@@ -1,9 +1,21 @@
 /* Asanoha for investors: motion, the build chart and the verified contact flow. */
 (function () {
   'use strict';
+  /* Translated pages set window.INV_T; English is the key and the fallback. */
+  var T = function (s) { var d = window.INV_T; return (d && d[s]) || s; };
   var root = document.documentElement;
   root.classList.add('js');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Language menu */
+  var langBtn = document.getElementById('lang-btn');
+  var langList = document.getElementById('lang-list');
+  if (langBtn && langList) {
+    var setLang = function (open) { langList.hidden = !open; langBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); };
+    langBtn.addEventListener('click', function (e) { e.stopPropagation(); setLang(langList.hidden); });
+    document.addEventListener('click', function (e) { if (!langList.hidden && !langList.contains(e.target)) setLang(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !langList.hidden) { setLang(false); langBtn.focus(); } });
+  }
 
   /* Theme */
   var themeBtn = document.getElementById('theme-btn');
@@ -12,12 +24,26 @@
     if (t) return t === 'dark';
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
-  themeBtn.addEventListener('click', function () {
-    var next = isDark() ? 'light' : 'dark';
+  function applyTheme(next) {
     root.setAttribute('data-theme', next);
     try { localStorage.setItem('asanoha:investors-theme', next); } catch (e) {}
     drawChart();
     dotClips.forEach(function (c) { c.redraw(); });
+  }
+  // Same reveal as Kosmik on the web: a circle of the new theme grows from the button, about 400 ms
+  themeBtn.addEventListener('click', function () {
+    var next = isDark() ? 'light' : 'dark';
+    if (!document.startViewTransition || reduce) { applyTheme(next); return; }
+    var b = themeBtn.getBoundingClientRect();
+    var x = b.left + b.width / 2, y = b.top + b.height / 2;
+    var r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    var t = document.startViewTransition(function () { applyTheme(next); });
+    t.ready.then(function () {
+      root.animate(
+        { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + r + 'px at ' + x + 'px ' + y + 'px)'] },
+        { duration: 400, easing: 'cubic-bezier(.2,.7,.2,1)', pseudoElement: '::view-transition-new(root)' }
+      );
+    }).catch(function () {});
   });
 
   /* Nav border once the page scrolls */
@@ -228,12 +254,12 @@
   var star = document.querySelector('.star');
   var hint = document.getElementById('star-hint');
   var blurbs = {
-    store: 'Asanoha store: prescription Ayurveda, packed in pairs',
-    pp: 'People Pitchers: hiring from real work, live',
-    kosmik: 'Kosmik: the Gita and Vedic astrology with sources, alpha on web and Android',
-    wearday: 'Wearday: your wardrobe and outfit log, built',
-    pay: 'Noha Pay: our own UPI rail, takes payments for three products',
-    money: 'Noha Money: one closed wallet for cashback and refunds'
+    store: T('Asanoha store: prescription Ayurveda, packed in pairs'),
+    pp: T('People Pitchers: hiring from real work, public on 14 Dec'),
+    kosmik: T('Kosmik: the Gita and Vedic astrology with sources, public on 1 Dec'),
+    wearday: T('Wearday: your wardrobe and outfit log, built'),
+    pay: T('Noha Pay: our own UPI rail, takes payments for three products'),
+    money: T('Noha Money: one closed wallet for cashback and refunds')
   };
   requestAnimationFrame(function () {
     setTimeout(function () { star.classList.add('in'); }, 120);
@@ -242,7 +268,7 @@
   function focusPart(k) {
     star.classList.toggle('focus', !!k);
     star.querySelectorAll('[data-k]').forEach(function (el) { el.classList.toggle('on', el.getAttribute('data-k') === k); });
-    hint.textContent = k ? blurbs[k] : 'Point at a part';
+    hint.textContent = k ? blurbs[k] : T('Point at a part');
   }
   star.querySelectorAll('.petal').forEach(function (p) {
     var k = p.getAttribute('data-k');
@@ -274,14 +300,14 @@
   window.addEventListener('resize', onTimeline);
   onTimeline();
 
-  /* Build chart: commits a week by product, from git history (21 Sep to 24 Nov 2026) */
-  var WEEKS = ['21 Sep', '28 Sep', '5 Oct', '12 Oct', '19 Oct', '26 Oct', '2 Nov', '9 Nov', '16 Nov', '23 Nov'];
+  /* Build chart: commits a week by product, from git history (21 Sep to 25 Nov 2026) */
+  var WEEKS = [T('21 Sep'), T('28 Sep'), T('5 Oct'), T('12 Oct'), T('19 Oct'), T('26 Oct'), T('2 Nov'), T('9 Nov'), T('16 Nov'), T('23 Nov')];
   var SERIES = [
-    { k: 'store', name: 'Asanoha store', v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 0] },
-    { k: 'wearday', name: 'Wearday', v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
-    { k: 'pp', name: 'People Pitchers', v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 0] },
-    { k: 'kosmik', name: 'Kosmik', v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 51] },
-    { k: 'pay', name: 'Noha Pay', v: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0] }
+    { k: 'store', name: T('Asanoha store'), v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 10] },
+    { k: 'wearday', name: T('Wearday'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
+    { k: 'pp', name: T('People Pitchers'), v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 6] },
+    { k: 'kosmik', name: T('Kosmik'), v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 76] },
+    { k: 'pay', name: T('Noha Pay'), v: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0] }
   ];
   var chartEl = document.getElementById('chart');
   var legendEl = document.getElementById('legend');
@@ -366,7 +392,7 @@
     // The quiet month, said in words
     var qx = pad.l + band * 2, qw = band * 4;
     var note = el('text', { class: 'note', x: qx + qw / 2, y: pad.t + ih - 12, 'text-anchor': 'middle' }, svg);
-    note.textContent = narrow ? 'Quiet October' : 'October: day jobs, seven commits';
+    note.textContent = narrow ? T('Quiet October') : T('October: day jobs, seven commits');
     chartEl.insertBefore(svg, tip);
     if (chartEl.classList.contains('in') || !io) chartEl.classList.add('in');
   }
@@ -413,22 +439,22 @@
   function busy(form, on, label) {
     var b = form.querySelector('button[type=submit]');
     if (!b) return;
-    if (on) { b.dataset.label = b.textContent; b.textContent = label || 'One moment'; b.disabled = true; }
+    if (on) { b.dataset.label = b.textContent; b.textContent = label || T('One moment'); b.disabled = true; }
     else { b.textContent = b.dataset.label || b.textContent; b.disabled = false; }
   }
 
   function api(path, body) {
-    if (!API) return Promise.reject(new Error('The contact form isn’t switched on yet. Please write to founders@asanoha.co.in.'));
+    if (!API) return Promise.reject(new Error(T('The contact form isn’t switched on yet. Please write to founders@asanoha.co.in.')));
     return fetch(API + path, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(body || {})
     }).then(function (res) {
       return res.json().catch(function () { return {}; }).then(function (j) {
-        if (!res.ok) throw new Error(j.error || 'Something went wrong. Please try again.');
+        if (!res.ok) throw new Error(j.error || T('Something went wrong. Please try again.'));
         return j;
       });
-    }, function () { throw new Error('We couldn’t reach our server. Check your connection and try again.'); });
+    }, function () { throw new Error(T('We couldn’t reach our server. Check your connection and try again.')); });
   }
 
   // Keep what the investor typed if they close the dialog by mistake
@@ -457,15 +483,15 @@
     setError(f, '');
     var v = function (k) { return (f.elements[k].value || '').trim(); };
     var d = { name: v('name'), firm: v('firm'), role: v('role'), website: v('website'), email: v('email').toLowerCase(), phone: v('phone'), message: v('message') };
-    if (!d.name) return setError(f, 'Please add your name.');
-    if (!d.firm) return setError(f, 'Please add your fund or firm. Angels can write Angel.');
+    if (!d.name) return setError(f, T('Please add your name.'));
+    if (!d.firm) return setError(f, T('Please add your fund or firm. Angels can write Angel.'));
     var p = phoneOk(d.phone);
-    if (!p) return setError(f, 'Please add a 10-digit Indian mobile number that has WhatsApp.');
+    if (!p) return setError(f, T('Please add a 10-digit Indian mobile number that has WhatsApp.'));
     d.phone = p;
-    if (d.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return setError(f, 'That email doesn’t look right. You can also leave it empty.');
-    if (!f.elements.consent.checked) return setError(f, 'Please agree to be contacted so we can write back.');
+    if (d.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return setError(f, T('That email doesn’t look right. You can also leave it empty.'));
+    if (!f.elements.consent.checked) return setError(f, T('Please agree to be contacted so we can write back.'));
     state.details = d;
-    busy(f, true, 'Sending the code');
+    busy(f, true, T('Sending the code'));
     api('/api/start', {
       name: d.name, firm: d.firm, role: d.role, website: d.website, email: d.email, phone: d.phone, message: d.message, consent: true
     }).then(function (r) {
@@ -481,13 +507,13 @@
     var f = forms[2];
     setError(f, '');
     var code = f.elements.code.value.replace(/\D/g, '');
-    if (code.length !== 6) return setError(f, 'Please type the 6-digit code from WhatsApp.');
-    busy(f, true, 'Checking');
+    if (code.length !== 6) return setError(f, T('Please type the 6-digit code from WhatsApp.'));
+    busy(f, true, T('Checking'));
     api('/api/verify', { id: state.id, code: code }).then(function (r) {
       bind('first', state.details.name.split(/\s+/)[0]);
       bind('doneText', r.updated
-        ? 'We have updated your details. One of the founders will reach out to you.'
-        : 'We have your details and sent you a note on WhatsApp. One of the founders will reach out to you.');
+        ? T('We have updated your details. One of the founders will reach out to you.')
+        : T('We have your details and sent you a note on WhatsApp. One of the founders will reach out to you.'));
       try { localStorage.removeItem('asanoha:investor-draft'); } catch (e2) {}
       show(3);
     }).catch(function (err) { setError(f, err.message); }).then(function () { busy(f, false); });
@@ -498,8 +524,8 @@
     setError(f, '');
     b.disabled = true;
     api('/api/resend', { id: state.id }).then(function () {
-      b.textContent = 'Sent. You can ask again in a minute';
-      setTimeout(function () { b.textContent = 'Send the code again'; b.disabled = false; }, 60000);
+      b.textContent = T('Sent. You can ask again in a minute');
+      setTimeout(function () { b.textContent = T('Send the code again'); b.disabled = false; }, 60000);
     }).catch(function (err) { setError(f, err.message); b.disabled = false; });
   });
 
