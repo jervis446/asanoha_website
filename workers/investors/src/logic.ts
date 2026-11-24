@@ -105,7 +105,7 @@ export function confirmationEmail(name: string): { subject: string; text: string
     '',
     'If you want to send anything before then, just reply to this email.',
     '',
-    'Adarsh, Joseph, Soumyadev and Pankaj',
+    'Adarsh, Joseph and Soumyadev',
     'Asanoha LLP, Bengaluru',
     'asanoha.co.in/investors',
   ].join('\n');
@@ -114,7 +114,7 @@ export function confirmationEmail(name: string): { subject: string; text: string
     `<p>Hi ${esc(first)},</p>` +
     `<p>Thank you for your interest in Asanoha. We have your details, and one of the founders will reach out to you.</p>` +
     `<p>If you want to send anything before then, just reply to this email.</p>` +
-    `<p style="margin-top:24px">Adarsh, Joseph, Soumyadev and Pankaj<br><span style="color:#7b7266">Asanoha LLP, Bengaluru · <a href="https://asanoha.co.in/investors/" style="color:#a84b27">asanoha.co.in/investors</a></span></p>` +
+    `<p style="margin-top:24px">Adarsh, Joseph and Soumyadev<br><span style="color:#7b7266">Asanoha LLP, Bengaluru · <a href="https://asanoha.co.in/investors/" style="color:#a84b27">asanoha.co.in/investors</a></span></p>` +
     `</div>`;
   return { subject: 'We’ll be in touch: Asanoha', text, html };
 }
