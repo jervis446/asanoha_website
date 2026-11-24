@@ -26,6 +26,21 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* Sections menu on narrow screens: the links collapse into one button */
+  var menuBtn = document.getElementById('menu-btn');
+  function setMenu(open) {
+    nav.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+  }
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function () { setMenu(!nav.classList.contains('open')); });
+    document.getElementById('nav-links').addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('open')) { setMenu(false); menuBtn.focus(); }
+    });
+    document.addEventListener('click', function (e) { if (nav.classList.contains('open') && !nav.contains(e.target)) setMenu(false); });
+  }
+
   /* Reveal on scroll */
   var revealables = document.querySelectorAll('.section-head, .product, .rail, .comp-table, .chart-card, .shared-item, .faq, .person, .cta-inner, .stats');
   revealables.forEach(function (el) { el.classList.add('reveal'); });
@@ -492,8 +507,14 @@
     b.addEventListener('click', function () { show(Number(b.getAttribute('data-back'))); });
   });
 
+  var opener = null;
+  dialog.addEventListener('close', function () {
+    if (opener && document.contains(opener)) opener.focus({ preventScroll: true });
+    opener = null;
+  });
   document.querySelectorAll('[data-open-contact]').forEach(function (b) {
     b.addEventListener('click', function () {
+      opener = b;
       if (state.step === 3) state.step = 1;
       loadDraft();
       show(state.step);
