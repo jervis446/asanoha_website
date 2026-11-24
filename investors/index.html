@@ -26,7 +26,7 @@
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="investors.css?v=5">
+<link rel="stylesheet" href="investors.css?v=6">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Asanoha LLP","legalName":"Asanoha LLP","identifier":"LLPIN ADE-0939","url":"https://asanoha.co.in/","address":{"@type":"PostalAddress","streetAddress":"Unit 101, Oxford Towers, 139/88 HAL Old Airport Road, HAL II Stage","addressLocality":"Bengaluru","addressRegion":"Karnataka","postalCode":"560008","addressCountry":"IN"},"subOrganization":[{"@type":"Organization","name":"People Pitchers","url":"https://peoplepitchers.com"},{"@type":"Organization","name":"Kosmik","url":"https://kosmik.asanoha.co.in"},{"@type":"Organization","name":"Wearday","url":"https://wearday.asanoha.co.in"}]}</script>
 </head>
 <body>
@@ -434,7 +434,7 @@
       <details><summary>Why now?</summary><p>UPI made small payments free to take, AI made one engineer worth a team, and Indian users now expect apps in their own language. A small team can now ship what needed fifty people five years ago.</p></details>
       <details><summary>Why you?</summary><p>We ship. 323 commits, four products and a registered LLP, with day jobs. One founder writes the code, one handles people and partners, and one runs operations.</p></details>
       <details><summary>What are the risks?</summary><p>The store sells a regulated Ayurvedic medicine, so licences, labels and advertising rules come first, and we follow legal advice on each. WhatsApp codes run through our own relay today and should move to the official WhatsApp Business API before we scale. And four products is a lot for three people, which is exactly why we share everything we can.</p></details>
-      <details><summary>What happens after I get in touch?</summary><p>You confirm your email and WhatsApp with a code, so we know the message is really from you. We get your note straight away, and one of the founders writes back to you.</p></details>
+      <details><summary>What happens after I get in touch?</summary><p>You confirm your WhatsApp number with a code, so we know the message is really from you. We get your note straight away, and one of the founders writes back to you.</p></details>
     </div>
   </div>
 </section>
@@ -445,7 +445,7 @@
     <svg class="cta-star" viewBox="-50 -50 100 100" aria-hidden="true"><use href="#asanoha-star"/></svg>
     <div>
       <h2 id="cta-title">Talk to the founders</h2>
-      <p>Confirm your email and WhatsApp with a code, leave a note, and we will reach out to you.</p>
+      <p>Confirm your WhatsApp number with a code, leave a note, and we will reach out to you.</p>
     </div>
     <button class="btn btn-primary" type="button" data-open-contact>Start</button>
   </div>
@@ -473,7 +473,7 @@
   <form method="dialog" class="c-close-row"><button class="icon-btn" value="close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></form>
   <h2 id="c-title">Talk to the founders</h2>
   <ol class="steps mono" aria-label="Progress">
-    <li data-step="1" class="on">Details</li><li data-step="2">Email</li><li data-step="3">WhatsApp</li><li data-step="4">Done</li>
+    <li data-step="1" class="on">Details</li><li data-step="2">WhatsApp</li><li data-step="3">Done</li>
   </ol>
 
   <form class="c-step" id="s1" data-step="1" novalidate>
@@ -485,32 +485,25 @@
       <label class="field"><span>Your role <em>optional</em></span><input name="role" autocomplete="organization-title" maxlength="120"></label>
       <label class="field"><span>Website <em>optional</em></span><input name="website" inputmode="url" maxlength="200"></label>
     </div>
-    <label class="field"><span>Work email</span><input name="email" type="email" autocomplete="email" required></label>
-    <label class="field"><span>WhatsApp number</span><span class="prefix-input"><span class="prefix mono">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14"></span></label>
-    <label class="check"><input type="checkbox" name="outsideIndia"><span>I’m outside India. Skip WhatsApp and confirm by email only</span></label>
+    <label class="field"><span>WhatsApp number</span><span class="prefix-input"><span class="prefix mono">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" required></span></label>
+    <label class="field"><span>Email <em>optional</em></span><input name="email" type="email" autocomplete="email" maxlength="200"></label>
     <label class="field"><span>What interests you <em>optional</em></span><textarea name="message" rows="3" maxlength="2000"></textarea></label>
-    <label class="check"><input type="checkbox" name="consent" required><span>Asanoha may contact me about investing. My email confirmation creates an Asanoha account, which I can delete any time</span></label>
+    <label class="check"><input type="checkbox" name="consent" required><span>Asanoha may contact me about investing on WhatsApp, and by email if I gave one</span></label>
     <p class="c-error" role="alert"></p>
-    <button class="btn btn-primary btn-wide" type="submit">Email me a code</button>
+    <button class="btn btn-primary btn-wide" type="submit">Send me a WhatsApp code</button>
+    <p class="c-note">Outside India? Write to <a href="mailto:founders@asanoha.co.in">founders@asanoha.co.in</a></p>
   </form>
 
   <form class="c-step" id="s2" data-step="2" hidden novalidate>
-    <p class="c-text">We sent a 6-digit code to <b data-bind="email"></b>. It can take a minute.</p>
-    <label class="field"><span>Email code</span><input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" class="code-input mono"></label>
-    <p class="c-error" role="alert"></p>
-    <button class="btn btn-primary btn-wide" type="submit">Confirm email</button>
-    <button class="btn btn-quiet btn-wide" type="button" data-back="1">Change email</button>
-  </form>
-
-  <form class="c-step" id="s3" data-step="3" hidden novalidate>
     <p class="c-text">We sent a 6-digit code on WhatsApp to <b data-bind="phone"></b>.</p>
     <label class="field"><span>WhatsApp code</span><input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" class="code-input mono"></label>
     <p class="c-error" role="alert"></p>
     <button class="btn btn-primary btn-wide" type="submit">Confirm and send</button>
     <button class="btn btn-quiet btn-wide" type="button" data-resend>Send the code again</button>
+    <button class="btn btn-quiet btn-wide" type="button" data-back="1">Change number</button>
   </form>
 
-  <div class="c-step c-done" data-step="4" hidden>
+  <div class="c-step c-done" data-step="3" hidden>
     <svg class="done-star" viewBox="-50 -50 100 100" aria-hidden="true"><use href="#asanoha-star"/></svg>
     <h3>Thank you, <span data-bind="first"></span></h3>
     <p class="c-text" data-bind="doneText">We have your details. One of the founders will reach out to you.</p>
@@ -518,6 +511,6 @@
   </div>
 </dialog>
 
-<script src="investors.js?v=5" defer></script>
+<script src="investors.js?v=6" defer></script>
 </body>
 </html>

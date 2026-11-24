@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { allowedOrigin, confirmationEmail, normalizePhone, parseLead, teamNote } from '../src/logic.ts';
+import { allowedOrigin, confirmationMessage, normalizePhone, parseLead, teamNote } from '../src/logic.ts';
+
+const base = { name: 'Riya Menon', firm: 'Acme Ventures', phone: '98934 53114', consent: true };
 
 test('normalizePhone accepts Indian mobiles in common forms', () => {
   for (const v of ['9893453114', '+91 98934 53114', '09893453114', '919893453114', '0091-9893453114']) {
@@ -14,19 +16,26 @@ test('normalizePhone rejects landlines, short and foreign numbers', () => {
   }
 });
 
-test('parseLead needs name, firm and consent', () => {
-  assert.throws(() => parseLead({ firm: 'X', consent: true }), /name/);
-  assert.throws(() => parseLead({ name: 'A', consent: true }), /firm/);
-  assert.throws(() => parseLead({ name: 'A', firm: 'X' }), /agree/);
+test('parseLead needs name, firm, a WhatsApp number and consent', () => {
+  assert.throws(() => parseLead({ ...base, name: '' }), /name/);
+  assert.throws(() => parseLead({ ...base, firm: '' }), /firm/);
+  assert.throws(() => parseLead({ ...base, phone: '12345' }), /WhatsApp/);
+  assert.throws(() => parseLead({ ...base, consent: false }), /agree/);
+});
+
+test('parseLead keeps email optional and unverified, but checks its shape', () => {
+  assert.equal(parseLead(base).email, null);
+  assert.equal(parseLead({ ...base, email: ' Riya@Acme.VC ' }).email, 'riya@acme.vc');
+  assert.throws(() => parseLead({ ...base, email: 'not-an-email' }), /email/);
 });
 
 test('parseLead trims, caps and fixes the website', () => {
-  const l = parseLead({ name: '  Riya Menon ', firm: 'Acme Ventures', website: 'acme.vc', message: 'x'.repeat(3000), consent: true, outsideIndia: true });
+  const l = parseLead({ ...base, name: '  Riya Menon ', website: 'acme.vc', message: 'x'.repeat(3000) });
   assert.equal(l.name, 'Riya Menon');
   assert.equal(l.website, 'https://acme.vc/');
   assert.equal(l.message?.length, 2000);
-  assert.equal(l.outsideIndia, true);
-  assert.throws(() => parseLead({ name: 'A', firm: 'B', website: 'not a site', consent: true }), /website/);
+  assert.equal(l.phone, '+919893453114');
+  assert.throws(() => parseLead({ ...base, website: 'not a site' }), /website/);
 });
 
 test('allowedOrigin only allows listed origins', () => {
@@ -36,14 +45,13 @@ test('allowedOrigin only allows listed origins', () => {
   assert.equal(allowedOrigin(null, list), null);
 });
 
-test('confirmation email says we will reach out and escapes the name', () => {
-  const m = confirmationEmail('<b>Riya</b> Menon');
-  assert.match(m.text, /will reach out to you/);
-  assert.ok(!m.html.includes('<b>Riya'));
+test('confirmation message says a founder will reach out', () => {
+  assert.match(confirmationMessage('Riya Menon'), /^Hi Riya,/);
+  assert.match(confirmationMessage('Riya Menon'), /will reach out to you/);
 });
 
-test('team note marks verified contact details', () => {
-  const n = teamNote({ name: 'Riya', firm: 'Acme', role: 'Partner', website: null, focus: null, message: null, outsideIndia: false, email: 'r@acme.vc', phone: '+919893453114' });
-  assert.match(n, /Email \(verified\): r@acme.vc/);
-  assert.match(n, /\+919893453114 \(verified\)/);
+test('team note marks WhatsApp as verified and email as not verified', () => {
+  const n = teamNote(parseLead({ ...base, email: 'r@acme.vc', role: 'Partner' }));
+  assert.match(n, /WhatsApp \(verified\): \+919893453114/);
+  assert.match(n, /Email \(not verified\): r@acme.vc/);
 });

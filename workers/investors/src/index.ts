@@ -1,33 +1,35 @@
 /**
  * Investor contact API for asanoha.co.in/investors.
  *
- * 1. The page signs the investor in with an emailed code from the shared Asanoha account
- *    (Supabase), so the email address is confirmed before anything reaches us.
- * 2. POST /api/phone/start and /api/phone/verify confirm an Indian WhatsApp number with a
- *    six-digit code sent through the Noha Pay WhatsApp relay. Investors outside India skip this.
- * 3. POST /api/lead saves the details, emails the investor that we will reach out (Resend), and
- *    tells the founders by email and WhatsApp.
+ * The only check is WhatsApp: there is no sign-in, and the email address is optional and not
+ * verified.
  *
- * Every route needs the Asanoha access token; it is checked with Supabase, never trusted.
+ * 1. POST /api/start  {name, firm, role, website, email, message, phone, consent}
+ *    checks the details, sends a six-digit code to the WhatsApp number through the Noha Pay relay
+ *    and keeps the details in a pending check. Returns {id, phone (masked)}.
+ * 2. POST /api/resend {id}       sends the code again (once a minute).
+ * 3. POST /api/verify {id, code} confirms the number, saves the lead, sends the investor a
+ *    WhatsApp message that we will reach out, and tells the founders.
+ *
+ * Abuse limits: a minute between codes and 5 a day per number, 10 checks an hour per IP address,
+ * 5 tries per code. Codes are stored only as salted hashes.
  */
 import {
   ApiError,
   allowedOrigin,
-  confirmationEmail,
+  confirmationMessage,
   hashCode,
-  indiaDay,
   maskPhone,
   normalizePhone,
   parseLead,
   sha256,
   sixDigitCode,
   teamNote,
+  type LeadInput,
 } from './logic.ts';
 
 export interface Env {
   DB: D1Database;
-  SUPABASE_URL: string;
-  SUPABASE_ANON_KEY: string;
   WA_RELAY_URL: string;
   WA_RELAY_TOKEN?: string;
   CODE_SALT?: string;
@@ -40,36 +42,15 @@ export interface Env {
 
 const CODE_TTL = 10 * 60_000;
 const RESEND_AFTER = 60_000;
-const MAX_SENDS_A_DAY = 5;
+const SENDS_PER_NUMBER_A_DAY = 5;
+const CHECKS_PER_IP_AN_HOUR = 10;
 const MAX_ATTEMPTS = 5;
+const DAY = 24 * 3_600_000;
 
-type User = { id: string; email: string };
-
-const verified = new Map<string, { user: User; until: number }>();
-
-async function signedIn(req: Request, env: Env): Promise<User> {
-  const header = req.headers.get('authorization') ?? '';
-  const token = header.startsWith('Bearer ') ? header.slice(7).trim() : '';
-  if (!token) throw new ApiError('Please confirm your email first.', 401);
-  const key = await sha256(token);
-  const hit = verified.get(key);
-  if (hit && hit.until > Date.now()) return hit.user;
-  const res = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
-    headers: { apikey: env.SUPABASE_ANON_KEY, authorization: `Bearer ${token}` },
-    signal: AbortSignal.timeout(10_000),
-  });
-  if (res.status === 401 || res.status === 403) throw new ApiError('Your email check has expired. Please ask for a new code.', 401);
-  if (!res.ok) throw new ApiError('We could not check your email just now. Please try again.', 503);
-  const u = (await res.json()) as { id?: string; email?: string | null; email_confirmed_at?: string | null };
-  if (!u.id || !u.email || !u.email_confirmed_at) throw new ApiError('Please confirm your email first.', 401);
-  const user = { id: u.id, email: u.email.trim().toLowerCase() };
-  if (verified.size > 2000) verified.clear();
-  verified.set(key, { user, until: Date.now() + 5 * 60_000 });
-  return user;
-}
+const salt = (env: Env) => env.CODE_SALT ?? 'local-development';
 
 async function sendWhatsApp(env: Env, to: string, text: string): Promise<void> {
-  if (!env.WA_RELAY_TOKEN) throw new ApiError('WhatsApp codes are not switched on yet. Choose "I’m outside India" to continue with email only.', 503);
+  if (!env.WA_RELAY_TOKEN) throw new ApiError('WhatsApp codes are not switched on yet. Please write to founders@asanoha.co.in for now.', 503);
   const res = await fetch(env.WA_RELAY_URL, {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${env.WA_RELAY_TOKEN}` },
@@ -83,90 +64,104 @@ async function sendWhatsApp(env: Env, to: string, text: string): Promise<void> {
   throw new ApiError('WhatsApp codes are not going through right now. Please try again in a few minutes.', 503);
 }
 
-async function sendEmail(env: Env, to: string, subject: string, text: string, html?: string, replyTo?: string): Promise<{ id: string | null; error: string | null }> {
-  if (!env.RESEND_API_KEY) return { id: null, error: 'email not configured' };
+async function sendEmail(env: Env, to: string, subject: string, text: string): Promise<void> {
+  if (!env.RESEND_API_KEY) return;
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ from: env.EMAIL_FROM, to: [to], subject, text, ...(html ? { html } : {}), ...(replyTo ? { reply_to: replyTo } : {}) }),
+    body: JSON.stringify({ from: env.EMAIL_FROM, to: [to], subject, text }),
     signal: AbortSignal.timeout(15_000),
   });
-  const j = (await res.json().catch(() => ({}))) as { id?: string; message?: string };
-  return res.ok ? { id: j.id ?? null, error: null } : { id: null, error: String(j.message ?? `Resend ${res.status}`).slice(0, 300) };
+  if (!res.ok) console.error('resend failed', res.status);
 }
 
-async function startPhone(env: Env, user: User, body: Record<string, unknown>, now: number) {
-  const phone = normalizePhone(body.phone);
-  if (!phone) throw new ApiError('Enter a 10-digit Indian mobile number that has WhatsApp.');
-  const done = await env.DB.prepare('SELECT phone FROM phones WHERE user_id = ?').bind(user.id).first<{ phone: string }>();
-  if (done?.phone === phone) return { phone: maskPhone(phone), verified: true };
-  const day = indiaDay(now);
-  const prev = await env.DB.prepare('SELECT sent_at, sends_today, day FROM phone_codes WHERE user_id = ?').bind(user.id).first<{ sent_at: number; sends_today: number; day: string }>();
-  if (prev && now - prev.sent_at < RESEND_AFTER) throw new ApiError('A code was just sent. Please wait a minute before asking for another.', 429);
-  const sendsToday = prev && prev.day === day ? prev.sends_today + 1 : 1;
-  if (sendsToday > MAX_SENDS_A_DAY) throw new ApiError('Too many codes today. Please try again tomorrow, or reply to our email.', 429);
-  const others = await env.DB.prepare('SELECT COUNT(*) AS n FROM phone_codes WHERE phone = ? AND user_id != ? AND sent_at > ?').bind(phone, user.id, now - 3_600_000).first<{ n: number }>();
-  if ((others?.n ?? 0) >= 2) throw new ApiError('Too many codes for this number. Please try again in an hour.', 429);
+const codeText = (code: string) => `${code} is your Asanoha code. It expires in 10 minutes. Don't share it with anyone.`;
+
+/** Enforces the per-number limits before a code goes out. */
+async function numberLimits(env: Env, phone: string, now: number) {
+  const r = await env.DB.prepare('SELECT MAX(sent_at) AS last, COALESCE(SUM(sends), 0) AS n FROM checks WHERE phone = ? AND created_at > ?')
+    .bind(phone, now - DAY)
+    .first<{ last: number | null; n: number }>();
+  if (r?.last && now - r.last < RESEND_AFTER) throw new ApiError('A code was just sent. Please wait a minute before asking for another.', 429);
+  if ((r?.n ?? 0) >= SENDS_PER_NUMBER_A_DAY) throw new ApiError('Too many codes for this number today. Please try again tomorrow.', 429);
+}
+
+async function start(env: Env, req: Request, body: Record<string, unknown>, now: number) {
+  const lead = parseLead(body);
+  const ipHash = await sha256(`${salt(env)}:ip:${req.headers.get('cf-connecting-ip') ?? 'unknown'}`);
+  const ip = await env.DB.prepare('SELECT COUNT(*) AS n FROM checks WHERE ip_hash = ? AND created_at > ?').bind(ipHash, now - 3_600_000).first<{ n: number }>();
+  if ((ip?.n ?? 0) >= CHECKS_PER_IP_AN_HOUR) throw new ApiError('Too many tries from this connection. Please try again in an hour.', 429);
+  await numberLimits(env, lead.phone, now);
+
+  const id = crypto.randomUUID();
   const code = sixDigitCode();
-  await sendWhatsApp(env, phone, `${code} is your Asanoha code. It expires in 10 minutes. Don't share it with anyone.`);
+  await sendWhatsApp(env, lead.phone, codeText(code));
   await env.DB.prepare(
-    `INSERT INTO phone_codes (user_id, phone, code_hash, expires_at, attempts, sent_at, sends_today, day) VALUES (?, ?, ?, ?, 0, ?, ?, ?)
-     ON CONFLICT (user_id) DO UPDATE SET phone = excluded.phone, code_hash = excluded.code_hash, expires_at = excluded.expires_at,
-       attempts = 0, sent_at = excluded.sent_at, sends_today = excluded.sends_today, day = excluded.day`,
+    'INSERT INTO checks (id, phone, code_hash, expires_at, attempts, sends, sent_at, lead_json, ip_hash, created_at) VALUES (?, ?, ?, ?, 0, 1, ?, ?, ?, ?)',
   )
-    .bind(user.id, phone, await hashCode(phone, code, env.CODE_SALT ?? 'local-development'), now + CODE_TTL, now, sendsToday, day)
+    .bind(id, lead.phone, await hashCode(id, code, salt(env)), now + CODE_TTL, now, JSON.stringify(lead), ipHash, now)
     .run();
-  return { phone: maskPhone(phone), verified: false };
+  return { id, phone: maskPhone(lead.phone) };
 }
 
-async function verifyPhone(env: Env, user: User, body: Record<string, unknown>, now: number) {
-  const row = await env.DB.prepare('SELECT phone, code_hash, expires_at, attempts FROM phone_codes WHERE user_id = ?').bind(user.id).first<{ phone: string; code_hash: string; expires_at: number; attempts: number }>();
-  if (!row || row.expires_at < now) throw new ApiError('That code has expired. Ask for a new one.');
+type Check = { id: string; phone: string; code_hash: string; expires_at: number; attempts: number; sends: number; sent_at: number; lead_json: string };
+
+async function getCheck(env: Env, body: Record<string, unknown>): Promise<Check> {
+  const id = typeof body.id === 'string' ? body.id : '';
+  const row = id ? await env.DB.prepare('SELECT * FROM checks WHERE id = ?').bind(id).first<Check>() : null;
+  if (!row) throw new ApiError('Please start again and ask for a new code.', 404);
+  return row;
+}
+
+async function resend(env: Env, body: Record<string, unknown>, now: number) {
+  const row = await getCheck(env, body);
+  await numberLimits(env, row.phone, now);
+  const code = sixDigitCode();
+  await sendWhatsApp(env, row.phone, codeText(code));
+  await env.DB.prepare('UPDATE checks SET code_hash = ?, expires_at = ?, attempts = 0, sends = sends + 1, sent_at = ? WHERE id = ?')
+    .bind(await hashCode(row.id, code, salt(env)), now + CODE_TTL, now, row.id)
+    .run();
+  return { phone: maskPhone(row.phone) };
+}
+
+async function verify(env: Env, body: Record<string, unknown>, now: number, ctx: ExecutionContext) {
+  const row = await getCheck(env, body);
+  if (row.expires_at < now) throw new ApiError('That code has expired. Ask for a new one.');
   if (row.attempts >= MAX_ATTEMPTS) throw new ApiError('Too many wrong codes. Ask for a new one.', 429);
   const typed = typeof body.code === 'string' ? body.code.replace(/\D/g, '') : '';
-  if (typed.length !== 6 || (await hashCode(row.phone, typed, env.CODE_SALT ?? 'local-development')) !== row.code_hash) {
-    await env.DB.prepare('UPDATE phone_codes SET attempts = attempts + 1 WHERE user_id = ?').bind(user.id).run();
+  if (typed.length !== 6 || (await hashCode(row.id, typed, salt(env))) !== row.code_hash) {
+    await env.DB.prepare('UPDATE checks SET attempts = attempts + 1 WHERE id = ?').bind(row.id).run();
     throw new ApiError('That code isn’t right. Check the WhatsApp message and try again.');
   }
+
+  const lead = JSON.parse(row.lead_json) as LeadInput;
+  const existing = await env.DB.prepare('SELECT id FROM leads WHERE phone = ?').bind(lead.phone).first<{ id: string }>();
   await env.DB.batch([
-    env.DB.prepare('INSERT INTO phones (user_id, phone, verified_at) VALUES (?, ?, ?) ON CONFLICT (user_id) DO UPDATE SET phone = excluded.phone, verified_at = excluded.verified_at').bind(user.id, row.phone, now),
-    env.DB.prepare('DELETE FROM phone_codes WHERE user_id = ?').bind(user.id),
+    env.DB.prepare(
+      `INSERT INTO leads (id, phone, email, name, firm, role, website, message, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT (phone) DO UPDATE SET email = excluded.email, name = excluded.name, firm = excluded.firm, role = excluded.role,
+         website = excluded.website, message = excluded.message, updated_at = excluded.updated_at`,
+    ).bind(existing?.id ?? crypto.randomUUID(), lead.phone, lead.email, lead.name, lead.firm, lead.role, lead.website, lead.message, now, now),
+    env.DB.prepare('DELETE FROM checks WHERE id = ?').bind(row.id),
   ]);
-  return { phone: maskPhone(row.phone), verified: true };
-}
 
-async function saveLead(env: Env, user: User, body: Record<string, unknown>, now: number, ctx: ExecutionContext) {
-  const lead = parseLead(body);
-  const ph = await env.DB.prepare('SELECT phone, verified_at FROM phones WHERE user_id = ?').bind(user.id).first<{ phone: string; verified_at: number }>();
-  if (!ph && !lead.outsideIndia) throw new ApiError('Please confirm your WhatsApp number, or choose "I’m outside India".');
-  const phone = ph?.phone ?? null;
-  const existing = await env.DB.prepare('SELECT id FROM leads WHERE user_id = ?').bind(user.id).first<{ id: string }>();
-  const id = existing?.id ?? crypto.randomUUID();
-  await env.DB.prepare(
-    `INSERT INTO leads (id, user_id, email, name, firm, role, website, focus, message, phone, phone_verified_at, outside_india, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-     ON CONFLICT (user_id) DO UPDATE SET email = excluded.email, name = excluded.name, firm = excluded.firm, role = excluded.role,
-       website = excluded.website, focus = excluded.focus, message = excluded.message, phone = excluded.phone,
-       phone_verified_at = excluded.phone_verified_at, outside_india = excluded.outside_india, updated_at = excluded.updated_at`,
-  )
-    .bind(id, user.id, user.email, lead.name, lead.firm, lead.role, lead.website, lead.focus, lead.message, phone, ph?.verified_at ?? null, lead.outsideIndia ? 1 : 0, now, now)
-    .run();
-
-  const mail = confirmationEmail(lead.name);
-  const sent = existing ? { id: null, error: 'already confirmed' } : await sendEmail(env, user.email, mail.subject, mail.text, mail.html, env.TEAM_EMAIL);
-  await env.DB.prepare('UPDATE leads SET confirm_email_id = coalesce(?, confirm_email_id), confirm_error = ? WHERE id = ?').bind(sent.id, sent.error, id).run();
-
-  // Tell the founders without making the investor wait.
-  const note = teamNote({ ...lead, email: user.email, phone });
+  // Thank the investor and tell the founders without making the page wait.
   ctx.waitUntil(
     (async () => {
-      await sendEmail(env, env.TEAM_EMAIL, `Investor: ${lead.name}, ${lead.firm}`, note, undefined, user.email).catch(() => null);
+      if (!existing) {
+        let error: string | null = null;
+        await sendWhatsApp(env, lead.phone, confirmationMessage(lead.name)).catch((e) => (error = String(e?.message ?? e).slice(0, 300)));
+        await env.DB.prepare('UPDATE leads SET confirm_sent = ?, confirm_error = ? WHERE phone = ?').bind(error ? 0 : 1, error, lead.phone).run();
+      }
+      const note = teamNote(lead);
+      await sendEmail(env, env.TEAM_EMAIL, `Investor: ${lead.name}, ${lead.firm}`, note).catch(() => null);
       for (const n of env.TEAM_WHATSAPP.split(',').map((s) => normalizePhone(s)).filter(Boolean) as string[]) {
         await sendWhatsApp(env, n, note).catch((e) => console.error('team whatsapp', String(e)));
       }
     })(),
   );
-  return { ok: true, emailed: !!sent.id || !!existing, updated: !!existing };
+  return { ok: true, updated: !!existing };
 }
 
 function json(data: unknown, status: number, origin: string | null): Response {
@@ -186,22 +181,21 @@ export default {
         headers: {
           'access-control-allow-origin': origin,
           'access-control-allow-methods': 'POST, GET, OPTIONS',
-          'access-control-allow-headers': 'authorization, content-type',
+          'access-control-allow-headers': 'content-type',
           'access-control-max-age': '86400',
           vary: 'Origin',
         },
       });
     }
-    if (url.pathname === '/api/health') return json({ ok: true, whatsapp: !!env.WA_RELAY_TOKEN, email: !!env.RESEND_API_KEY }, 200, origin);
+    if (url.pathname === '/api/health') return json({ ok: true, whatsapp: !!env.WA_RELAY_TOKEN, teamEmail: !!env.RESEND_API_KEY }, 200, origin);
     if (req.method !== 'POST') return json({ error: 'Not found' }, 404, origin);
     if (!origin) return json({ error: 'Not allowed' }, 403, null);
     try {
       const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
-      const user = await signedIn(req, env);
       const now = Date.now();
-      if (url.pathname === '/api/phone/start') return json(await startPhone(env, user, body, now), 200, origin);
-      if (url.pathname === '/api/phone/verify') return json(await verifyPhone(env, user, body, now), 200, origin);
-      if (url.pathname === '/api/lead') return json(await saveLead(env, user, body, now, ctx), 200, origin);
+      if (url.pathname === '/api/start') return json(await start(env, req, body, now), 200, origin);
+      if (url.pathname === '/api/resend') return json(await resend(env, body, now), 200, origin);
+      if (url.pathname === '/api/verify') return json(await verify(env, body, now, ctx), 200, origin);
       return json({ error: 'Not found' }, 404, origin);
     } catch (e) {
       if (e instanceof ApiError) return json({ error: e.message }, e.status, origin);

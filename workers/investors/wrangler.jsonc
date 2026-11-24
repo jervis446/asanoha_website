@@ -11,8 +11,6 @@
     { "binding": "DB", "database_name": "asanoha-investors", "database_id": "1be68eb1-530b-4359-8baa-b3297b55d37b", "migrations_dir": "migrations" }
   ],
   "vars": {
-    "SUPABASE_URL": "https://fkhxgkscnkxtwnvecoyv.supabase.co",
-    "SUPABASE_ANON_KEY": "sb_publishable_kJghZQlNmpuy-NAGfUm4Dg_EHybViX9",
     "WA_RELAY_URL": "https://wa.peoplepitchers.com/send",
     "ALLOWED_ORIGINS": "https://asanoha.co.in,http://localhost:4410",
     "EMAIL_FROM": "Asanoha <founders@asanoha.co.in>",

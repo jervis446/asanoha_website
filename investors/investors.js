@@ -364,39 +364,15 @@
     }, { threshold: 0.35 }).observe(chartEl);
   }
 
-  /* Contact flow: details, email code (Asanoha account), WhatsApp code, then the founders hear about it */
-  var SUPABASE_URL = 'https://fkhxgkscnkxtwnvecoyv.supabase.co';
-  var SUPABASE_KEY = 'sb_publishable_kJghZQlNmpuy-NAGfUm4Dg_EHybViX9';
+  /* Contact flow: details, then a WhatsApp code, then the founders hear about it. No sign-in;
+     the email address is optional and not verified. */
   var apiMeta = document.querySelector('meta[name="investors-api"]');
   var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var API = local ? 'http://localhost:8799' : (apiMeta ? apiMeta.content : '');
 
   var dialog = document.getElementById('contact');
-  var forms = { 1: document.getElementById('s1'), 2: document.getElementById('s2'), 3: document.getElementById('s3') };
-  var state = { details: null, token: null, step: 1 };
-  var sb = null;
-
-  var SB_SRC = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js';
-  var sbLoading = null;
-  // supabase-js is only needed for the contact flow, so it loads when the dialog opens
-  function client() {
-    if (sb) return Promise.resolve(sb);
-    if (!sbLoading) {
-      sbLoading = new Promise(function (resolve, reject) {
-        var s = document.createElement('script');
-        s.src = SB_SRC; s.async = true;
-        s.onload = function () {
-          sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-            auth: { persistSession: true, storageKey: 'asanoha-auth', autoRefreshToken: true }
-          });
-          resolve(sb);
-        };
-        s.onerror = function () { sbLoading = null; reject(new Error('We couldn’t load the sign-in check. Check your connection and try again.')); };
-        document.head.appendChild(s);
-      });
-    }
-    return sbLoading;
-  }
+  var forms = { 1: document.getElementById('s1'), 2: document.getElementById('s2') };
+  var state = { details: null, id: null, step: 1 };
 
   function bind(name, value) {
     dialog.querySelectorAll('[data-bind="' + name + '"]').forEach(function (n) { n.textContent = value; });
@@ -414,8 +390,6 @@
       li.classList.toggle('on', n === step);
       li.classList.toggle('done', n < step);
     });
-    var skipWa = state.details && state.details.outsideIndia;
-    dialog.querySelector('.steps li[data-step="3"]').style.display = skipWa ? 'none' : '';
     var first = dialog.querySelector('.c-step[data-step="' + step + '"] input:not([type=checkbox]), .c-step[data-step="' + step + '"] button');
     if (first) setTimeout(function () { first.focus(); }, 50);
   }
@@ -432,7 +406,7 @@
     if (!API) return Promise.reject(new Error('The contact form isn’t switched on yet. Please write to founders@asanoha.co.in.'));
     return fetch(API + path, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: 'Bearer ' + state.token },
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify(body || {})
     }).then(function (res) {
       return res.json().catch(function () { return {}; }).then(function (j) {
@@ -442,61 +416,20 @@
     }, function () { throw new Error('We couldn’t reach our server. Check your connection and try again.'); });
   }
 
-  function saveLead(form) {
-    var d = state.details;
-    return api('/api/lead', {
-      name: d.name, firm: d.firm, role: d.role, website: d.website, message: d.message,
-      outsideIndia: d.outsideIndia, consent: true
-    }).then(function (r) {
-      bind('first', d.name.split(/\s+/)[0]);
-      bind('doneText', r.updated
-        ? 'We have updated your details. One of the founders will reach out to you.'
-        : r.emailed
-          ? 'We have your details and sent a confirmation to ' + d.email + '. One of the founders will reach out to you.'
-          : 'We have your details. One of the founders will reach out to you.');
-      try { localStorage.removeItem('asanoha:investor-draft'); } catch (e) {}
-      show(4);
-    });
-  }
-
-  function afterEmail(form) {
-    if (state.details.outsideIndia) return saveLead(form);
-    return api('/api/phone/start', { phone: state.details.phone }).then(function (r) {
-      bind('phone', r.phone);
-      if (r.verified) return saveLead(form);
-      show(3);
-    });
-  }
-
   // Keep what the investor typed if they close the dialog by mistake
+  var DRAFT_KEYS = ['name', 'firm', 'role', 'website', 'email', 'phone', 'message'];
   function saveDraft() {
     var f = forms[1], data = {};
-    ['name', 'firm', 'role', 'website', 'email', 'phone', 'message'].forEach(function (k) { data[k] = f.elements[k].value; });
-    data.outsideIndia = f.elements.outsideIndia.checked;
+    DRAFT_KEYS.forEach(function (k) { data[k] = f.elements[k].value; });
     try { localStorage.setItem('asanoha:investor-draft', JSON.stringify(data)); } catch (e) {}
   }
   function loadDraft() {
     var data = null;
     try { data = JSON.parse(localStorage.getItem('asanoha:investor-draft') || 'null'); } catch (e) {}
     if (!data) return;
-    var f = forms[1];
-    Object.keys(data).forEach(function (k) {
-      if (!f.elements[k]) return;
-      if (k === 'outsideIndia') f.elements[k].checked = !!data[k];
-      else f.elements[k].value = data[k] || '';
-    });
-    syncPhoneField();
+    DRAFT_KEYS.forEach(function (k) { if (forms[1].elements[k] && data[k]) forms[1].elements[k].value = data[k]; });
   }
   forms[1].addEventListener('input', saveDraft);
-
-  function syncPhoneField() {
-    var f = forms[1];
-    var off = f.elements.outsideIndia.checked;
-    var field = f.elements.phone.closest('.field');
-    field.classList.toggle('off', off);
-    f.elements.phone.disabled = off;
-  }
-  forms[1].elements.outsideIndia.addEventListener('change', syncPhoneField);
 
   function phoneOk(v) {
     var d = v.replace(/[\s\-().]/g, '').replace(/^(\+91|0091|91(?=\d{10}$)|0(?=\d{10}$))/, '');
@@ -508,33 +441,23 @@
     var f = forms[1];
     setError(f, '');
     var v = function (k) { return (f.elements[k].value || '').trim(); };
-    var d = {
-      name: v('name'), firm: v('firm'), role: v('role'), website: v('website'), email: v('email').toLowerCase(),
-      phone: v('phone'), message: v('message'), outsideIndia: f.elements.outsideIndia.checked
-    };
+    var d = { name: v('name'), firm: v('firm'), role: v('role'), website: v('website'), email: v('email').toLowerCase(), phone: v('phone'), message: v('message') };
     if (!d.name) return setError(f, 'Please add your name.');
     if (!d.firm) return setError(f, 'Please add your fund or firm. Angels can write Angel.');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return setError(f, 'That email doesn’t look right.');
-    if (!d.outsideIndia) {
-      var p = phoneOk(d.phone);
-      if (!p) return setError(f, 'Please add an Indian mobile number for WhatsApp, or tick “I’m outside India”.');
-      d.phone = p;
-    }
+    var p = phoneOk(d.phone);
+    if (!p) return setError(f, 'Please add a 10-digit Indian mobile number that has WhatsApp.');
+    d.phone = p;
+    if (d.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return setError(f, 'That email doesn’t look right. You can also leave it empty.');
     if (!f.elements.consent.checked) return setError(f, 'Please agree to be contacted so we can write back.');
     state.details = d;
-    bind('email', d.email);
     busy(f, true, 'Sending the code');
-    var c;
-    client().then(function (cl) { c = cl; return c.auth.getSession(); }).then(function (r) {
-      var s = r.data && r.data.session;
-      if (s && s.user && s.user.email && s.user.email.toLowerCase() === d.email && s.user.email_confirmed_at) {
-        state.token = s.access_token;
-        return afterEmail(f);
-      }
-      return c.auth.signInWithOtp({ email: d.email, options: { shouldCreateUser: true } }).then(function (res) {
-        if (res.error) throw new Error(res.error.status === 429 ? 'Too many codes for this email. Please wait a minute and try again.' : 'We couldn’t send a code to that email. Please check it and try again.');
-        show(2);
-      });
+    api('/api/start', {
+      name: d.name, firm: d.firm, role: d.role, website: d.website, email: d.email, phone: d.phone, message: d.message, consent: true
+    }).then(function (r) {
+      state.id = r.id;
+      bind('phone', r.phone);
+      forms[2].elements.code.value = '';
+      show(2);
     }).catch(function (err) { setError(f, err.message); }).then(function () { busy(f, false); });
   });
 
@@ -543,31 +466,23 @@
     var f = forms[2];
     setError(f, '');
     var code = f.elements.code.value.replace(/\D/g, '');
-    if (code.length < 6) return setError(f, 'Please type the 6-digit code from the email.');
+    if (code.length !== 6) return setError(f, 'Please type the 6-digit code from WhatsApp.');
     busy(f, true, 'Checking');
-    client().then(function (c) { return c.auth.verifyOtp({ email: state.details.email, token: code, type: 'email' }); }).then(function (res) {
-      if (res.error || !res.data.session) throw new Error('That code didn’t work. Check the latest email and try again.');
-      state.token = res.data.session.access_token;
-      return afterEmail(f);
+    api('/api/verify', { id: state.id, code: code }).then(function (r) {
+      bind('first', state.details.name.split(/\s+/)[0]);
+      bind('doneText', r.updated
+        ? 'We have updated your details. One of the founders will reach out to you.'
+        : 'We have your details and sent you a note on WhatsApp. One of the founders will reach out to you.');
+      try { localStorage.removeItem('asanoha:investor-draft'); } catch (e2) {}
+      show(3);
     }).catch(function (err) { setError(f, err.message); }).then(function () { busy(f, false); });
   });
 
-  forms[3].addEventListener('submit', function (e) {
-    e.preventDefault();
-    var f = forms[3];
-    setError(f, '');
-    var code = f.elements.code.value.replace(/\D/g, '');
-    if (code.length !== 6) return setError(f, 'Please type the 6-digit code from WhatsApp.');
-    busy(f, true, 'Checking');
-    api('/api/phone/verify', { code: code }).then(function () { return saveLead(f); })
-      .catch(function (err) { setError(f, err.message); }).then(function () { busy(f, false); });
-  });
-
-  forms[3].querySelector('[data-resend]').addEventListener('click', function (e) {
-    var f = forms[3], b = e.currentTarget;
+  forms[2].querySelector('[data-resend]').addEventListener('click', function (e) {
+    var f = forms[2], b = e.currentTarget;
     setError(f, '');
     b.disabled = true;
-    api('/api/phone/start', { phone: state.details.phone }).then(function () {
+    api('/api/resend', { id: state.id }).then(function () {
       b.textContent = 'Sent. You can ask again in a minute';
       setTimeout(function () { b.textContent = 'Send the code again'; b.disabled = false; }, 60000);
     }).catch(function (err) { setError(f, err.message); b.disabled = false; });
@@ -579,8 +494,7 @@
 
   document.querySelectorAll('[data-open-contact]').forEach(function (b) {
     b.addEventListener('click', function () {
-      if (state.step === 4) { state.step = 1; }
-      client().catch(function () {});
+      if (state.step === 3) state.step = 1;
       loadDraft();
       show(state.step);
       if (typeof dialog.showModal === 'function') dialog.showModal();

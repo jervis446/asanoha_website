@@ -540,3 +540,6 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 }
 
 .ballpark { margin-top: 16px; font-size: 15px; color: var(--muted); font-style: normal; max-width: 38em; padding-left: 12px; border-left: 2px solid var(--accent); }
+
+.c-note { font-size: 13px; color: var(--muted); text-align: center; }
+.c-note a { color: var(--text-2); }

@@ -33,7 +33,7 @@ export async function sha256(text: string): Promise<string> {
   return Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-export const hashCode = (phone: string, code: string, salt: string) => sha256(`${salt}:${phone}:${code}`);
+export const hashCode = (id: string, code: string, salt: string) => sha256(`${salt}:${id}:${code}`);
 
 export function sixDigitCode(): string {
   const buf = new Uint32Array(1);
@@ -46,9 +46,9 @@ export type LeadInput = {
   firm: string;
   role: string | null;
   website: string | null;
-  focus: string | null;
+  email: string | null;
   message: string | null;
-  outsideIndia: boolean;
+  phone: string;
 };
 
 const clean = (v: unknown, max: number): string | null => {
@@ -75,15 +75,22 @@ export function parseLead(body: unknown): LeadInput {
       throw new ApiError('That website link doesn’t look right.');
     }
   }
+  let email = clean(b.email, 200);
+  if (email) {
+    email = email.toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new ApiError('That email doesn’t look right. You can also leave it empty.');
+  }
+  const phone = normalizePhone(b.phone);
+  if (!phone) throw new ApiError('Enter a 10-digit Indian mobile number that has WhatsApp.');
   if (b.consent !== true) throw new ApiError('Please agree to be contacted about Asanoha.');
   return {
     name,
     firm,
     role: clean(b.role, 120),
     website,
-    focus: clean(b.focus, 200),
+    email,
     message: clean(b.message, 2000),
-    outsideIndia: b.outsideIndia === true,
+    phone,
   };
 }
 
@@ -93,41 +100,27 @@ export function allowedOrigin(origin: string | null, list: string): string | nul
   return list.split(',').map((s) => s.trim()).filter(Boolean).includes(origin) ? origin : null;
 }
 
-const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
-
-/** The email the investor gets after their details are saved. */
-export function confirmationEmail(name: string): { subject: string; text: string; html: string } {
+/** The WhatsApp message the investor gets once their number is confirmed. */
+export function confirmationMessage(name: string): string {
   const first = name.split(/\s+/)[0];
-  const text = [
-    `Hi ${first},`,
+  return [
+    `Hi ${first}, thank you for your interest in Asanoha.`,
     '',
-    'Thank you for your interest in Asanoha. We have your details, and one of the founders will reach out to you.',
-    '',
-    'If you want to send anything before then, just reply to this email.',
+    'We have your details, and one of the founders will reach out to you.',
     '',
     'Adarsh, Joseph and Soumyadev',
     'Asanoha LLP, Bengaluru',
-    'asanoha.co.in/investors',
   ].join('\n');
-  const html =
-    `<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:15px;line-height:1.6;color:#1f1b16;max-width:520px">` +
-    `<p>Hi ${esc(first)},</p>` +
-    `<p>Thank you for your interest in Asanoha. We have your details, and one of the founders will reach out to you.</p>` +
-    `<p>If you want to send anything before then, just reply to this email.</p>` +
-    `<p style="margin-top:24px">Adarsh, Joseph and Soumyadev<br><span style="color:#7b7266">Asanoha LLP, Bengaluru · <a href="https://asanoha.co.in/investors/" style="color:#a84b27">asanoha.co.in/investors</a></span></p>` +
-    `</div>`;
-  return { subject: 'We’ll be in touch: Asanoha', text, html };
 }
 
 /** The note the founders get about a new investor. */
-export function teamNote(l: LeadInput & { email: string; phone: string | null }): string {
+export function teamNote(l: LeadInput): string {
   return [
     `New investor on asanoha.co.in/investors`,
     `${l.name}, ${l.role ? `${l.role}, ` : ''}${l.firm}`,
-    `Email (verified): ${l.email}`,
-    `WhatsApp: ${l.phone ? `${l.phone} (verified)` : l.outsideIndia ? 'outside India, email only' : 'not given'}`,
+    `WhatsApp (verified): ${l.phone}`,
+    `Email (not verified): ${l.email ?? 'not given'}`,
     l.website ? `Website: ${l.website}` : '',
-    l.focus ? `Focus: ${l.focus}` : '',
     l.message ? `Note: ${l.message}` : '',
   ]
     .filter(Boolean)
