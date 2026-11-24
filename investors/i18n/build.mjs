@@ -191,8 +191,8 @@ if (cmd === 'extract') {
     if (!fs.existsSync(f)) { console.log(`${L[0]}: no translation file, skipped`); continue; }
     const t = JSON.parse(fs.readFileSync(f, 'utf8')).t || {};
     const missing = want.filter((k) => !t[k]);
-    let out = setBlock(html, 'langs', langBlocks(L[0]).items);
-    out = translate(out, t, L);
+    // the menu goes in after translate(), which points /investors/ links at this language
+    const out = setBlock(translate(html, t, L), 'langs', langBlocks(L[0]).items);
     fs.mkdirSync(path.join(DIR, L[0]), { recursive: true });
     fs.writeFileSync(path.join(DIR, L[0], 'index.html'), out);
     console.log(`${L[0]}: built, ${missing.length} missing${missing.length ? ': ' + missing.slice(0, 3).map((s) => s.slice(0, 40)).join(' | ') : ''}`);
