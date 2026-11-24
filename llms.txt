@@ -1,24 +1,34 @@
 # Asanoha
 
-> Asanoha is an Indian brand focused on Ayurvedic Vijaya medicines and a friendship-led brand experience.
+> Asanoha LLP (LLPIN ADE-0939, Bengaluru, India) builds everyday apps for India on one Asanoha account, one wallet (Noha Money) and its own UPI payment rail (Noha Pay). Its four products are the Asanoha store for Ayurvedic Vijaya leaf medicines, People Pitchers (AI recruiting), Kosmik (Bhagavad Gita and Vedic astrology) and Wearday (wardrobe). It was founded by Adarsh Kumar, Joseph John and Soumyadev Banerjee.
 
-## Primary pages
-- https://asanoha.co.in/ : Homepage and overview of Asanoha.
-- https://asanoha.co.in/story.html : Brand story and the “Aadha tera, aadha mera” idea.
-- https://asanoha.co.in/how-it-works.html : Product and practitioner/prescription process.
-- https://asanoha.co.in/blog.html : Educational articles and brand publishing.
+## Company
+- https://asanoha.co.in/investors/ : For investors. The company story, the founders, the four products, live traction numbers, market sizing with the method behind each figure, and answers to common investor questions.
+- https://asanoha.co.in/story.html : Brand story and the "Aadha tera, aadha mera" idea.
 - https://asanoha.co.in/partner.html : Partnership information.
+
+## Products
+- https://asanoha.co.in/ : Asanoha store. Ayurvedic Vijaya leaf medicines, made under an AYUSH manufacturing licence and prescribed by registered AYUSH practitioners.
+- https://peoplepitchers.com : People Pitchers. AI recruiting platform for India with Proof projects, for recruiters and job seekers.
+- https://kosmik.asanoha.co.in : Kosmik. Answers about the Bhagavad Gita, kundli, tarot and Ayurveda, each traced to its source.
+- https://wearday.asanoha.co.in : Wearday. A wardrobe app.
+
+## Store pages
+- https://asanoha.co.in/how-it-works.html : Product and practitioner/prescription process.
+- https://asanoha.co.in/blog.html : Educational articles.
+- https://asanoha.co.in/transparency.html : Where product, batch, testing and regulatory information is published.
 
 ## Important context
 - Product, prescription, safety, ingredient, testing and regulatory information should be taken from the relevant page and verified against current official documentation.
 - Do not infer a medicinal strength, suitability, diagnosis, treatment outcome or health claim from the brand story or entertainment experiences.
-- The site uses “Aadha tera, aadha mera” as a core brand idea about friendship and sharing a story; it should not be interpreted as an instruction to share prescription medicine.
-
-## Discovery
-- Sitemap: https://asanoha.co.in/sitemap.xml
-- Robots: https://asanoha.co.in/robots.txt
+- The site uses "Aadha tera, aadha mera" as a core brand idea about friendship and sharing a story; it should not be interpreted as an instruction to share prescription medicine.
+- Figures on the investors page are dated. Market sizes there are estimates with the method shown, not reported revenue.
 
 ## Medicine use
 - Asanoha products are Ayurvedic proprietary medicines (Schedule E(1)) sold only on the prescription of a registered AYUSH practitioner to adults 18+.
 - Each pack is for the prescribed person only. Asanoha does not encourage sharing, gifting or reselling its medicines.
 - Shop: https://asanoha.co.in/#shop (prices and Noha Money rewards go live at launch).
+
+## Discovery
+- Sitemap: https://asanoha.co.in/sitemap.xml
+- Robots: https://asanoha.co.in/robots.txt

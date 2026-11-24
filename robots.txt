@@ -78,4 +78,20 @@ Disallow: /other-half-game/
 Disallow: /slam-book-ai/
 Disallow: /friendship-story/
 
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /tools/
+Disallow: /which-half-are-you/
+Disallow: /other-half-game/
+Disallow: /slam-book-ai/
+Disallow: /friendship-story/
+
 Sitemap: https://asanoha.co.in/sitemap.xml
