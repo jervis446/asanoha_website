@@ -444,7 +444,7 @@
   }
 
   function api(path, body) {
-    if (!API) return Promise.reject(new Error(T('The contact form isn’t switched on yet. Please write to founders@asanoha.co.in.')));
+    if (!API) return Promise.reject(new Error(T('The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.')));
     return fetch(API + path, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

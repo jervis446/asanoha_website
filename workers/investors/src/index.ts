@@ -50,7 +50,7 @@ const DAY = 24 * 3_600_000;
 const salt = (env: Env) => env.CODE_SALT ?? 'local-development';
 
 async function sendWhatsApp(env: Env, to: string, text: string): Promise<void> {
-  if (!env.WA_RELAY_TOKEN) throw new ApiError('WhatsApp codes are not switched on yet. Please write to founders@asanoha.co.in for now.', 503);
+  if (!env.WA_RELAY_TOKEN) throw new ApiError('WhatsApp codes are not switched on yet. Please write to orders@asanoha.co.in for now.', 503);
   const res = await fetch(env.WA_RELAY_URL, {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${env.WA_RELAY_TOKEN}` },
