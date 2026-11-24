@@ -191,6 +191,24 @@
   var rd;
   window.addEventListener('resize', function () { clearTimeout(rd); rd = setTimeout(function () { dotClips.forEach(function (c) { c.redraw(); }); }, 150); });
 
+  /* Market grids: 1,000 dots, each 0.1% of a market; the lit ones are our target */
+  document.querySelectorAll('.dots').forEach(function (g) {
+    var lit = Number(g.getAttribute('data-lit')) || 0;
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 1000; i++) {
+      var d = document.createElement('i');
+      if (i >= 1000 - lit) d.className = 'lit';
+      if (!reduce) d.style.transitionDelay = ((i % 40) * 8 + Math.floor(i / 40) * 12) + 'ms';
+      frag.appendChild(d);
+    }
+    g.appendChild(frag);
+    if (io) {
+      new IntersectionObserver(function (es, o) {
+        if (es[0].isIntersecting) { g.classList.add('in'); o.disconnect(); }
+      }, { threshold: 0.3 }).observe(g);
+    } else g.classList.add('in');
+  });
+
   /* The star: unfold, then point at a part to read about it */
   var star = document.querySelector('.star');
   var hint = document.getElementById('star-hint');

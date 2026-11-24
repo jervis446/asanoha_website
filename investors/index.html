@@ -26,7 +26,7 @@
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="investors.css?v=3">
+<link rel="stylesheet" href="investors.css?v=4">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Asanoha LLP","legalName":"Asanoha LLP","identifier":"LLPIN ADE-0939","url":"https://asanoha.co.in/","address":{"@type":"PostalAddress","streetAddress":"Unit 101, Oxford Towers, 139/88 HAL Old Airport Road, HAL II Stage","addressLocality":"Bengaluru","addressRegion":"Karnataka","postalCode":"560008","addressCountry":"IN"},"subOrganization":[{"@type":"Organization","name":"People Pitchers","url":"https://peoplepitchers.com"},{"@type":"Organization","name":"Kosmik","url":"https://kosmik.asanoha.co.in"},{"@type":"Organization","name":"Wearday","url":"https://wearday.asanoha.co.in"}]}</script>
 </head>
 <body>
@@ -42,6 +42,7 @@
       <a href="#story">Story</a>
       <a href="#team">Founders</a>
       <a href="#products">Products</a>
+      <a href="#market">Market</a>
       <a href="#build">How we build</a>
       <a href="#questions">Questions</a>
     </nav>
@@ -308,8 +309,89 @@
   </div>
 </section>
 
+<!-- Market -->
+<section class="section" id="market" aria-labelledby="market-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow mono">The market</p>
+      <h2 id="market-title">Big markets, small slices, about ₹30 crore a year</h2>
+      <p class="sub">Each product enters a market where Indians already spend real money. Our year-three targets need a fraction of one percent of each. Every grid below has 1,000 dots, each one 0.1% of that market. The lit dots are what we need.</p>
+    </div>
+
+    <div class="markets">
+      <article class="mkt" style="--c:var(--pp)">
+        <header><span class="p-dot"></span><h3>People Pitchers</h3><span class="mono share">0.38%</span></header>
+        <div class="dots" data-lit="4" aria-hidden="true"></div>
+        <dl class="mkt-nums">
+          <div><dt>Market</dt><dd>₹2,343 Cr</dd><p>What Naukri alone earned from recruiters in FY26</p></div>
+          <div><dt>Yearly revenue, year 3</dt><dd>₹9 Cr</dd><p>2,000 companies on Pro</p></div>
+        </dl>
+        <details class="math"><summary>How we got this</summary><p>2,000 companies × 1.5 seats × ₹29,988 a year (₹2,499 a month) = ₹9.0 Cr. Naukri’s hiring index covers 1,50,000 hiring companies, so 2,000 is 1.3% of them. Hiring fees and escrow are on top and not counted.</p></details>
+      </article>
+
+      <article class="mkt" style="--c:var(--kosmik)">
+        <header><span class="p-dot"></span><h3>Kosmik</h3><span class="mono share">0.52%</span></header>
+        <div class="dots" data-lit="5" aria-hidden="true"></div>
+        <dl class="mkt-nums">
+          <div><dt>Market</dt><dd>₹1,176 Cr</dd><p>Astrotalk’s operating revenue in FY25, one app in the category</p></div>
+          <div><dt>Yearly revenue, year 3</dt><dd>₹6 Cr</dd><p>50,000 people on a monthly pass</p></div>
+        </dl>
+        <details class="math"><summary>How we got this</summary><p>50,000 subscribers × ₹101 a month × 12 = ₹6.06 Cr. Report packs (₹99 to ₹699) are on top and not counted. The market figure is one company’s revenue, so the real category is larger.</p></details>
+      </article>
+
+      <article class="mkt" style="--c:var(--store)">
+        <header><span class="p-dot"></span><h3>Asanoha store</h3><span class="mono share">0.01%</span></header>
+        <div class="dots" data-lit="1" aria-hidden="true"></div>
+        <dl class="mkt-nums">
+          <div><dt>Market</dt><dd>₹1,01,751 Cr</dd><p>India’s Ayurvedic products market in 2025</p></div>
+          <div><dt>Yearly revenue, year 3</dt><dd>₹9.6 Cr</dd><p>20,000 repeat customers</p></div>
+        </dl>
+        <details class="math"><summary>How we got this</summary><p>20,000 customers × 4 orders a year × ₹1,200 an order = ₹9.6 Cr. Order size and frequency are our assumptions, to be checked once orders open.</p></details>
+      </article>
+
+      <article class="mkt" style="--c:var(--wearday)">
+        <header><span class="p-dot"></span><h3>Wearday</h3><span class="mono share">0.014%</span></header>
+        <div class="dots" data-lit="1" aria-hidden="true"></div>
+        <dl class="mkt-nums">
+          <div><dt>Market</dt><dd>$1.25 bn</dd><p>In-app spending in India expected in 2026, up about a third a year</p></div>
+          <div><dt>Yearly revenue, year 3</dt><dd>₹2.4 Cr</dd><p>40,000 yearly Premium members</p></div>
+        </dl>
+        <details class="math"><summary>How we got this</summary><p>40,000 × ₹599 a year = ₹2.4 Cr. India has 290 to 300 million online shoppers, so 40,000 is 0.014% of them. The share above is of shoppers, not of spend.</p></details>
+      </article>
+
+      <article class="mkt" style="--c:var(--pay)">
+        <header><span class="p-dot"></span><h3>Noha Pay for merchants</h3><span class="mono share">0.08%</span></header>
+        <div class="dots" data-lit="1" aria-hidden="true"></div>
+        <dl class="mkt-nums">
+          <div><dt>Market</dt><dd>60 lakh+</dd><p>New small-merchant UPI QR codes NPCI aims to add every year</p></div>
+          <div><dt>Yearly revenue, year 3</dt><dd>₹3 Cr</dd><p>5,000 merchants on hosted Noha Pay</p></div>
+        </dl>
+        <details class="math"><summary>How we got this</summary><p>5,000 merchants × ₹499 a month × 12 = ₹3.0 Cr. The ₹499 price is a plan, not a live price. 5,000 is 0.08% of one year’s new small-merchant QR codes.</p></details>
+      </article>
+
+      <article class="mkt mkt-total">
+        <p class="eyebrow mono">Year three, all five</p>
+        <p class="total-num">₹30 Cr <span>a year</span></p>
+        <p class="muted">₹9 + ₹6.1 + ₹9.6 + ₹2.4 + ₹3.0 crore. Each target is a fraction of a percent of its market. Reaching 1% in any one of them changes the total.</p>
+      </article>
+    </div>
+
+    <div class="scale">
+      <h3>How it scales</h3>
+      <ol>
+        <li><b>Start where we are known.</b> Our IIM Indore batch already uses what we build. Placement cells, then the companies that hire from them, come next for People Pitchers.</li>
+        <li><b>One account, many products.</b> Someone who joins for one product is one tap from the others, so each new user costs us once, not five times.</li>
+        <li><b>Our own rails, low running cost.</b> Payments, sign-in, WhatsApp and AI caching are ours and shared, so revenue grows faster than our bills.</li>
+        <li><b>Then sell the rails.</b> Noha Pay turns what we built for ourselves into a product for other small merchants.</li>
+      </ol>
+    </div>
+
+    <p class="sources mono">Sources: <a href="https://www.infoedge.in/pdfs/financial_pdfs/f_Earnings/investor-concall-transcript-28May2026.pdf" target="_blank" rel="noopener">Info Edge FY26</a> · <a href="https://www.naukri.com/blog/naukri-jobspeak-it-hiring-shows-meaningful-recovery-and-ai-momentum-continues-white-collar-market-posts-12-yoy-growth-in-february-2026/amp" target="_blank" rel="noopener">Naukri JobSpeak</a> · <a href="https://entrackr.com/news/astrotalks-e-commerce-vertical-posts-rs-140-cr-revenue-in-2025-hits-rs-200-cr-arr-11004745" target="_blank" rel="noopener">Entrackr on Astrotalk FY25</a> · <a href="https://imarcgroup.com/india-ayurvedic-products-market" target="_blank" rel="noopener">IMARC Ayurvedic products 2025</a> · <a href="https://sensortower.com/blog/indias-new-growth-playbook-2026" target="_blank" rel="noopener">Sensor Tower India 2026</a> · <a href="https://www.bain.com/insights/how-india-shops-online-2026/" target="_blank" rel="noopener">Bain, How India Shops Online</a> · <a href="https://inc42.com/buzz/npci-unveils-new-mdr-funded-scheme-to-promote-upi-among-small-merchants/" target="_blank" rel="noopener">NPCI small-merchant scheme</a>. Targets are our estimates, not forecasts.</p>
+  </div>
+</section>
+
 <!-- How we build -->
-<section class="section" id="build" aria-labelledby="build-title">
+<section class="section section-alt" id="build" aria-labelledby="build-title">
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow mono">How we build</p>
@@ -335,7 +417,7 @@
 </section>
 
 <!-- Questions -->
-<section class="section section-alt" id="questions" aria-labelledby="q-title">
+<section class="section" id="questions" aria-labelledby="q-title">
   <div class="wrap q-grid">
     <div class="section-head">
       <p class="eyebrow mono">Questions</p>
@@ -347,6 +429,8 @@
       <details><summary>Isn’t that unfocused?</summary><p>The focus is the platform under the products, not one app. Our measure is simple: how fast a new idea reaches paying users, and how little it costs us to run. Products that don’t earn their place will be shut down, not kept alive.</p></details>
       <details><summary>How do you make money?</summary><p>Subscriptions (People Pitchers seats, Kosmik passes, Wearday Premium), one-off purchases (Kosmik reports, store orders), hiring fees and escrow commission on People Pitchers, and later a hosted Noha Pay for other merchants.</p></details>
       <details><summary>What traction is real today?</summary><p>The numbers above are read from our databases, not estimated: 6,818 jobs from 2,866 companies, 179 job seeker profiles, 2,699 cited library entries, 27 WhatsApp-verified people in the Kosmik alpha, and IIMXamday live for our batch of 190. Revenue is still at the test stage. We would rather show you small true numbers than big round ones.</p></details>
+      <details><summary>How big can this get?</summary><p>Our year-three targets add up to about ₹30 crore a year, and each needs less than 1% of its market. The markets are proven: Naukri earned ₹2,343 crore from recruiters in FY26 and Astrotalk ₹1,176 crore in FY25. The math for every number is in the market section above.</p></details>
+      <details><summary>How will you get users without a big ad budget?</summary><p>Through people who already know us: our IIM Indore batch, their placement cells and the companies that hire from them. Kosmik answers in Hindi and Hinglish, where most apps don’t. And one Asanoha account means a user who joins one product can try the others for free.</p></details>
       <details><summary>Why now?</summary><p>UPI made small payments free to take, AI made one engineer worth a team, and Indian users now expect apps in their own language. A small team can now ship what needed fifty people five years ago.</p></details>
       <details><summary>Why you?</summary><p>We ship. 323 commits, four products and a registered LLP, with day jobs. One founder writes the code, one handles people and partners, one runs operations, and one is a pharmacist who reads every lab report.</p></details>
       <details><summary>What are the risks?</summary><p>The store sells a regulated Ayurvedic medicine, so licences, labels and advertising rules come first, and we follow legal advice on each. WhatsApp codes run through our own relay today and should move to the official WhatsApp Business API before we scale. And four products is a lot for four people, which is exactly why we share everything we can.</p></details>
@@ -434,6 +518,6 @@
   </div>
 </dialog>
 
-<script src="investors.js?v=4" defer></script>
+<script src="investors.js?v=5" defer></script>
 </body>
 </html>
