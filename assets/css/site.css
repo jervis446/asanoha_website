@@ -609,7 +609,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opac
 /* header chips */
 .ash-coinbtn,.ash-mebtn{display:inline-flex;align-items:center;gap:8px;height:44px;border-radius:22px;border:2px solid var(--ink);background:transparent;color:var(--ink);font:inherit;font-weight:800;cursor:pointer}
 .ash-coinbtn{padding:0 12px 0 8px} .ash-mebtn{width:44px;justify-content:center}
-.ash-coinbtn .ash-coin{width:24px;height:24px}
+.ash-coinbtn .ash-coin-ico{flex:0 0 auto}
 @media (max-width:640px){.ash-coinbtn .ash-coinbal{display:none}.ash-coinbtn{width:44px;padding:0;justify-content:center}}
 @media (max-width:420px){.ash-coinbtn{display:none}}
 
