@@ -211,7 +211,7 @@
         '<div class="body"><span class="badge ' + p.dose + '">' + DOSE[p.dose].name + '</span>' +
         '<h3>' + esc(p.name) + '</h3><p class="meta">' + esc(p.short) + '. ' + esc(p.story || STORY[p.dose]) + '</p>' +
         (inCart(p.id) ? '<span class="incart">\u2713 ' + inCart(p.id) + ' in your cart</span>' : '') +
-        '<div class="row"><span class="price">' + (p.variants.length > 1 && !CONFIG.hidePrices ? '<small>from </small>' : '') + money(from) + (CONFIG.hidePrices ? '<span class="lockchip">\uD83D\uDD12 after launch</span>' : '') + '</span>' +
+        '<div class="row"><span class="price">' + (p.variants.length > 1 && !CONFIG.hidePrices ? '<small>from </small>' : '') + money(from) + (CONFIG.hidePrices ? '<span class="lockchip"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9.5" rx="2.2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> after launch</span>' : '') + '</span>' +
         '<button class="btn small clay" data-open="' + p.id + '">' + (inCart(p.id) ? 'Add more' : 'Choose') + '</button></div></div></article>';
     }).join('');
   }
@@ -328,10 +328,10 @@
       return '<div class="line"><img src="' + p.img + '" alt=""><div><b>' + esc(p.name) + '</b><small>' + esc(v.label) + '</small><small>' + DOSE[p.dose].name + ' \u00B7 ' + money(v.price) + '</small><button class="rm" data-rm="' + i + '">Remove</button></div>' +
         '<div class="qty" role="group" aria-label="Quantity for ' + esc(p.name) + '"><button data-dq="-1" data-i="' + i + '" aria-label="One less">\u2212</button><output>' + l.q + '</output><button data-dq="1" data-i="' + i + '" aria-label="One more">+</button></div></div>';
     }).join('');
-    foot.innerHTML = (CONFIG.hidePrices ? '<p class="hint" style="margin:0">\uD83D\uDD12 Prices go live at launch. Send your order now and we\u2019ll confirm the price and delivery charge before you pay.</p>' : '') +
+    foot.innerHTML = (CONFIG.hidePrices ? '<p class="hint" style="margin:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9.5" rx="2.2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> Prices go live at launch. Send your order now and we\u2019ll confirm the price and delivery charge before you pay.</p>' : '') +
       (CONFIG.hidePrices ? '' : '<div class="sum"><span>Subtotal</span><span>' + money(s) + '</span></div><div class="sum"><span>Delivery</span><span>' + (sh ? money(sh) : 'Free') + '</span></div>') +
       (sh && !CONFIG.hidePrices ? '<p class="hint" style="margin:0">Free delivery from ' + money(CONFIG.freeShippingFrom) + '.</p>' : '') +
-      (CONFIG.gift ? '<div class="gift-line"><span aria-hidden="true">\uD83C\uDF81</span>Free with this order: ' + esc(CONFIG.gift) + '</div>' : '') +
+      (CONFIG.gift ? '<div class="gift-line"><span aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8.5" width="17" height="4" rx="1"/><path d="M5 12.5V20h14v-7.5M12 8.5V20"/><path d="M12 8.5C10.5 5 7 4.6 7 6.6c0 1.4 2.2 1.9 5 1.9zM12 8.5c1.5-3.5 5-3.9 5-1.9 0 1.4-2.2 1.9-5 1.9z"/></svg></span>Free with this order: ' + esc(CONFIG.gift) + '</div>' : '') +
       '<div class="sum total"><span>Total</span><span>' + money(s + sh) + '</span></div><button class="btn clay wide" id="to-co">Checkout</button>';
     $('#to-co').addEventListener('click', function () { track('begin_checkout', { items: cart.length }); view = 'checkout'; renderDrawer(); });
   }
