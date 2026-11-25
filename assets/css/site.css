@@ -781,8 +781,8 @@ body.ash-open .ash-top{display:none}
 }
 
 /* ===== phone polish (Baymard / Material: 2-up grid, 44-48px targets, compact banners) ===== */
-footer.site .ash-sign{max-width:var(--wrap);margin:28px auto 0;padding:0 22px 26px;color:color-mix(in srgb,#F4EEE3 18%,transparent);font-size:clamp(34px,8vw,80px)}
-footer.site .ash-sign span{color:var(--pink)}
+footer.site .ash-sign{max-width:var(--wrap);margin:28px auto 0;padding:0 22px 26px;color:color-mix(in srgb,#F4EEE3 45%,var(--dark));font-size:clamp(34px,8vw,80px)}
+footer.site .ash-sign span{color:#D6588A} /* 3:1+ on both footer greens; the sign is large text */
 .ash-hero-pill{white-space:nowrap}
 @media (max-width:640px){
   .ash-shop.section{padding-top:28px}
