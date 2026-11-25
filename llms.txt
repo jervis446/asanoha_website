@@ -1,6 +1,6 @@
 # Asanoha
 
-> Asanoha LLP (LLPIN ADE-0939, Bengaluru, India) builds everyday apps for India on one Asanoha account, one wallet (Noha Money) and its own UPI payment rail (Noha Pay). Its four products are the Asanoha store for Ayurvedic Vijaya leaf medicines, People Pitchers (AI recruiting), Kosmik (Bhagavad Gita and Vedic astrology) and Wearday (wardrobe). It was founded by Adarsh Kumar, Joseph John and Soumyadev Banerjee.
+> Asanoha LLP (LLPIN ADE-0939, Bengaluru, India) builds everyday apps for India on one Asanoha account, one wallet (Noha Money) and its own UPI payment rail (Noha Pay). Its four products are the Asanoha store for Ayurvedic Vijaya leaf medicines, People Pitchers (AI recruiting), Kosmik (Bhagavad Gita and Vedic astrology) and Wearday (wardrobe). It was founded by three partners: A. Kumar (founder and CEO), J. John and S. Banerjee.
 
 ## Company
 - https://asanoha.co.in/investors/ : For investors. The company story, the founders, the four products, live traction numbers, market sizing with the method behind each figure, and answers to common investor questions. Also in Hindi, Bengali, Marathi, Telugu, Tamil, Gujarati, Kannada, Malayalam, Punjabi, Chinese, Japanese, Arabic, French, German and Spanish at /investors/<code>/ (hi, bn, mr, te, ta, gu, kn, ml, pa, zh, ja, ar, fr, de, es).
