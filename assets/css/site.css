@@ -75,7 +75,9 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.1;letter-spacing
 .hero .trust span{display:inline-flex;align-items:center;gap:8px}
 .hero .trust span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--haldi)}
 .hero-art{position:relative;justify-self:center;width:100%;max-width:480px}
-.hero-art svg{width:100%;height:auto;display:block}
+.hero-art svg{width:100%;height:auto;display:block;overflow:visible}
+.hero-art{--star-a:#A84B27;--star-b:#C9962B}
+:root[data-theme="night"] .hero-art{--star-a:#E07B52;--star-b:#F0C987}
 .hero-art .half-l,.hero-art .half-r{transition:transform 1.3s cubic-bezier(.2,.8,.2,1)}
 .hero-art .half-l{transform:translateX(-54px)} .hero-art .half-r{transform:translateX(54px)}
 .hero-art.joined .half-l,.hero-art.joined .half-r{transform:none}
