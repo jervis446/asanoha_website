@@ -111,7 +111,7 @@
   function addBtn(p) {
     if (p.status !== 'live') return '<button class="ash-add" disabled>Soon</button>';
     var q = cart[p.id] || 0;
-    if (!q) return '<button class="ash-add" data-ash-add="' + p.id + '" aria-label="Add ' + esc(p.name) + '">ADD</button>';
+    if (!q) return '<button class="ash-add" data-ash-add="' + p.id + '" aria-label="Add ' + esc(p.name) + '">Add</button>';
     return '<div class="ash-step" role="group" aria-label="Quantity of ' + esc(p.name) + '"><button data-ash-dec="' + p.id + '" aria-label="Remove one">\u2212</button><span>' + q + '</span><button data-ash-add="' + p.id + '" aria-label="Add one">+</button></div>';
   }
   function tile(p) {
