@@ -714,10 +714,10 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 .masked { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted var(--muted); outline: none; }
 .masked:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
 .m-dots { letter-spacing: .12em; }
-.naam-tip { position: absolute; left: -4px; bottom: calc(100% + 10px); transform: translateY(4px); width: max-content; max-width: min(260px, 80vw);
+.naam-tip { position: absolute; inset-inline-start: -4px; bottom: calc(100% + 10px); transform: translateY(4px); width: max-content; max-width: min(260px, 80vw);
   padding: 8px 12px; border-radius: 10px; background: var(--text); color: var(--bg); font: 400 13px/1.4 var(--sans); letter-spacing: 0; text-align: center;
   opacity: 0; pointer-events: none; transition: opacity .2s var(--ease), transform .2s var(--ease); z-index: 5; white-space: normal; }
-.naam-tip::after { content: ''; position: absolute; left: 18px; top: 100%; border: 6px solid transparent; border-top-color: var(--text); }
+.naam-tip::after { content: ''; position: absolute; inset-inline-start: 18px; top: 100%; border: 6px solid transparent; border-top-color: var(--text); }
 .masked:hover .naam-tip, .masked:focus-visible .naam-tip, .masked.show .naam-tip { opacity: 1; transform: none; }
 .founder-chip { margin-top: 14px !important; font-size: 16px; color: var(--text) !important; }
 
@@ -735,7 +735,8 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 .tour-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--line-2); transition: background .2s, width .2s; }
 .tour-dots i.done { background: color-mix(in srgb, var(--accent) 45%, transparent); }
 .tour-dots i.on { background: var(--accent); width: 18px; border-radius: 3px; }
-.tour-actions { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+.tour-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
+.tour-actions [data-tour-next] { margin-inline-start: auto; }
 .tour-gap { flex: 1; }
 .tour-keys { font-size: 11px; margin: 0; }
 .touring .nav { z-index: 40; }
