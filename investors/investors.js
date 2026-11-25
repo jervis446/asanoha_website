@@ -72,6 +72,30 @@
     document.addEventListener('click', function (e) { if (nav.classList.contains('open') && !nav.contains(e.target)) setMenu(false); });
   }
 
+  /* Header fit: step down (hide walkthrough link, hide tag, collapse links) until the row fits */
+  var navRow = document.querySelector('.nav-row'), navLinks = document.getElementById('nav-links');
+  function navOverflows() {
+    return navRow.scrollWidth > navRow.clientWidth + 1 || (navLinks && navLinks.scrollWidth > navLinks.clientWidth + 1);
+  }
+  function fitNav() {
+    if (!navRow) return;
+    nav.classList.remove('fit-1', 'fit-2', 'fit-3');
+    ['fit-1', 'fit-2', 'fit-3'].some(function (c) {
+      if (!navOverflows()) return true;
+      nav.classList.add(c);
+      return false;
+    });
+    if (menuBtn && !nav.classList.contains('fit-3') && window.innerWidth > 980) setMenu(false);
+  }
+  var fitQueued = false;
+  window.addEventListener('resize', function () {
+    if (fitQueued) return;
+    fitQueued = true;
+    requestAnimationFrame(function () { fitQueued = false; fitNav(); });
+  });
+  fitNav();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNav);
+
   /* Reveal on scroll */
   document.querySelectorAll('.handnote .hn-line').forEach(function (l, i) { l.style.setProperty('--i', i); });
   var revealables = document.querySelectorAll('.handnote, .section-head, .tier-head, .selfhost, .product, .rail, .comp-table, .chart-card, .shared-item, .faq, .person, .cta-inner, .stats');
@@ -563,6 +587,7 @@
       join.setAttribute('aria-hidden', on ? 'true' : 'false');
       talk.setAttribute('aria-hidden', on ? 'false' : 'true');
     });
+    if (typeof fitNav === 'function') fitNav();
   }
   missionBtns.forEach(function (b) {
     b.addEventListener('click', function () {
