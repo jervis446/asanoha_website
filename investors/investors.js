@@ -73,7 +73,8 @@
   }
 
   /* Reveal on scroll */
-  var revealables = document.querySelectorAll('.section-head, .tier-head, .selfhost, .product, .rail, .comp-table, .chart-card, .shared-item, .faq, .person, .cta-inner, .stats');
+  document.querySelectorAll('.handnote .hn-line').forEach(function (l, i) { l.style.setProperty('--i', i); });
+  var revealables = document.querySelectorAll('.handnote, .section-head, .tier-head, .selfhost, .product, .rail, .comp-table, .chart-card, .shared-item, .faq, .person, .cta-inner, .stats');
   revealables.forEach(function (el) { el.classList.add('reveal'); });
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
