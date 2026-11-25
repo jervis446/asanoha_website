@@ -47,8 +47,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&family=Manrope:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <script>
   (function () {
-    var t = null;
-    try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {}
+    // one theme setting for the whole site: the store saves 'day' / 'night' / 'auto' as JSON
+    var t = null, s = null;
+    try { s = JSON.parse(localStorage.getItem('asanoha:theme') || 'null'); } catch (e) {}
+    if (s === 'day') t = 'light'; else if (s === 'night') t = 'dark';
+    else if (s == null) { try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {} }
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
@@ -563,6 +566,6 @@
 </dialog>
 
 <script>window.INV_T={"Asanoha store: prescription Ayurveda, packed in pairs":"Asanoha ஸ்டோர்: மருந்துச்சீட்டுடன் ஆயுர்வேதம், ஜோடியாக பேக் செய்யப்பட்டது","People Pitchers: hiring from real work, public on 14 Dec":"People Pitchers: உண்மையான வேலையைப் பார்த்துப் பணியமர்த்தல், 14 டிச அன்று பொதுவுக்கு","Kosmik: the Gita and Vedic astrology with sources, public on 1 Dec":"Kosmik: ஆதாரங்களுடன் கீதையும் வேத ஜோதிடமும், 1 டிச அன்று பொதுவுக்கு","Wearday: your wardrobe and outfit log, built":"Wearday: உங்கள் உடை அலமாரியும் உடைப் பதிவும், உருவாக்கப்பட்டது","Noha Pay: our own UPI rail, takes payments for three products":"Noha Pay: எங்கள் சொந்த UPI பாதை, மூன்று தயாரிப்புகளுக்குக் கட்டணங்களைப் பெறுகிறது","Noha Money: one closed wallet for cashback and refunds":"Noha Money: cashback, refunds-க்கான ஒரே closed wallet","Point at a part":"ஒரு பகுதியைச் சுட்டுங்கள்","21 Sep":"21 செப்","28 Sep":"28 செப்","5 Oct":"5 அக்","12 Oct":"12 அக்","19 Oct":"19 அக்","26 Oct":"26 அக்","2 Nov":"2 நவ","9 Nov":"9 நவ","16 Nov":"16 நவ","23 Nov":"23 நவ","Asanoha store":"Asanoha ஸ்டோர்","Wearday":"Wearday","People Pitchers":"People Pitchers","Kosmik":"Kosmik","Noha Pay":"Noha Pay","Quiet October":"அமைதியான அக்டோபர்","October: day jobs, seven commits":"அக்டோபர்: பகல் வேலைகள், ஏழு commits","One moment":"ஒரு நிமிடம்","The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.":"தொடர்புப் படிவம் இன்னும் இயக்கப்படவில்லை. orders@asanoha.co.in-க்கு எழுதுங்கள்.","Something went wrong. Please try again.":"ஏதோ தவறு நடந்துவிட்டது. மீண்டும் முயற்சிக்கவும்.","We couldn’t reach our server. Check your connection and try again.":"எங்கள் சர்வரை அடைய முடியவில்லை. உங்கள் இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.","Please add your name.":"உங்கள் பெயரைச் சேர்க்கவும்.","Please add your fund or firm. Angels can write Angel.":"உங்கள் முதலீட்டு நிதி அல்லது நிறுவனத்தைச் சேர்க்கவும். Angel முதலீட்டாளர்கள் Angel என்று எழுதலாம்.","Please add a 10-digit Indian mobile number that has WhatsApp.":"WhatsApp உள்ள 10 இலக்க இந்திய மொபைல் எண்ணைச் சேர்க்கவும்.","That email doesn’t look right. You can also leave it empty.":"அந்த மின்னஞ்சல் சரியாகத் தெரியவில்லை. அதைக் காலியாகவும் விடலாம்.","Please agree to be contacted so we can write back.":"நாங்கள் பதில் எழுத, தொடர்புகொள்ள ஒப்புதல் தாருங்கள்.","Sending the code":"குறியீட்டை அனுப்புகிறோம்","Please type the 6-digit code from WhatsApp.":"WhatsApp-இல் வந்த 6 இலக்கக் குறியீட்டை உள்ளிடவும்.","Checking":"சரிபார்க்கிறோம்","We have updated your details. One of the founders will reach out to you.":"உங்கள் விவரங்களைப் புதுப்பித்துள்ளோம். நிறுவனர்களில் ஒருவர் உங்களைத் தொடர்புகொள்வார்.","We have your details and sent you a note on WhatsApp. One of the founders will reach out to you.":"உங்கள் விவரங்கள் எங்களுக்குக் கிடைத்தன, WhatsApp-இல் உங்களுக்கு ஒரு குறிப்பு அனுப்பியுள்ளோம். நிறுவனர்களில் ஒருவர் உங்களைத் தொடர்புகொள்வார்.","Sent. You can ask again in a minute":"அனுப்பப்பட்டது. ஒரு நிமிடம் கழித்து மீண்டும் கேட்கலாம்","Send the code again":"குறியீட்டை மீண்டும் அனுப்புங்கள்"};</script>
-<script src="../investors.js?v=13" defer></script>
+<script src="../investors.js?v=14" defer></script>
 </body>
 </html>

@@ -141,7 +141,11 @@
     if (!CONFIG.ga4Id && !CONFIG.clarityId) { if (bar) bar.remove(); return; }
     if (c === true) { loadAnalytics(); if (bar) bar.remove(); return; }
     if (c === false || !bar) { if (bar) bar.remove(); return; }
-    bar.hidden = false;
+    // One thing at a time on a first visit: the 18+ question first, the analytics choice a moment after
+    var showBar = function () { bar.hidden = false; };
+    var gy = $('#gate-yes');
+    if (!store.get('adult', false) && gy) gy.addEventListener('click', function () { setTimeout(showBar, 1500); });
+    else showBar();
     $('#consent-yes').addEventListener('click', function () { store.set('analytics', true); bar.remove(); loadAnalytics(); });
     $('#consent-no').addEventListener('click', function () { store.set('analytics', false); bar.remove(); });
   }
@@ -382,9 +386,32 @@
     var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', t === 'night' ? '#0F1615' : '#ECE5D8');
     sky.start(t === 'night' ? 'night' : 'day');
   }
+  // Same reveal as Kosmik and the investors page: a circle of the new theme grows from where
+  // the person tapped (or from the button), about 400 ms. Skipped for reduced motion.
+  var lastTap = null;
+  document.addEventListener('pointerdown', function (e) { lastTap = { x: e.clientX, y: e.clientY, at: Date.now() }; }, true);
+  function revealTheme(change, el) {
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce) { change(); return; }
+    var x, y, r = el && el.getBoundingClientRect();
+    if (lastTap && Date.now() - lastTap.at < 1500) { x = lastTap.x; y = lastTap.y; }
+    else if (r && r.width) { x = r.left + r.width / 2; y = r.top + r.height / 2; }
+    else { x = innerWidth / 2; y = innerHeight / 2; }
+    var rad = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    document.startViewTransition(change).ready.then(function () {
+      document.documentElement.animate(
+        { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + rad + 'px at ' + x + 'px ' + y + 'px)'] },
+        { duration: 400, easing: 'cubic-bezier(.2,.7,.2,1)', pseudoElement: '::view-transition-new(root)' });
+    }).catch(function () {});
+  }
   function themeToggle() {
     var b = $('#theme-btn'); if (!b) return;
-    b.addEventListener('click', function () { var t = document.documentElement.getAttribute('data-theme') === 'night' ? 'day' : 'night'; store.set('theme', t); applyTheme(t); });
+    b.addEventListener('click', function () {
+      var t = document.documentElement.getAttribute('data-theme') === 'night' ? 'day' : 'night';
+      // themePref is what the profile sheet and the investors page read
+      store.set('theme', t); store.set('themePref', t);
+      revealTheme(function () { applyTheme(t); }, b);
+    });
     applyTheme(document.documentElement.getAttribute('data-theme') || 'day');
   }
 

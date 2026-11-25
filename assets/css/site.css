@@ -571,7 +571,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opac
 .ash-banners{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:20px}
 @media (min-width:860px){.ash-banners{grid-template-columns:1.3fr 1fr 1fr}}
 .ash-ban{display:flex;gap:14px;align-items:center;text-align:left;border-radius:20px;padding:16px 18px;border:0;cursor:pointer;font:inherit;color:#F4EEE3;min-height:96px}
-.ash-ban b{display:block;font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15}
+.ash-ban b{display:block;font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.15}
 .ash-ban span span{display:block;font-size:13.5px;line-height:1.45;opacity:.88;margin-top:4px}
 .ash-ban.rx{background:var(--teal-d)} .ash-ban.noha{background:#3A2419} .ash-ban.learn{background:#2B2A45}
 .ash-ban .ico{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--gold)}
@@ -596,6 +596,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opac
 .ash-foot{margin-top:auto;padding-top:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .ash-price{display:flex;flex-direction:column;font-size:12px;font-weight:800;color:var(--muted);line-height:1.2}
 .ash-blur{filter:blur(5px);color:var(--ink);user-select:none}
+.ash-sum{align-items:center} .ash-sum > b{font-size:14px;color:var(--accent-text)}
+.ash-has-pill main{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .ash-add{min-width:70px;height:38px;padding:0 14px;border-radius:var(--r-btn);border:1.5px solid var(--accent-text);background:var(--accent-tint);color:var(--accent-text);font:inherit;font-weight:800;font-size:14px;cursor:pointer}
 .ash-add:not(:disabled):hover{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .ash-add:disabled{border-color:var(--line);color:var(--muted);background:transparent;cursor:not-allowed}
@@ -693,7 +695,9 @@ body.ash-open{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .ash-toast.on{opacity:1;transform:translate(-50%,0)}
 
 /* cart and theme live in the profile now */
-.top .cart-btn,.top .theme-btn{display:none!important}
+.top .cart-btn{display:none!important}
+/* theme reveal (see revealTheme in site.js) */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 .ash-user{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--paper);border:1px solid var(--line)}
 .ash-user img,.ash-ini{width:48px;height:48px;border-radius:50%;flex:0 0 auto}
 .ash-ini{display:grid;place-items:center;background:var(--accent);color:var(--on-accent);font-weight:800;font-size:20px;text-transform:uppercase}
@@ -739,7 +743,7 @@ body.ash-open .ash-top{display:none}
 .ash-hero{position:relative;display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:8px;overflow:hidden;border-radius:22px;margin:4px 0 12px;min-height:190px;padding:20px 0 20px 22px;color:#F4EEE3;
   background:radial-gradient(120% 120% at 100% 0%,#3F6B66 0%,transparent 55%),linear-gradient(135deg,#1E3F3B 0%,#2E4F4B 60%,#3A2419 140%)}
 .ash-hero-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:var(--gold);color:#1E2624;font-size:12px;font-weight:800}
-.ash-hero h3{font-family:var(--display);font-weight:400;font-size:clamp(22px,4.6vw,34px);line-height:1.12;margin:10px 0 14px;max-width:18ch}
+.ash-hero h3{font-family:var(--serif);font-weight:600;font-size:clamp(22px,4.6vw,34px);line-height:1.12;margin:10px 0 14px;max-width:18ch}
 .ash-hero-cta{min-height:44px;padding:0 22px;border-radius:var(--r-btn);border:0;background:var(--accent);color:var(--on-accent);font:inherit;font-weight:800;font-size:14px;cursor:pointer}
 .ash-hero-art{position:relative;height:100%;min-height:150px}
 .ash-hero-art img{position:absolute;bottom:-8px;max-height:92%;filter:drop-shadow(0 12px 18px rgba(0,0,0,.35));border-radius:14px}
@@ -754,7 +758,7 @@ body.ash-open .ash-top{display:none}
 .ash-aware-top{display:flex;gap:14px;align-items:center}
 .ash-shield{flex:0 0 auto;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:rgba(143,195,187,.14);color:#8FC3BB}
 .ash-shield.big{width:76px;height:76px;margin:10px auto 6px;border-radius:22px}
-.ash-aware h3{font-family:var(--display);font-weight:400;font-size:21px;margin:0;color:#F0C987}
+.ash-aware h3{font-family:var(--serif);font-weight:600;font-size:21px;margin:0;color:#F0C987}
 .ash-aware p{margin:4px 0 0;font-size:14px;color:#C9D6D2}
 .ash-aware-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
 .ash-aware-row span{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:12.5px;font-weight:700;line-height:1.35;padding:12px 8px;border-radius:14px;background:rgba(255,255,255,.06)}
@@ -989,10 +993,12 @@ input,select,textarea,button{font-size:16px}
     border-bottom:1px solid var(--band-line);color:var(--ink);transition:box-shadow .2s}
   .ash-appbar.stuck{box-shadow:0 10px 24px rgba(15,20,19,.10)}
   :root[data-theme="night"] .ash-appbar.stuck{box-shadow:0 10px 24px rgba(0,0,0,.35)}
-  .ash-ab-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px}
+  .ash-ab-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding-bottom:12px}
   .ash-appbar .ash-deliver{flex:1;min-width:0;width:auto;margin:0;padding:0;border:0;border-radius:0;background:none}
-  .ash-ab-acts{display:flex;gap:10px;flex:0 0 auto;padding-top:4px}
-  .ash-ab-acts .ash-coinbtn,.ash-ab-acts .ash-mebtn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid var(--band-line);border-radius:50%;background:var(--band-soft);color:var(--ink)}
+  .ash-ab-acts{display:flex;gap:6px;flex:0 0 auto;padding-top:4px}
+  .ash-ab-brand{flex:0 0 auto;display:grid;place-items:center;width:40px;height:44px;margin-right:2px}
+  .ash-ab-brand img{width:34px;height:34px}
+  .ash-ab-acts .theme-btn,.ash-ab-acts .ash-coinbtn,.ash-ab-acts .ash-mebtn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border:1px solid var(--band-line);border-radius:50%;background:var(--band-soft);color:var(--ink)}
   .ash-ab-acts .ash-coinbal{display:none}
   .ash-ab-acts .ash-coin{width:24px;height:24px;box-shadow:0 0 0 1.5px var(--ink)}
   .ash-appbar .ash-search{position:relative;top:auto;margin:0;max-width:none;background:var(--field);border:1px solid var(--line);box-shadow:0 1px 2px rgba(30,38,36,.06)}
@@ -1012,7 +1018,7 @@ input,select,textarea,button{font-size:16px}
 }
 
 /* brand wordmark inside the delivery line, same face as the header logo */
-.ash-dl-brand{font-family:var(--display);font-weight:400;font-size:1.22em;letter-spacing:0;color:var(--ink);line-height:1}
+.ash-dl-brand{font-family:var(--serif);font-weight:600;font-size:1.3em;letter-spacing:-.01em;color:var(--ink);line-height:1}
 .ash-dl-brand sup{font-family:var(--sans);font-size:.5em;font-weight:700;margin-left:1px;vertical-align:super}
 .ash-deliver .ash-dl-eta{flex-wrap:wrap;row-gap:6px}
 .ash-dl-time{white-space:nowrap}
@@ -1043,3 +1049,7 @@ input,select,textarea,button{font-size:16px}
 .fam:hover,.fam:focus-visible{border-color:var(--accent);transform:translateY(-1px)}
 :root[data-theme="night"] .fam{background:rgba(24,33,31,.82)}
 @media (max-width:640px){.family{grid-template-columns:1fr}.fam{padding:10px 12px}}
+
+/* desktop: when the search sticks under the header, give it a solid band so it does not sit on top of the pack art */
+@media (min-width:641px){.ash-search.stuck{box-shadow:0 0 0 100vmax var(--ground),0 10px 26px rgba(30,38,36,.14);clip-path:inset(-14px -100vmax)}
+  :root[data-theme="night"] .ash-search.stuck{box-shadow:0 0 0 100vmax var(--ground),0 10px 26px rgba(0,0,0,.45)}}

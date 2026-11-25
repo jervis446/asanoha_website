@@ -26,7 +26,12 @@
   }
   function applyTheme(next) {
     root.setAttribute('data-theme', next);
-    try { localStorage.setItem('asanoha:investors-theme', next); } catch (e) {}
+    try {
+      localStorage.setItem('asanoha:investors-theme', next);
+      // shared with the store, which saves 'day' / 'night' as JSON
+      var st = JSON.stringify(next === 'dark' ? 'night' : 'day');
+      localStorage.setItem('asanoha:theme', st); localStorage.setItem('asanoha:themePref', st);
+    } catch (e) {}
     drawChart();
     dotClips.forEach(function (c) { c.redraw(); });
   }
@@ -78,7 +83,9 @@
     });
   }, { rootMargin: '0px 0px -10% 0px' }) : null;
   revealables.forEach(function (el) { io ? io.observe(el) : el.classList.add('in'); });
-  requestAnimationFrame(function () { document.querySelectorAll('.rise').forEach(function (el) { el.classList.add('in'); }); });
+  // rAF never fires in a background tab or a preview renderer, so also show the hero on a timer
+  function showHero() { document.querySelectorAll('.rise').forEach(function (el) { el.classList.add('in'); }); }
+  requestAnimationFrame(showHero); setTimeout(showHero, 400);
 
   /* Count up numbers the first time each one is seen */
   function countUp(el) {
