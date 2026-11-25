@@ -851,7 +851,7 @@
     var actions = $('.top .actions'), cartBtn = $('.top .cart-btn');
     if (actions && cartBtn && !$('.ash-coinbtn')) {
       var coin = document.createElement('button'); coin.className = 'ash-coinbtn'; coin.setAttribute('data-ash-open', 'noha'); coin.setAttribute('aria-label', 'Noha Money');
-      coin.innerHTML = '<span class="ash-coin" aria-hidden="true"></span><span class="ash-coinbal">\u20B90</span>';
+      coin.innerHTML = '<svg class="ash-coin-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M8.5 7.5h7M8.5 10.5h7M8.5 7.5c4.2 0 4.2 6 0 6l5 4"/></svg><span class="ash-coinbal">\u20B90</span>';
       var me = document.createElement('button'); me.className = 'ash-mebtn'; me.setAttribute('data-ash-open', 'me'); me.setAttribute('aria-label', 'Your account');
       me.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>';
       actions.insertBefore(coin, cartBtn); actions.insertBefore(me, cartBtn);
