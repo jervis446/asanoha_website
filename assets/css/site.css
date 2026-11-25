@@ -1079,3 +1079,5 @@ input,select,textarea,button{font-size:16px}
 }
 /* card quick-add stays secondary to the page's main action */
 .ash-add:not(:disabled){background:transparent}
+/* cart count: the header cart appears once something is in the cart (phones use the View cart pill) */
+.ash-has-cart .top .cart-btn{display:inline-flex!important}

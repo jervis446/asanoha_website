@@ -245,6 +245,10 @@
     var n = count(); pill.hidden = !n || document.body.classList.contains('ash-open');
     // keep the last lines of the page clear of the floating pill
     document.documentElement.classList.toggle('ash-has-pill', !!n);
+    // header and app bar cart buttons show only once something is in the cart, with the count
+    document.documentElement.classList.toggle('ash-has-cart', !!n);
+    $$('.cart-count').forEach(function (e) { e.textContent = n; });
+    $$('.cart-btn').forEach(function (b) { b.setAttribute('aria-label', n ? 'Open cart, ' + n + (n === 1 ? ' item' : ' items') : 'Open cart'); });
     if (n) {
       var first = byId[Object.keys(cart)[0]];
       $('#ash-pill-th').innerHTML = '<img src="' + first.img + '" alt="">';

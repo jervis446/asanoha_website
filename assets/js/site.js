@@ -168,7 +168,7 @@
   var cart = (Array.isArray(cartRaw) ? cartRaw : []).filter(function (l) { return l && byId[l.p] && variantOf(l.p, l.v) && l.q > 0; });
   function variantOf(pid, vid) { var p = byId[pid]; if (!p) return null; for (var i = 0; i < p.variants.length; i++) if (p.variants[i].id === vid) return p.variants[i]; return null; }
   function inCart(pid) { return cart.reduce(function (a, l) { return a + (l.p === pid ? l.q : 0); }, 0); }
-  function saveCart() { store.set('cart', cart); var n = cart.reduce(function (a, l) { return a + l.q; }, 0); $$('.cart-count').forEach(function (e) { e.textContent = n; }); if ($('#grid')) renderGrid(); }
+  function saveCart() { store.set('cart', cart); var n = cart.reduce(function (a, l) { return a + l.q; }, 0); if (!$('#ash-pill')) $$('.cart-count').forEach(function (e) { e.textContent = n; }); if ($('#grid')) renderGrid(); } // shop.js owns the count where its cart is mounted
   function addToCart(pid, vid, q) {
     q = q || 1;
     var line = cart.filter(function (l) { return l.p === pid && l.v === vid; })[0];
