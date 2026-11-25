@@ -621,9 +621,9 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 .nav-tour:hover { color: var(--text); background: var(--surface-2); }
 
 /* Mission button: two labels, one shown at a time, flips on the first press */
-.mission-btn { position: relative; overflow: hidden; }
-.mission-btn .m-join, .mission-btn .m-talk { display: inline-block; transition: transform .45s var(--ease), opacity .3s var(--ease); }
-.mission-btn .m-talk { position: absolute; inset: 0; display: grid; place-items: center; transform: translateY(110%); opacity: 0; }
+.mission-btn { position: relative; overflow: hidden; display: inline-grid; place-items: center; }
+.mission-btn .m-join, .mission-btn .m-talk { grid-area: 1 / 1; display: inline-block; transition: transform .45s var(--ease), opacity .3s var(--ease); }
+.mission-btn .m-talk { transform: translateY(110%); opacity: 0; }
 .mission-on .mission-btn .m-join { transform: translateY(-110%); opacity: 0; }
 .mission-on .mission-btn .m-talk { transform: none; opacity: 1; }
 .mission-big { min-width: 220px; }
@@ -834,3 +834,15 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 @keyframes intro-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
 @media (prefers-reduced-motion: reduce) { .intro-ring::after, .intro-pointer { animation: none; } }
 .stack-stage { isolation: isolate; }
+
+/* Header fit: investors.js adds these when the header's text (some languages run long) does not fit */
+.nav.fit-1 .nav-links .nav-tour { display: none; }
+.nav.fit-2 .brand-tag { display: none; }
+.nav.fit-3 .nav-links { display: none; }
+.nav.fit-3 .menu-btn { display: inline-flex; }
+.nav.fit-3 .nav-links + .nav-actions { margin-left: auto; }
+.nav.fit-3.open .nav-links {
+  display: flex; flex-direction: column; gap: 2px; position: absolute; left: 0; right: 0; top: 64px;
+  padding: 8px 16px 16px; background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.nav.fit-3.open .nav-links a { padding: 12px; font-size: 16px; }
