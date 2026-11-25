@@ -47,8 +47,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&family=Manrope:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <script>
   (function () {
-    var t = null;
-    try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {}
+    // one theme setting for the whole site: the store saves 'day' / 'night' / 'auto' as JSON
+    var t = null, s = null;
+    try { s = JSON.parse(localStorage.getItem('asanoha:theme') || 'null'); } catch (e) {}
+    if (s === 'day') t = 'light'; else if (s === 'night') t = 'dark';
+    else if (s == null) { try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {} }
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
@@ -560,6 +563,6 @@
   </div>
 </dialog>
 
-<script src="investors.js?v=13" defer></script>
+<script src="investors.js?v=14" defer></script>
 </body>
 </html>

@@ -47,8 +47,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&family=Manrope:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <script>
   (function () {
-    var t = null;
-    try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {}
+    // one theme setting for the whole site: the store saves 'day' / 'night' / 'auto' as JSON
+    var t = null, s = null;
+    try { s = JSON.parse(localStorage.getItem('asanoha:theme') || 'null'); } catch (e) {}
+    if (s === 'day') t = 'light'; else if (s === 'night') t = 'dark';
+    else if (s == null) { try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {} }
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
@@ -563,6 +566,6 @@
 </dialog>
 
 <script>window.INV_T={"Asanoha store: prescription Ayurveda, packed in pairs":"Asanoha స్టోర్: ప్రిస్క్రిప్షన్ ఆయుర్వేదం, జంటగా ప్యాక్","People Pitchers: hiring from real work, public on 14 Dec":"People Pitchers: నిజమైన పనితో హైరింగ్, 14 డిసెంబర్ నుంచి పబ్లిక్","Kosmik: the Gita and Vedic astrology with sources, public on 1 Dec":"Kosmik: ఆధారాలతో గీత, వైదిక జ్యోతిషం, 1 డిసెంబర్ నుంచి పబ్లిక్","Wearday: your wardrobe and outfit log, built":"Wearday: మీ వార్డ్‌రోబ్, అవుట్‌ఫిట్ లాగ్, సిద్ధం","Noha Pay: our own UPI rail, takes payments for three products":"Noha Pay: మా సొంత UPI రైల్, మూడు ఉత్పత్తులకు పేమెంట్లు తీసుకుంటుంది","Noha Money: one closed wallet for cashback and refunds":"Noha Money: క్యాష్‌బ్యాక్, రిఫండ్ల కోసం ఒకే క్లోజ్డ్ వాలెట్","Point at a part":"ఏదైనా భాగం మీద పాయింటర్ ఉంచండి","21 Sep":"21 సెప్టెం","28 Sep":"28 సెప్టెం","5 Oct":"5 అక్టో","12 Oct":"12 అక్టో","19 Oct":"19 అక్టో","26 Oct":"26 అక్టో","2 Nov":"2 నవం","9 Nov":"9 నవం","16 Nov":"16 నవం","23 Nov":"23 నవం","Asanoha store":"Asanoha స్టోర్","Wearday":"Wearday","People Pitchers":"People Pitchers","Kosmik":"Kosmik","Noha Pay":"Noha Pay","Quiet October":"నిశ్శబ్ద అక్టోబర్","October: day jobs, seven commits":"అక్టోబర్: ఉద్యోగాలు, ఏడు కమిట్‌లు","One moment":"ఒక్క క్షణం","The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.":"కాంటాక్ట్ ఫారమ్ ఇంకా ఆన్ కాలేదు. దయచేసి orders@asanoha.co.in కి రాయండి.","Something went wrong. Please try again.":"ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.","We couldn’t reach our server. Check your connection and try again.":"మా సర్వర్‌ను చేరలేకపోయాం. మీ కనెక్షన్ చూసి మళ్లీ ప్రయత్నించండి.","Please add your name.":"దయచేసి మీ పేరు ఇవ్వండి.","Please add your fund or firm. Angels can write Angel.":"దయచేసి మీ ఫండ్ లేదా సంస్థ పేరు ఇవ్వండి. ఏంజెల్ ఇన్వెస్టర్లు Angel అని రాయవచ్చు.","Please add a 10-digit Indian mobile number that has WhatsApp.":"దయచేసి WhatsApp ఉన్న 10 అంకెల భారతీయ మొబైల్ నంబర్ ఇవ్వండి.","That email doesn’t look right. You can also leave it empty.":"ఆ ఈమెయిల్ సరిగ్గా లేనట్టుంది. ఖాళీగా కూడా వదిలేయవచ్చు.","Please agree to be contacted so we can write back.":"మేం మీకు తిరిగి రాయడానికి, సంప్రదించడానికి అంగీకరించండి.","Sending the code":"కోడ్ పంపుతున్నాం","Please type the 6-digit code from WhatsApp.":"దయచేసి WhatsApp లో వచ్చిన 6 అంకెల కోడ్ టైప్ చేయండి.","Checking":"తనిఖీ చేస్తున్నాం","We have updated your details. One of the founders will reach out to you.":"మీ వివరాలు అప్‌డేట్ చేశాం. వ్యవస్థాపకుల్లో ఒకరు మిమ్మల్ని సంప్రదిస్తారు.","We have your details and sent you a note on WhatsApp. One of the founders will reach out to you.":"మీ వివరాలు అందాయి, WhatsApp లో మీకు ఒక నోట్ పంపాం. వ్యవస్థాపకుల్లో ఒకరు మిమ్మల్ని సంప్రదిస్తారు.","Sent. You can ask again in a minute":"పంపాం. ఒక నిమిషం తర్వాత మళ్లీ అడగవచ్చు","Send the code again":"కోడ్ మళ్లీ పంపండి"};</script>
-<script src="../investors.js?v=13" defer></script>
+<script src="../investors.js?v=14" defer></script>
 </body>
 </html>

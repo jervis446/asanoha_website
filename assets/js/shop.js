@@ -101,6 +101,8 @@
     var now = document.documentElement.getAttribute('data-theme');
     var tb = document.getElementById('theme-btn');
     if (now !== want) { if (tb) tb.click(); else document.documentElement.setAttribute('data-theme', want); }
+    // the header button saves its own choice on click; put the profile choice (maybe 'auto') back
+    store.set('themePref', pref);
     store.set('theme', pref === 'auto' ? 'auto' : want);
   }
   if (mq && mq.addEventListener) mq.addEventListener('change', function () { if (themePref() === 'auto') applyThemePref('auto'); });
@@ -116,7 +118,7 @@
     return '<article class="ash-p"><button class="ash-img" data-ash-pd="' + p.id + '" aria-label="View ' + esc(p.name) + '"><img src="' + p.img + '" alt="" loading="lazy">' +
       (p.rx === false ? '<span class="ash-rx ayur">Ayurveda</span>' : '<span class="ash-rx">Rx</span>') + (p.status === 'soon' ? '<span class="ash-soon">Soon</span>' : '') + '</button>' +
       '<div class="ash-b"><span class="ash-pack">' + esc(p.pack) + '</span><span class="ash-n">' + esc(p.name) + '</span><span class="ash-dose ' + p.dose + '">' + esc(p.strength) + '</span>' +
-      '<div class="ash-foot"><span class="ash-price"><span class="ash-blur" aria-hidden="true">\u20B98,888</span><span>at launch</span></span>' + addBtn(p) + '</div></div></article>';
+      '<div class="ash-foot"><span class="ash-price"><span>Price at</span><span>launch</span></span>' + addBtn(p) + '</div></div></article>';
   }
   /* ---------- forgiving search: plurals, typos, partial words, everyday words ---------- */
   // each line: the word we index on the left, the words people actually type on the right
@@ -241,6 +243,8 @@
   function renderPill() {
     var pill = $('#ash-pill'); if (!pill) return;
     var n = count(); pill.hidden = !n || document.body.classList.contains('ash-open');
+    // keep the last lines of the page clear of the floating pill
+    document.documentElement.classList.toggle('ash-has-pill', !!n);
     if (n) {
       var first = byId[Object.keys(cart)[0]];
       $('#ash-pill-th').innerHTML = '<img src="' + first.img + '" alt="">';
@@ -454,6 +458,7 @@
     var a = defaultAddress();
     open('<h2 class="ash-h">Your cart</h2>' +
       ids.map(function (k) { var p = byId[k]; return '<div class="ash-line"><span class="ash-th"><img src="' + p.img + '" alt=""></span><span class="ash-meta"><b>' + esc(p.name) + '</b><span>' + esc(p.pack) + '</span></span>' + addBtn(p) + '</div>'; }).join('') +
+      (apiBase() ? '' : '<div class="ash-box ash-row ash-sum"><span><b>Total</b><span>' + count() + (count() === 1 ? ' item' : ' items') + '</span></span><b>Confirmed at launch</b></div>') +
       '<div class="ash-box ash-addrbox"><div class="ash-row"><b>Delivery address</b><button class="ash-link" data-ash-open="address">' + (a ? 'Change' : 'Add') + '</button></div>' +
       (a ? '<span><b class="ash-tag">' + esc(a.label) + '</b> ' + esc(a.name) + ', ' + esc(a.phone) + '<br>' + esc(addrLine(a)) + '</span>' : '<span>Add an address so we can deliver your order.</span>') + '</div>' +
       (loc ? '<div class="ash-box"><b>' + speed(loc).label + '</b><span>' + speed(loc).long + (loc.etd && !loc.quick ? '. Estimated by ' + esc(loc.etd) : '') + '.' + (speed(loc).quick && hasRx() ? ' The clock starts once your prescription is checked.' : '') + '</span></div>' : '') +
@@ -1031,7 +1036,9 @@
     var shouldLand = $('#shop') && !location.hash && isMobile && !appBar;
     var landed = false;
     if (shouldLand) { try { landed = !!sessionStorage.getItem('asanoha:landed'); sessionStorage.setItem('asanoha:landed', '1'); } catch (e) {} }
-    var afterLanding = function () { maybeAskLocation(); };
+    // No automatic location sheet: it used to slide in over the products on the first visit.
+    // The delivery row at the top and the cart's address box both ask when the person is ready.
+    var afterLanding = function () {};
     if (shouldLand && !landed) {
       var gateGone = function () {
         var gate = document.getElementById('gate');

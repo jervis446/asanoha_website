@@ -47,8 +47,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&family=Manrope:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <script>
   (function () {
-    var t = null;
-    try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {}
+    // one theme setting for the whole site: the store saves 'day' / 'night' / 'auto' as JSON
+    var t = null, s = null;
+    try { s = JSON.parse(localStorage.getItem('asanoha:theme') || 'null'); } catch (e) {}
+    if (s === 'day') t = 'light'; else if (s === 'night') t = 'dark';
+    else if (s == null) { try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {} }
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
@@ -561,6 +564,6 @@
 </dialog>
 
 <script>window.INV_T={"Asanoha store: prescription Ayurveda, packed in pairs":"Asanoha-Shop: Ayurveda auf Rezept, im Doppelpack","People Pitchers: hiring from real work, public on 14 Dec":"People Pitchers: Einstellen auf Basis echter Arbeit, öffentlich ab 14. Dez.","Kosmik: the Gita and Vedic astrology with sources, public on 1 Dec":"Kosmik: die Gita und vedische Astrologie mit Quellen, öffentlich ab 1. Dez.","Wearday: your wardrobe and outfit log, built":"Wearday: Ihr Kleiderschrank und Outfit-Tagebuch, fertig gebaut","Noha Pay: our own UPI rail, takes payments for three products":"Noha Pay: unsere eigene UPI-Infrastruktur, nimmt Zahlungen für drei Produkte an","Noha Money: one closed wallet for cashback and refunds":"Noha Money: eine geschlossene Wallet für Cashback und Erstattungen","Point at a part":"Zeigen Sie auf einen Teil","21 Sep":"21. Sep.","28 Sep":"28. Sep.","5 Oct":"5. Okt.","12 Oct":"12. Okt.","19 Oct":"19. Okt.","26 Oct":"26. Okt.","2 Nov":"2. Nov.","9 Nov":"9. Nov.","16 Nov":"16. Nov.","23 Nov":"23. Nov.","Asanoha store":"Asanoha-Shop","Wearday":"Wearday","People Pitchers":"People Pitchers","Kosmik":"Kosmik","Noha Pay":"Noha Pay","Quiet October":"Ruhiger Oktober","October: day jobs, seven commits":"Oktober: Hauptjobs, sieben Commits","One moment":"Einen Moment","The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.":"Das Kontaktformular ist noch nicht freigeschaltet. Bitte schreiben Sie an orders@asanoha.co.in.","Something went wrong. Please try again.":"Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.","We couldn’t reach our server. Check your connection and try again.":"Unser Server ist nicht erreichbar. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.","Please add your name.":"Bitte geben Sie Ihren Namen an.","Please add your fund or firm. Angels can write Angel.":"Bitte geben Sie Ihren Fonds oder Ihre Firma an. Angels können Angel eintragen.","Please add a 10-digit Indian mobile number that has WhatsApp.":"Bitte geben Sie eine 10-stellige indische Mobilnummer mit WhatsApp an.","That email doesn’t look right. You can also leave it empty.":"Diese E-Mail-Adresse sieht nicht richtig aus. Sie können das Feld auch leer lassen.","Please agree to be contacted so we can write back.":"Bitte stimmen Sie der Kontaktaufnahme zu, damit wir Ihnen antworten können.","Sending the code":"Code wird gesendet","Please type the 6-digit code from WhatsApp.":"Bitte geben Sie den 6-stelligen Code aus WhatsApp ein.","Checking":"Wird geprüft","We have updated your details. One of the founders will reach out to you.":"Wir haben Ihre Angaben aktualisiert. Einer der Gründer meldet sich bei Ihnen.","We have your details and sent you a note on WhatsApp. One of the founders will reach out to you.":"Ihre Angaben sind bei uns angekommen, und wir haben Ihnen eine Nachricht auf WhatsApp geschickt. Einer der Gründer meldet sich bei Ihnen.","Sent. You can ask again in a minute":"Gesendet. In einer Minute können Sie erneut anfragen","Send the code again":"Code erneut senden"};</script>
-<script src="../investors.js?v=13" defer></script>
+<script src="../investors.js?v=14" defer></script>
 </body>
 </html>

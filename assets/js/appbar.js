@@ -16,10 +16,25 @@
     var bar = document.createElement('div'); bar.className = 'ash-appbar'; bar.id = 'ash-appbar';
     var row = document.createElement('div'); row.className = 'ash-ab-top';
     var acts = document.createElement('div'); acts.className = 'ash-ab-acts';
+    // the split-star mark, always visible at the top of the phone layout (the header is hidden here)
+    var brand = document.createElement('a'); brand.className = 'ash-ab-brand'; brand.href = './'; brand.setAttribute('aria-label', 'Asanoha home');
+    brand.innerHTML = '<img src="assets/img/mark.svg" alt="" width="34" height="34">';
     // same buttons as the header (Noha Money, account); the header itself is hidden in this mode
     ['.top .ash-coinbtn', '.top .ash-mebtn'].forEach(function (s) {
       var b = $(s); if (b) { var c = b.cloneNode(true); c.removeAttribute('id'); acts.appendChild(c); }
     });
+    // day/night button: a copy that presses the real (hidden) header button, so the reveal,
+    // the sky and the saved choice all stay in one place
+    var tb = $('#theme-btn');
+    if (tb) {
+      var tc = tb.cloneNode(true); tc.removeAttribute('id');
+      tc.addEventListener('click', function () { tb.click(); });
+      new MutationObserver(function () {
+        tc.setAttribute('aria-label', tb.getAttribute('aria-label') || 'Switch theme');
+        tc.setAttribute('aria-pressed', tb.getAttribute('aria-pressed') || 'false');
+      }).observe(tb, { attributes: true, attributeFilter: ['aria-label', 'aria-pressed'] });
+      acts.insertBefore(tc, acts.firstChild);
+    }
 
     // icons for the category tabs; CSS shows them only inside the app bar
     var S = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
@@ -45,7 +60,7 @@
     }
     function on() {
       if (bar.isConnected) return;
-      row.appendChild(del); row.appendChild(acts);
+      row.appendChild(brand); row.appendChild(del); row.appendChild(acts);
       bar.appendChild(row); bar.appendChild(box); bar.appendChild(tabs);
       main.parentNode.insertBefore(bar, main);
       document.documentElement.classList.add('ash-appmode');

@@ -47,8 +47,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&family=Manrope:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <script>
   (function () {
-    var t = null;
-    try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {}
+    // one theme setting for the whole site: the store saves 'day' / 'night' / 'auto' as JSON
+    var t = null, s = null;
+    try { s = JSON.parse(localStorage.getItem('asanoha:theme') || 'null'); } catch (e) {}
+    if (s === 'day') t = 'light'; else if (s === 'night') t = 'dark';
+    else if (s == null) { try { t = localStorage.getItem('asanoha:investors-theme'); } catch (e) {} }
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
@@ -563,6 +566,6 @@
 </dialog>
 
 <script>window.INV_T={"Asanoha store: prescription Ayurveda, packed in pairs":"Asanoha 商店：凭处方销售的阿育吠陀，成对包装","People Pitchers: hiring from real work, public on 14 Dec":"People Pitchers：依据真实作品招聘，十二月14日公开","Kosmik: the Gita and Vedic astrology with sources, public on 1 Dec":"Kosmik：有出处的《薄伽梵歌》与吠陀占星，十二月1日公开","Wearday: your wardrobe and outfit log, built":"Wearday：您的衣橱与穿搭记录，已完成","Noha Pay: our own UPI rail, takes payments for three products":"Noha Pay：我们自建的 UPI 通道，为三款产品收款","Noha Money: one closed wallet for cashback and refunds":"Noha Money：用于返现和退款的封闭式钱包","Point at a part":"指向某个部分","21 Sep":"九月21日","28 Sep":"九月28日","5 Oct":"十月5日","12 Oct":"十月12日","19 Oct":"十月19日","26 Oct":"十月26日","2 Nov":"十一月2日","9 Nov":"十一月9日","16 Nov":"十一月16日","23 Nov":"十一月23日","Asanoha store":"Asanoha 商店","Wearday":"Wearday","People Pitchers":"People Pitchers","Kosmik":"Kosmik","Noha Pay":"Noha Pay","Quiet October":"安静的十月","October: day jobs, seven commits":"十月：本职工作，七次提交","One moment":"请稍候","The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.":"联系表单尚未开放，请发邮件至 orders@asanoha.co.in。","Something went wrong. Please try again.":"出了点问题，请重试。","We couldn’t reach our server. Check your connection and try again.":"无法连接到我们的服务器，请检查网络后重试。","Please add your name.":"请填写您的姓名。","Please add your fund or firm. Angels can write Angel.":"请填写您的基金或机构。天使投资人可填写“天使”。","Please add a 10-digit Indian mobile number that has WhatsApp.":"请填写一个已开通 WhatsApp 的 10 位印度手机号。","That email doesn’t look right. You can also leave it empty.":"这个邮箱地址看起来不对。您也可以留空。","Please agree to be contacted so we can write back.":"请同意我们与您联系，以便我们回复。","Sending the code":"正在发送验证码","Please type the 6-digit code from WhatsApp.":"请输入 WhatsApp 收到的 6 位验证码。","Checking":"正在核对","We have updated your details. One of the founders will reach out to you.":"我们已更新您的信息，一位创始人会与您联系。","We have your details and sent you a note on WhatsApp. One of the founders will reach out to you.":"我们已收到您的信息，并通过 WhatsApp 给您发了一条消息。一位创始人会与您联系。","Sent. You can ask again in a minute":"已发送。一分钟后可再次请求","Send the code again":"重新发送验证码"};</script>
-<script src="../investors.js?v=13" defer></script>
+<script src="../investors.js?v=14" defer></script>
 </body>
 </html>
