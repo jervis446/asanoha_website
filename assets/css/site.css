@@ -208,7 +208,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.1;letter-spacing
 /* footer */
 footer.site{position:relative;z-index:1;background:var(--dark);color:#CFC6B6;padding:64px 0 calc(40px + env(safe-area-inset-bottom,0px));font-size:15px}
 footer.site .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
-footer.site h4{color:#F4EEE3;font-size:14px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 14px}
+footer.site h4,footer.site .ft-h{color:#F4EEE3;font-size:14px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 14px}
 footer.site a{color:#E6DECF;text-decoration:none} footer.site a:hover{color:var(--gold)}
 footer.site ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 footer.site .fbrand{display:flex;align-items:center;gap:10px;color:#F4EEE3;margin-bottom:14px}
@@ -460,7 +460,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opac
 @keyframes leak{0%{transform:translate(0,0) rotate(-12deg) scale(1)}100%{transform:translate(6%,-5%) rotate(10deg) scale(1.15)}}
 .circle-news .nl-inner{position:relative;max-width:860px}
 .nl-mark{width:84px;height:84px;margin:0 auto 18px;filter:drop-shadow(0 0 30px rgba(255,230,180,.7))}
-.circle-news h2{font-family:var(--display);font-weight:400;font-size:clamp(40px,7vw,84px);line-height:1.02;color:#FFF8EC;text-shadow:0 2px 30px rgba(0,0,0,.25)}
+.circle-news h2{font-family:var(--serif);font-weight:600;font-size:clamp(40px,7vw,84px);line-height:1.02;color:#FFF8EC;text-shadow:0 2px 30px rgba(0,0,0,.25)}
 .circle-news h2 em{font-family:var(--serif);font-weight:600}
 .circle-news p{font-size:clamp(16px,1.9vw,20px);color:#FFF3E0;max-width:62ch;margin:18px auto 30px;text-shadow:0 1px 16px rgba(0,0,0,.35)}
 .nl-form{display:flex;gap:8px;max-width:560px;margin:0 auto;padding:7px;border-radius:40px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
@@ -574,7 +574,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opac
 .ash-ban b{display:block;font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.15}
 .ash-ban span span{display:block;font-size:13.5px;line-height:1.45;opacity:.88;margin-top:4px}
 .ash-ban.rx{background:var(--teal-d)} .ash-ban.noha{background:#3A2419} .ash-ban.learn{background:#2B2A45}
-.ash-ban .ico{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--gold)}
+.ash-ban .ico{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:#FFF8EC}
 .ash-coin{display:inline-block;width:26px;height:26px;border-radius:50%;background:linear-gradient(90deg,var(--clay) 50%,var(--gold) 50%);box-shadow:0 0 0 1.5px currentColor;flex:0 0 auto}
 .ash-coin.big{width:84px;height:84px;box-shadow:0 0 0 3px var(--paper),0 0 0 4.5px var(--ink)}
 .ash-ban .ash-coin{width:52px;height:52px;box-shadow:0 0 0 2px #F4EEE3}
@@ -727,8 +727,8 @@ body.ash-open .ash-top{display:none}
 .ash-wallet{padding-top:28px}
 .ash-rx.ayur{background:var(--teal-d);color:#F4EEE3}
 .ash-dose.low{color:#8A6414}
-.ash-dose.none{color:var(--teal)}
-:root[data-theme="night"] .ash-dose.none{color:#8FC3BB}
+.ash-dose.none{color:#5E6B3A}
+:root[data-theme="night"] .ash-dose.none{color:#C2CB94}
 .ash-coin.big{display:block;margin:0 auto 12px}
 .ash-bal{line-height:1.1}
 .ash-deliver{line-height:1.5}
@@ -1060,3 +1060,22 @@ input,select,textarea,button{font-size:16px}
 .lockchip svg{vertical-align:-1px;margin-right:2px}
 .hint svg{vertical-align:-2px;margin-right:4px;color:var(--accent)}
 .gift-line>span[aria-hidden] svg{display:block}
+/* UX audit round 2 */
+.hero-rx{margin:14px 0 0;font-size:14px;font-weight:600;color:var(--muted)}
+.clear-item .step-note{font-size:13px;font-weight:500;letter-spacing:0;color:var(--ink-2);line-height:1.4;max-width:22ch}
+/* phone: offer, headline and button first, the star after */
+@media (max-width:640px){
+  .hero{padding-top:22px}
+  .hero .hindi{font-size:18px;margin-bottom:2px}
+  .hero h1{font-size:44px;margin-bottom:12px}
+  .hero .lead{font-size:16px;margin-bottom:18px}
+  .hero .ctas{flex-wrap:nowrap;gap:10px}
+  .hero .ctas .btn{flex:1 1 0;justify-content:center;padding-left:12px;padding-right:12px;white-space:nowrap}
+  .hero-art{order:0;max-width:210px;margin-top:8px}
+  .consent{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:10px 12px;border-radius:16px}
+  .consent p{flex:1 1 100%;font-size:12.5px;line-height:1.4}
+  .consent div{width:100%}
+  .consent div .btn{flex:1;min-height:38px;padding:0 12px}
+}
+/* card quick-add stays secondary to the page's main action */
+.ash-add:not(:disabled){background:transparent}

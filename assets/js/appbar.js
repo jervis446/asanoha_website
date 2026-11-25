@@ -13,7 +13,7 @@
     var home = document.createComment('ash-appbar-home');
     del.parentNode.insertBefore(home, del);
 
-    var bar = document.createElement('div'); bar.className = 'ash-appbar'; bar.id = 'ash-appbar';
+    var bar = document.createElement('div'); bar.className = 'ash-appbar'; bar.id = 'ash-appbar'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', 'Shop bar');
     var row = document.createElement('div'); row.className = 'ash-ab-top';
     var acts = document.createElement('div'); acts.className = 'ash-ab-acts';
     // the split-star mark, always visible at the top of the phone layout (the header is hidden here)
