@@ -786,3 +786,35 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 .js .handnote.reveal, .js .handnote.reveal.in { opacity: 1; transform: rotate(-0.4deg); }
 @media (max-width: 680px) { .handnote { padding: 20px 16px 18px 30px; } .handnote::before { left: 18px; } }
 @media (prefers-reduced-motion: reduce) { .hn-line { transition: none; } .handnote.reveal:not(.in) .hn-line { clip-path: none; } }
+
+/* Idea to execution: the gap draws in long, then closes */
+.hn-gap { margin: 4px 0 6px; }
+.hn-gap svg { width: 100%; height: auto; overflow: visible; font-family: 'Kalam', cursive; }
+.hn-gap text { fill: var(--text-2); font-size: 20px; }
+.g-idea circle { fill: color-mix(in srgb, var(--money) 30%, transparent); stroke: var(--money); stroke-width: 2.5; }
+.g-idea path, .g-exec path { stroke: var(--text-2); stroke-width: 2.5; stroke-linecap: round; fill: none; }
+.g-exec path:first-child { fill: color-mix(in srgb, var(--accent) 30%, transparent); stroke: var(--accent); }
+.g-line { stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 456; stroke-dashoffset: 0; transform-box: fill-box; transform-origin: left center; transform: scaleX(.21); }
+.g-exec { transform: translateX(-360px); }
+.g-was { opacity: 0; }
+.g-now { fill: var(--accent) !important; opacity: 1; }
+.g-proof { font: 400 12px/1.4 var(--mono) !important; color: var(--muted); margin-top: 2px !important; }
+/* Before the note is seen: everything waits at the start */
+.js .handnote.reveal:not(.in) .g-line { stroke-dashoffset: 456; transform: none; }
+.js .handnote.reveal:not(.in) .g-exec { transform: none; }
+.js .handnote.in .g-line { animation: g-draw 1.2s ease-out 2.4s both, g-shrink 1.4s cubic-bezier(.7,0,.2,1) 4.4s both; }
+.js .handnote.in .g-exec { animation: g-move 1.4s cubic-bezier(.7,0,.2,1) 4.4s both; }
+.js .handnote.in .g-was { animation: g-was 3.4s ease 2.6s both; }
+.js .handnote.in .g-now { animation: g-fade 0.6s ease 5.6s both; }
+.js .handnote.in .g-proof { animation: g-fade 0.6s ease 6s both; }
+@keyframes g-draw { from { stroke-dashoffset: 456; transform: none; } to { stroke-dashoffset: 0; transform: none; } }
+@keyframes g-shrink { from { transform: scaleX(1); } to { transform: scaleX(.21); } }
+@keyframes g-move { from { transform: none; } to { transform: translateX(-360px); } }
+@keyframes g-was { 0% { opacity: 0; } 20%, 60% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes g-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .js .handnote .g-line, .js .handnote .g-exec, .js .handnote .g-was, .js .handnote .g-now, .js .handnote .g-proof { animation: none !important; }
+  .js .handnote.reveal:not(.in) .g-line { stroke-dashoffset: 0; transform: scaleX(.21); }
+  .js .handnote.reveal:not(.in) .g-exec { transform: translateX(-360px); }
+}
+.hn-vision { margin-top: 16px !important; font-size: clamp(19px, 2.4vw, 23px); line-height: 1.5; font-weight: 400; color: var(--accent); }
