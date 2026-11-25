@@ -106,9 +106,9 @@ export function confirmationMessage(name: string): string {
   return [
     `Hi ${first}, thank you for your interest in Asanoha.`,
     '',
-    'We have your details, and one of the founders will reach out to you.',
+    'We have your details, and our founder will reach out to you.',
     '',
-    'Adarsh, Joseph and Soumyadev',
+    'The Asanoha founders',
     'Asanoha LLP, Bengaluru',
   ].join('\n');
 }

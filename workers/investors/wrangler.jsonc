@@ -7,6 +7,9 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-11-01",
   "observability": { "enabled": true },
+  // Served on our own domain so the account's workers.dev name never shows in the page or the API.
+  "workers_dev": false,
+  "routes": [{ "pattern": "investors-api.peoplepitchers.com", "custom_domain": true }],
   "d1_databases": [
     { "binding": "DB", "database_name": "asanoha-investors", "database_id": "1be68eb1-530b-4359-8baa-b3297b55d37b", "migrations_dir": "migrations" }
   ],

@@ -73,7 +73,7 @@
   }
 
   /* Reveal on scroll */
-  var revealables = document.querySelectorAll('.section-head, .product, .rail, .comp-table, .chart-card, .shared-item, .faq, .person, .cta-inner, .stats');
+  var revealables = document.querySelectorAll('.section-head, .tier-head, .selfhost, .product, .rail, .comp-table, .chart-card, .shared-item, .faq, .person, .cta-inner, .stats');
   revealables.forEach(function (el) { el.classList.add('reveal'); });
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
@@ -257,41 +257,34 @@
     } else g.classList.add('in');
   });
 
-  /* The star: unfold, then point at a part to read about it */
-  var star = document.querySelector('.star');
-  var hint = document.getElementById('star-hint');
-  var blurbs = {
-    store: T('Asanoha store: prescription Ayurveda, packed in pairs'),
-    pp: T('People Pitchers: hiring from real work, public on 14 Dec'),
-    kosmik: T('Kosmik: the Gita and Vedic astrology with sources, public on 1 Dec'),
-    wearday: T('Wearday: your wardrobe and outfit log, built'),
-    pay: T('Noha Pay: our own UPI rail, takes payments for three products'),
-    money: T('Noha Money: one closed wallet for cashback and refunds')
-  };
-  requestAnimationFrame(function () {
-    setTimeout(function () { star.classList.add('in'); }, 120);
-    setTimeout(function () { star.classList.add('ready'); }, reduce ? 0 : 1600);
-  });
-  function focusPart(k) {
-    star.classList.toggle('focus', !!k);
-    star.querySelectorAll('[data-k]').forEach(function (el) { el.classList.toggle('on', el.getAttribute('data-k') === k); });
-    hint.textContent = k ? blurbs[k] : T('Point at a part');
+  /* The three layers: a static SVG first, then the 3D stack when WebGL works and motion is allowed */
+  var stack = document.getElementById('layers-3d');
+  function goTo(id) {
+    var t = document.getElementById(id);
+    if (t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   }
-  star.querySelectorAll('.petal').forEach(function (p) {
-    var k = p.getAttribute('data-k');
-    p.setAttribute('tabindex', '0');
-    p.setAttribute('role', 'button');
-    p.setAttribute('aria-label', blurbs[k]);
-    p.addEventListener('mouseenter', function () { focusPart(k); });
-    p.addEventListener('focus', function () { focusPart(k); });
-    p.addEventListener('click', function () {
-      var target = { pp: 'p-pp', kosmik: 'p-kosmik', wearday: 'p-wearday', store: 'p-store' }[k];
-      if (target) document.getElementById(target).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
-      else document.querySelector('.rails').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  if (stack) {
+    stack.querySelectorAll('[data-go]').forEach(function (b) {
+      b.addEventListener('click', function () { goTo(b.getAttribute('data-go')); });
     });
-    p.addEventListener('blur', function () { focusPart(null); });
-  });
-  star.addEventListener('mouseleave', function () { focusPart(null); });
+    var webgl = (function () {
+      try { var c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch (e) { return false; }
+    })();
+    if (!reduce && webgl && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
+      var stage = stack.querySelector('.stack-stage');
+      var src = (document.currentScript && document.currentScript.src) || '';
+      var moduleUrl = new URL('stack3d.js?v=2', src || location.href).href;
+      var go3d = function () {
+        import(moduleUrl).then(function (m) {
+          m.mount(stage, { onPick: function (k) {
+            var b = stage.querySelector('[data-k="' + k + '"]');
+            if (b) goTo(b.getAttribute('data-go'));
+          } });
+        }).catch(function () { /* the static SVG stays */ });
+      };
+      if ('requestIdleCallback' in window) requestIdleCallback(go3d, { timeout: 1200 }); else setTimeout(go3d, 300);
+    }
+  }
 
   /* Timeline: the line fills as you read */
   var timeline = document.querySelector('.timeline');
@@ -519,8 +512,8 @@
     api('/api/verify', { id: state.id, code: code }).then(function (r) {
       bind('first', state.details.name.split(/\s+/)[0]);
       bind('doneText', r.updated
-        ? T('We have updated your details. One of the founders will reach out to you.')
-        : T('We have your details and sent you a note on WhatsApp. One of the founders will reach out to you.'));
+        ? T('We have updated your details. Our founder will reach out to you.')
+        : T('We have your details and sent you a note on WhatsApp. Our founder will reach out to you.'));
       try { localStorage.removeItem('asanoha:investor-draft'); } catch (e2) {}
       show(3);
     }).catch(function (err) { setError(f, err.message); }).then(function () { busy(f, false); });
@@ -545,15 +538,119 @@
     if (opener && document.contains(opener)) opener.focus({ preventScroll: true });
     opener = null;
   });
+  function openContact(b) {
+    opener = b;
+    if (state.step === 3) state.step = 1;
+    loadDraft();
+    show(state.step);
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+  }
   document.querySelectorAll('[data-open-contact]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      opener = b;
-      if (state.step === 3) state.step = 1;
-      loadDraft();
-      show(state.step);
-      if (typeof dialog.showModal === 'function') dialog.showModal();
-      else dialog.setAttribute('open', '');
-    });
+    b.addEventListener('click', function () { openContact(b); });
   });
   dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
+
+  /* Join our mission: the first press turns every mission button into "talk to our founder",
+     the next press opens the contact flow. */
+  var missionLive = document.getElementById('mission-live');
+  var missionBtns = document.querySelectorAll('[data-mission]');
+  function setMission(on) {
+    root.classList.toggle('mission-on', on);
+    missionBtns.forEach(function (b) {
+      var join = b.querySelector('.m-join'), talk = b.querySelector('.m-talk');
+      join.setAttribute('aria-hidden', on ? 'true' : 'false');
+      talk.setAttribute('aria-hidden', on ? 'false' : 'true');
+    });
+  }
+  missionBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!root.classList.contains('mission-on')) {
+        setMission(true);
+        if (missionLive) missionLive.textContent = T('Welcome aboard. Press again to talk to our founder.');
+        return;
+      }
+      openContact(b);
+    });
+  });
+
+  /* The masked name: hover or focus shows the line; a tap toggles it on touch screens */
+  document.querySelectorAll('.masked').forEach(function (m) {
+    m.addEventListener('click', function () { m.classList.toggle('show'); });
+    m.addEventListener('blur', function () { m.classList.remove('show'); });
+    m.addEventListener('keydown', function (e) { if (e.key === 'Escape') m.classList.remove('show'); });
+  });
+
+  /* Investor walkthrough: step by step, keyboard friendly, skippable at any point */
+  var STEPS = [
+    { sel: '#manifesto .hero-copy', t: T('We are not a company'), x: T('We are a revolution for the democratic right of the internet: rails for payments, hiring and knowledge that no gatekeeper owns.') },
+    { sel: '#layers-3d', t: T('Three layers, one star'), x: T('Our logo, built in 3D. Asanoha Store on top, three earning products in the middle, open-source rails at the base. Drag it, or tap a part.') },
+    { sel: '#p-store', t: T('Layer 1: Asanoha Store'), x: T('The main product. It opens only after five gates: GST, licence on every product, lab reports, legal sign-off and a prescription check.') },
+    { sel: '#p-pp', t: T('Layer 2: the money-makers'), x: T('What AWS is to Amazon. People Pitchers is live and invite-only, with a plan to test every candidate for about ₹1.') },
+    { sel: '#p-kosmik', t: T('Kosmik goes public on 1 December'), x: T('Answers from a cited library before any AI writes a word. Our 30-day target: 1,000 sign-ups.') },
+    { sel: '#p-pay', t: T('Layer 3: open rails'), x: T('Noha Pay and Noha Money are AGPL-3.0. We run them for you, or you run them yourself if you have the guts.') },
+    { sel: '.receipts', t: T('Real numbers only'), x: T('Read from our own databases. Every plan figure on this page is tagged Plan, every outside figure Market.') },
+    { sel: '#market', t: T('Big markets, small slices'), x: T('Each year-three target needs less than one percent of its market. The math is under every card.') },
+    { sel: '#questions', t: T('The hard questions'), x: T('Risks, focus and money, answered plainly.') },
+    { sel: '#founder', t: T('Join our mission'), x: T('Press the button once to join, and again to talk to our founder.') }
+  ];
+  var tour = document.getElementById('tour');
+  if (tour) {
+    var ring = tour.querySelector('.tour-ring'), card = tour.querySelector('.tour-card');
+    var stepEl = document.getElementById('tour-step'), titleEl = document.getElementById('tour-title'), textEl = document.getElementById('tour-text');
+    var dotsEl = tour.querySelector('.tour-dots');
+    var backBtn = tour.querySelector('[data-tour-back]'), nextBtn = tour.querySelector('[data-tour-next]');
+    var at = 0, tourOpener = null, target = null;
+    STEPS.forEach(function () { dotsEl.appendChild(document.createElement('i')); });
+    function place() {
+      if (!target) return;
+      var r = target.getBoundingClientRect(), pad = 8;
+      ring.style.top = (r.top - pad) + 'px'; ring.style.left = (r.left - pad) + 'px';
+      ring.style.width = (r.width + pad * 2) + 'px'; ring.style.height = (r.height + pad * 2) + 'px';
+    }
+    function go(i) {
+      at = Math.max(0, Math.min(STEPS.length - 1, i));
+      var s = STEPS[at];
+      target = document.querySelector(s.sel);
+      stepEl.textContent = T('Step') + ' ' + (at + 1) + ' ' + T('of') + ' ' + STEPS.length;
+      titleEl.textContent = s.t; textEl.textContent = s.x;
+      [].forEach.call(dotsEl.children, function (d, j) { d.className = j === at ? 'on' : j < at ? 'done' : ''; });
+      backBtn.disabled = at === 0;
+      nextBtn.textContent = at === STEPS.length - 1 ? T('Join our mission') : T('Next');
+      if (target) {
+        var r = target.getBoundingClientRect();
+        var tall = r.height > window.innerHeight * 0.6;
+        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: tall ? 'start' : 'center' });
+      }
+      place();
+      card.focus({ preventScroll: true });
+    }
+    function openTour(b) {
+      tourOpener = b; tour.hidden = false; root.classList.add('touring');
+      if (nav.classList.contains('open')) setMenu(false);
+      go(0);
+      requestAnimationFrame(follow);
+    }
+    function closeTour() {
+      tour.hidden = true; root.classList.remove('touring'); target = null;
+      if (tourOpener && document.contains(tourOpener)) tourOpener.focus({ preventScroll: true });
+    }
+    document.querySelectorAll('[data-tour]').forEach(function (b) { b.addEventListener('click', function () { openTour(b); }); });
+    tour.querySelector('[data-tour-skip]').addEventListener('click', closeTour);
+    backBtn.addEventListener('click', function () { go(at - 1); });
+    nextBtn.addEventListener('click', function () {
+      if (at < STEPS.length - 1) return go(at + 1);
+      closeTour();
+      var b = document.querySelector('#founder [data-mission]');
+      if (b) { b.focus({ preventScroll: true }); b.click(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (tour.hidden || (dialog.open)) return;
+      if (e.key === 'Escape') { e.preventDefault(); closeTour(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); nextBtn.click(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); if (at > 0) go(at - 1); }
+    });
+    // Follow the target while the page scrolls to it (smooth scroll, reveal motion, resizes)
+    function follow() { if (tour.hidden) return; place(); requestAnimationFrame(follow); }
+  }
 })();
