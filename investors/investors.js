@@ -304,10 +304,10 @@
   /* Build chart: commits a week by product, from git history (21 Sep to 25 Nov 2026) */
   var WEEKS = [T('21 Sep'), T('28 Sep'), T('5 Oct'), T('12 Oct'), T('19 Oct'), T('26 Oct'), T('2 Nov'), T('9 Nov'), T('16 Nov'), T('23 Nov')];
   var SERIES = [
-    { k: 'store', name: T('Asanoha store'), v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 10] },
+    { k: 'store', name: T('Asanoha store'), v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 34] },
     { k: 'wearday', name: T('Wearday'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
-    { k: 'pp', name: T('People Pitchers'), v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 6] },
-    { k: 'kosmik', name: T('Kosmik'), v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 76] },
+    { k: 'pp', name: T('People Pitchers'), v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 28] },
+    { k: 'kosmik', name: T('Kosmik'), v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 78] },
     { k: 'pay', name: T('Noha Pay'), v: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0] }
   ];
   var chartEl = document.getElementById('chart');
@@ -346,10 +346,10 @@
     var narrow = W < 520;
     var pad = { l: 28, r: 4, t: 20, b: 28 };
     var iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
-    var max = 140;
+    var max = 160;
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true' });
     var grid = el('g', { class: 'grid axis' }, svg);
-    [0, 35, 70, 105, 140].forEach(function (v) {
+    [0, 40, 80, 120, 160].forEach(function (v) {
       var y = pad.t + ih - (v / max) * ih;
       el('line', { x1: pad.l, x2: W - pad.r, y1: y, y2: y }, grid);
       var t = el('text', { x: pad.l - 8, y: y + 4, 'text-anchor': 'end' }, grid);
@@ -585,6 +585,8 @@
   /* Investor walkthrough: step by step, keyboard friendly, skippable at any point */
   var STEPS = [
     { sel: '#manifesto .hero-copy', t: T('We are not a company'), x: T('We are a revolution for the democratic right of the internet: rails for payments, hiring and knowledge that no gatekeeper owns.') },
+    { sel: '#theme-btn', fixed: true, t: T('Day or night'), x: T('Switch between light and dark here. The choice is remembered across Asanoha.') },
+    { sel: '.lang-menu', fixed: true, t: T('Read it in your language'), x: T('This page comes in 16 languages, from Hindi, Tamil and Bengali to Japanese and Arabic. A few new lines are still in English.') },
     { sel: '#layers-3d', t: T('Three layers, one star'), x: T('Our logo, built in 3D. Asanoha Store on top, three earning products in the middle, open-source rails at the base. Drag it, or tap a part.') },
     { sel: '#p-store', t: T('Layer 1: Asanoha Store'), x: T('The main product. It opens only after five gates: GST, licence on every product, lab reports, legal sign-off and a prescription check.') },
     { sel: '#p-pp', t: T('Layer 2: the money-makers'), x: T('What AWS is to Amazon. People Pitchers is live and invite-only, with a plan to test every candidate for about ₹1.') },
@@ -618,7 +620,7 @@
       [].forEach.call(dotsEl.children, function (d, j) { d.className = j === at ? 'on' : j < at ? 'done' : ''; });
       backBtn.disabled = at === 0;
       nextBtn.textContent = at === STEPS.length - 1 ? T('Join our mission') : T('Next');
-      if (target) {
+      if (target && !s.fixed) {
         var r = target.getBoundingClientRect();
         var tall = r.height > window.innerHeight * 0.6;
         target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: tall ? 'start' : 'center' });
@@ -637,6 +639,39 @@
       if (tourOpener && document.contains(tourOpener)) tourOpener.focus({ preventScroll: true });
     }
     document.querySelectorAll('[data-tour]').forEach(function (b) { b.addEventListener('click', function () { openTour(b); }); });
+
+    /* First visit: dim the page, point at the walkthrough button */
+    var intro = document.getElementById('intro');
+    var start = document.getElementById('tour-start');
+    var SEEN = 'asanoha:public-intro-seen';
+    var seen = false;
+    try { seen = localStorage.getItem(SEEN) === '1'; } catch (e) { seen = true; }
+    function closeIntro() {
+      if (!intro || intro.hidden) return;
+      intro.hidden = true; root.classList.remove('intro-on');
+      try { localStorage.setItem(SEEN, '1'); } catch (e) {}
+    }
+    function placeIntro() {
+      if (intro.hidden) return;
+      var r = start.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) { closeIntro(); return; }
+      var ring = intro.querySelector('.intro-ring'), ptr = intro.querySelector('.intro-pointer'), tip = intro.querySelector('.intro-tip');
+      ring.style.cssText = 'top:' + (r.top - 6) + 'px;left:' + (r.left - 6) + 'px;width:' + (r.width + 12) + 'px;height:' + (r.height + 12) + 'px';
+      ptr.style.cssText = 'top:' + (r.top - 62) + 'px;left:' + (r.left + Math.min(48, r.width / 2) - 22) + 'px';
+      tip.style.cssText = 'top:' + (r.bottom + 16) + 'px;left:' + Math.max(16, r.left) + 'px';
+      requestAnimationFrame(placeIntro);
+    }
+    if (intro && start && !seen && window.scrollY < 200 && !location.hash) {
+      setTimeout(function () {
+        if (!tour.hidden || window.scrollY > 200 || (dialog && dialog.open)) return;
+        intro.hidden = false; root.classList.add('intro-on');
+        placeIntro();
+      }, 1200);
+      start.addEventListener('click', closeIntro);
+      intro.querySelector('.intro-close').addEventListener('click', closeIntro);
+      document.addEventListener('click', function (e) { if (!intro.hidden && !intro.querySelector('.intro-tip').contains(e.target)) closeIntro(); }, true);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeIntro(); });
+    }
     tour.querySelector('[data-tour-skip]').addEventListener('click', closeTour);
     backBtn.addEventListener('click', function () { go(at - 1); });
     nextBtn.addEventListener('click', function () {
