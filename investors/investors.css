@@ -705,10 +705,10 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 .rails { grid-template-columns: repeat(3, 1fr); }
 .rail-nums { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin-top: auto; }
 .rail-nums b { color: var(--c); font-weight: 400; font-size: 18px; margin-right: 4px; }
-.selfhost { margin-top: 20px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; align-items: center; padding: 20px 24px; border-radius: 16px; background: var(--text); color: var(--bg); }
-.selfhost .eyebrow { color: color-mix(in srgb, var(--bg) 70%, transparent); }
+.selfhost { margin-top: 20px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; align-items: center; padding: 20px 24px; border-radius: 16px; background: var(--surface); color: var(--text); border: 1px solid var(--line); }
+.selfhost .eyebrow { color: var(--muted); }
 .selfhost p { margin: 6px 0 0; }
-.selfhost pre { margin: 0; padding: 14px 16px; border-radius: 10px; background: color-mix(in srgb, var(--bg) 10%, transparent); font-size: 13px; line-height: 1.7; overflow-x: auto; white-space: pre; }
+.selfhost pre { margin: 0; padding: 14px 16px; border-radius: 10px; background: var(--surface-2); color: var(--text); font-size: 13px; line-height: 1.7; overflow-x: auto; white-space: pre; }
 
 /* The masked name: dots, and a line on hover, focus or tap */
 .masked { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted var(--muted); outline: none; }
