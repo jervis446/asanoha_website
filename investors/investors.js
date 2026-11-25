@@ -298,7 +298,7 @@
     if (!reduce && webgl && 'IntersectionObserver' in window && 'ResizeObserver' in window) {
       var stage = stack.querySelector('.stack-stage');
       var src = (document.currentScript && document.currentScript.src) || '';
-      var moduleUrl = new URL('stack3d.js?v=2', src || location.href).href;
+      var moduleUrl = new URL('stack3d.js?v=3', src || location.href).href;
       var go3d = function () {
         import(moduleUrl).then(function (m) {
           m.mount(stage, { onPick: function (k) {
