@@ -159,7 +159,9 @@ export function mount(host, opts) {
 
   // Size
   let w = 0, h = 0;
+  const tagSize = new Map();
   function resize() {
+    tagSize.clear();
     const r = host.getBoundingClientRect();
     w = Math.max(1, r.width); h = Math.max(1, r.height);
     renderer.setSize(w, h, false);
@@ -170,6 +172,7 @@ export function mount(host, opts) {
     camera.lookAt(0, -0.2, 0);
     camera.updateProjectionMatrix();
   }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => tagSize.clear());
   const ro = new ResizeObserver(resize);
   ro.observe(host);
   resize();
@@ -247,17 +250,32 @@ export function mount(host, opts) {
     dotGeo.attributes.position.needsUpdate = true;
     dots.material.opacity = Math.min(0.85, age * 0.6);
     renderer.render(scene, camera);
-    // Labels follow their part
+    // Labels follow their part. Nearer labels are placed first; a label that would
+    // cover one already placed moves below its part, then further out, so none overlap.
+    if (!tagSize.size) tags.forEach((t) => tagSize.set(t, [t.offsetWidth, t.offsetHeight]));
+    const spots = [];
     tags.forEach((t) => {
       const p = byK[t.getAttribute('data-k')];
       if (!p) return;
       v.set(0, p.tier === 'top' ? 0.32 : 0.22, 0);
       p.group.localToWorld(v);
       v.project(camera);
-      const x = (v.x * 0.5 + 0.5) * w, y = (-v.y * 0.5 + 0.5) * h;
-      t.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) translate(-50%,-100%)';
-      t.style.zIndex = String(Math.round((1 - v.z) * 1000));
-      t.classList.toggle('on', lit === p.k);
+      spots.push({ t, k: p.k, x: (v.x * 0.5 + 0.5) * w, y: (-v.y * 0.5 + 0.5) * h, z: v.z });
+    });
+    spots.sort((a, b) => a.z - b.z);
+    const boxes = [];
+    spots.forEach((s) => {
+      const [tw, th] = tagSize.get(s.t) || [80, 22];
+      const left = s.x - tw / 2;
+      const tops = [s.y - th, s.y + 6, s.y - 2 * th - 4, s.y + th + 10, s.y - 3 * th - 8, s.y + 2 * th + 14];
+      let top = tops[0];
+      for (const c of tops) {
+        if (!boxes.some((b) => left < b[2] + 4 && left + tw > b[0] - 4 && c < b[3] + 2 && c + th > b[1] - 2)) { top = c; break; }
+      }
+      boxes.push([left, top, left + tw, top + th]);
+      s.t.style.transform = 'translate(' + left.toFixed(1) + 'px,' + top.toFixed(1) + 'px)';
+      s.t.style.zIndex = String(Math.round((1 - s.z) * 1000));
+      s.t.classList.toggle('on', lit === s.k);
     });
     if (visible && !document.hidden) raf = requestAnimationFrame(frame);
   }
