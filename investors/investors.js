@@ -613,11 +613,11 @@
     { sel: '#theme-btn', fixed: true, t: T('Day or night'), x: T('Switch between light and dark here. The choice is remembered across Asanoha.') },
     { sel: '.lang-menu', fixed: true, t: T('Read it in your language'), x: T('This page comes in 16 languages, from Hindi, Tamil and Bengali to Japanese and Arabic. A few new lines are still in English.') },
     { sel: '#layers-3d', t: T('Three layers, one star'), x: T('Our logo, built in 3D. Asanoha Store on top, three earning products in the middle, open-source rails at the base. Drag it, or tap a part.') },
+    { sel: '.receipts', t: T('Real numbers only'), x: T('Read from our own databases. Every plan figure on this page is tagged Plan, every outside figure Market.') },
     { sel: '#p-store', t: T('Layer 1: Asanoha Store'), x: T('The main product. It opens only after five gates: GST, licence on every product, lab reports, legal sign-off and a prescription check.') },
     { sel: '#p-pp', t: T('Layer 2: meant to make the money'), x: T('What AWS is to Amazon, once they earn. People Pitchers is live and invite-only, with a plan to run each candidate’s test for about ₹1.') },
     { sel: '#p-kosmik', t: T('Kosmik goes public on 1 December'), x: T('Answers from a cited library before any AI writes a word. Our 30-day target: 1,000 sign-ups.') },
     { sel: '#p-pay', t: T('Layer 3: open rails'), x: T('Noha Pay and Noha Money are AGPL-3.0. We run them for you, or you run them yourself if you have the guts.') },
-    { sel: '.receipts', t: T('Real numbers only'), x: T('Read from our own databases. Every plan figure on this page is tagged Plan, every outside figure Market.') },
     { sel: '#market', t: T('Big markets, small slices'), x: T('Each year-three target needs less than one percent of its market. The math is under every card.') },
     { sel: '#questions', t: T('The hard questions'), x: T('Risks, focus and money, answered plainly.') },
     { sel: '#founder', t: T('Join our mission'), x: T('Press the button once to join, and again to talk to our founder.') }

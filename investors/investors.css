@@ -855,3 +855,8 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
   .tour-card { bottom: 8px; max-height: calc(100dvh - 16px); overflow-y: auto; padding: 14px; gap: 6px; }
   .tour-keys { display: none; }
 }
+
+/* Story inside the founders section */
+#story .story-grid { margin-bottom: 96px; }
+.story-copy .story-h { font: 400 clamp(24px, 3vw, 32px)/1.15 var(--serif); letter-spacing: -0.01em; text-wrap: balance; margin-bottom: 8px; }
+@media (max-width: 760px) { #story .story-grid { margin-bottom: 64px; } }

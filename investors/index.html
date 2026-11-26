@@ -55,7 +55,7 @@
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="investors.css?v=28">
+<link rel="stylesheet" href="investors.css?v=29">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"Asanoha LLP","legalName":"Asanoha LLP","identifier":"LLPIN ADE-0939","url":"https://asanoha.co.in/","address":{"@type":"PostalAddress","streetAddress":"Unit 101, Oxford Towers, 139/88 HAL Old Airport Road, HAL II Stage","addressLocality":"Bengaluru","addressRegion":"Karnataka","postalCode":"560008","addressCountry":"IN"},"subOrganization":[{"@type":"Organization","name":"People Pitchers","url":"https://peoplepitchers.com"},{"@type":"Organization","name":"Kosmik","url":"https://kosmik.asanoha.co.in"},{"@type":"Organization","name":"Wearday","url":"https://wearday.asanoha.co.in"}],"@id":"https://asanoha.co.in/#organization","foundingDate":"2026-11-14","founder":[{"@type":"Person","familyName":"Kumar","jobTitle":"Founder and CEO"},{"@type":"Person","familyName":"John","jobTitle":"Co-founder, people and partners"},{"@type":"Person","familyName":"Banerjee","jobTitle":"Co-founder and COO"}],"sameAs":["https://www.crunchbase.com/organization/asanoha","https://www.wikidata.org/wiki/Q142274918","https://www.linkedin.com/company/asanoha-llp/"]},{"@type":"WebPage","@id":"https://asanoha.co.in/investors/#webpage","url":"https://asanoha.co.in/investors/","name":"Asanoha LLP for public","inLanguage":"en-IN","about":{"@id":"https://asanoha.co.in/#organization"},"dateModified":"2026-11-25"},{"@type":"FAQPage","@id":"https://asanoha.co.in/investors/#faq","mainEntity":[{"@type":"Question","name":"Why four products and not one?","acceptedAnswer":{"@type":"Answer","text":"Because the expensive parts are shared. Sign-in, payments, the wallet, WhatsApp messages and AI caching were built once. A new product starts with all of them, so we can test a market in days and keep only what works. Each product still has its own name, its own users and its own way to make money."}},{"@type":"Question","name":"Isn’t that unfocused?","acceptedAnswer":{"@type":"Answer","text":"The focus is the platform under the products, not one app. Our measure is simple: how fast a new idea reaches paying users, and how little it costs us to run. Products that don’t earn their place will be shut down, not kept alive."}},{"@type":"Question","name":"How do you make money?","acceptedAnswer":{"@type":"Answer","text":"Subscriptions (People Pitchers seats, Kosmik passes, Wearday Premium), one-off purchases (Kosmik reports, store orders), hiring fees on People Pitchers, and later a hosted Noha Pay for other merchants."}},{"@type":"Question","name":"What traction is real today?","acceptedAnswer":{"@type":"Answer","text":"The numbers above are read from our databases, not estimated: 8,975 jobs from 3,344 companies, 179 job seeker profiles, 2,699 cited library entries, 27 WhatsApp-verified people in the Kosmik alpha, and IIMXamday live for our batch of 190. Revenue is still at the test stage. We would rather show you small true numbers than big round ones."}},{"@type":"Question","name":"How big can this get?","acceptedAnswer":{"@type":"Answer","text":"Our year-three targets add up to about ₹30 crore a year, and each needs less than 1% of its market. The markets are proven: Naukri earned ₹2,343 crore from recruiters in FY26 and Astrotalk ₹1,176 crore in FY25. The math for every number is in the market section above."}},{"@type":"Question","name":"How will you get users without a big ad budget?","acceptedAnswer":{"@type":"Answer","text":"Through people who already know us: our IIM Indore batch, their placement cells and the companies that hire from them. Kosmik answers in Hindi and Hinglish, where most apps don’t. And one Asanoha account means a user who joins one product can try the others for free."}},{"@type":"Question","name":"Why now?","acceptedAnswer":{"@type":"Answer","text":"UPI made small payments free to take, AI made one engineer worth a team, and Indian users now expect apps in their own language. A small team can now ship what needed fifty people five years ago."}},{"@type":"Question","name":"Why you?","acceptedAnswer":{"@type":"Answer","text":"We ship. 412 commits, four products and a registered LLP, with day jobs. One founder writes the code, one handles people and partners, and one runs operations."}},{"@type":"Question","name":"What are the risks?","acceptedAnswer":{"@type":"Answer","text":"The store sells a regulated Ayurvedic medicine. It is made under an AYUSH manufacturing licence and sold only on a prescription from a registered AYUSH practitioner, and labels and advertising rules come first, and we follow legal advice on each. WhatsApp codes run through our own relay today and should move to the official WhatsApp Business API before we scale. And four products is a lot for three people, which is exactly why we share everything we can."}},{"@type":"Question","name":"What is the launch plan?","acceptedAnswer":{"@type":"Answer","text":"One public launch at a time. Kosmik goes public on 1 December 2026, People Pitchers opens to everyone on 14 December, and the store opens orders only when GST registration, licence details on every product and legal sign-off are in place. A date can move. The checks before each launch cannot."}},{"@type":"Question","name":"What happens after I get in touch?","acceptedAnswer":{"@type":"Answer","text":"You confirm your WhatsApp number with a code, so we know the message is really from you. We get your note straight away, and one of the founders writes back to you."}}]}]}</script>
 </head>
 <body>
@@ -72,8 +72,8 @@
       <a href="#products">Products</a>
       <a href="#story">Story</a>
       <a href="#team">Founders</a>
-      <a href="#market">Market</a>
       <a href="#build">How we build</a>
+      <a href="#market">Market</a>
       <a href="#questions">Questions</a>
       <button class="nav-tour" type="button" data-tour>Walkthrough</button>
     </nav>
@@ -125,7 +125,6 @@
         <button class="btn btn-primary" type="button" data-tour id="tour-start">Take the walkthrough</button>
         <button class="btn btn-quiet mission-btn" type="button" data-mission><span class="m-join">Join our mission</span><span class="m-talk" aria-hidden="true">Talk to our founder</span></button>
       </div>
-      <p class="receipt mono"><span class="dot" aria-hidden="true"></span>412 commits from 25 Sep to 25 Nov 2026</p>
     </div>
 
     <figure class="stack" id="layers-3d" aria-labelledby="stack-cap">
@@ -181,147 +180,12 @@
   </div>
 </section>
 
-<!-- Story -->
-<section class="section" id="story" aria-labelledby="story-title">
-  <div class="wrap story-grid">
-    <div class="story-copy">
-      <p class="eyebrow mono">The story</p>
-      <h2 id="story-title">A month ago we had one website</h2>
-      <p>Three of us: two IIM Indore classmates and a flatmate found through a Reddit post. We all have day jobs. Asanoha gets the nights and the weekends.</p>
-      <p>In September we built the store site. In October we wrote seven commits. Then in November we stopped talking and started shipping: Wearday on the 6th, People Pitchers on the 10th, Kosmik on the 13th, the LLP on the 14th and our own payment rail rewritten from scratch on the 22nd.</p>
-      <p>We keep receipts. Every line on the right links back to a commit, a date or a registration you can check.</p>
-      <p>Next, one launch at a time: Kosmik goes public on 1 December, People Pitchers opens to everyone on 14 December, and the store opens orders only after its five gates are passed, from GST registration to legal sign-off.</p>
-    </div>
-    <ol class="timeline">
-      <li><time datetime="2026-09-25">25 Sep</time><div><b>asanoha.co.in goes up</b><span>The store site, the slam book and the prescription flow</span><code>0a8e72a</code></div></li>
-      <li class="quiet"><time datetime="2026-10">October</time><div><b>Seven commits</b><span>Day jobs and an MBA term. We planned more than we built</span></div></li>
-      <li><time datetime="2026-11-06">6 Nov</time><div><b>Wearday, first commit</b><span>A wardrobe and outfit log. Premium with limits enforced by the database the next day</span><code>89b46ee</code></div></li>
-      <li><time datetime="2026-11-10">10 Nov</time><div><b>People Pitchers, first commit</b><span>Same day: one Asanoha login across the store and Wearday</span><code>4019799</code></div></li>
-      <li><time datetime="2026-11-11">11 Nov</time><div><b>Noha Pay takes its first UPI payments</b><span>Self-hosted gateway at pay.peoplepitchers.com, with WhatsApp codes</span></div></li>
-      <li><time datetime="2026-11-13">13 Nov</time><div><b>Kosmik, first commit</b><span>Live on kosmik.asanoha.co.in the same day, Premium through Noha Pay</span><code>ffc8cb8</code></div></li>
-      <li><time datetime="2026-11-14">14 Nov</time><div><b>Asanoha LLP is incorporated</b><span>LLPIN ADE-0939, registered in Bengaluru</span></div></li>
-      <li><time datetime="2026-11-20">20 Nov</time><div><b>Six phases of the job seeker side in one day</b><span>Browser extension, outreach, job emails and an MCP server</span><code>64bd6bc</code></div></li>
-      <li><time datetime="2026-11-22">22 Nov</time><div><b>Noha Pay rewritten, clean room</b><span>Our own code, open source under AGPL-3.0, with the Noha Money wallet</span><code>e5ccc01</code></div></li>
-      <li><time datetime="2026-11-24">24 Nov</time><div><b>Kosmik on Android, tested with new users</b><span>25 bugs from the device test, fixed and retested</span><code>aa4f3e6</code></div></li>
-      <li><time datetime="2026-11-24">24 Nov</time><div><b>Launch order set</b><span>Kosmik goes public on 1 Dec, People Pitchers on 14 Dec, the store once its paperwork is done</span></div></li>
-      <li><time datetime="2026-11-25">25 Nov</time><div><b>Job seeker sign-up ready on People Pitchers</b><span>Behind a switch, terms accepted once. Kosmik sign-in reworked from tester findings the same day</span><code>f13d98b</code></div></li>
-      <li class="now"><time datetime="2026-11-25">25 Nov</time><div><b>PP Learn reaches 69 lessons and 8 timed tests</b><span>Seven tracks from DSA to finance, plus the plan for one assessment engine</span><code>4527c0c</code></div></li>
-    </ol>
-  </div>
-</section>
-
-<!-- Founders -->
-<section class="section section-alt" id="team" aria-labelledby="team-title">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow mono">The founders</p>
-      <h2 id="team-title">A Reddit post, a classroom and a living room</h2>
-      <p class="sub">None of us met at a startup event. We met the way people in India actually meet: looking for a flatmate and sitting in the same class.</p>
-    </div>
-
-    <div class="chapters">
-      <article class="chapter">
-        <figure class="clip" data-src="media/dots-ride.mp4"><canvas role="img" aria-label="Evening ride home at dusk, drawn in dots"></canvas><figcaption class="mono">Evenings after work</figcaption></figure>
-        <div class="chapter-copy">
-          <p class="chapter-no mono">01 · S</p>
-          <h3>Nine people answered a flatmate post</h3>
-          <p>A needed a flatmate in Bengaluru and posted on Reddit. Nine people replied. S got the room.</p>
-          <p>The flatmate turned out to be the person who asks what everything costs, who will do the paperwork and whether anyone has eaten. Every team needs that person. Ours came from a Reddit thread, and today he runs operations.</p>
-        </div>
-      </article>
-
-      <article class="chapter flip">
-        <figure class="clip" data-src="media/dots-class.mp4"><canvas role="img" aria-label="A and J in class at IIM Indore, drawn in dots"></canvas><figcaption class="mono">A and J, IIM Indore</figcaption></figure>
-        <div class="chapter-copy">
-          <p class="chapter-no mono">02 · J</p>
-          <h3>A classmate who asks how everyone feels</h3>
-          <p>At IIM Indore, A found J: an engineer turned HR consultant, the kind of person who asks how everyone feels, even in a meeting about fonts.</p>
-          <p>Our first product together wasn’t for investors. It was for our own batch. The timetable lived in a spreadsheet that kept changing, so we built <b>IIMXamday</b>: every classmate gets their own calendar, readings, course groups and a jobs board, updated every morning at 6.</p>
-        </div>
-      </article>
-
-      <article class="chapter">
-        <figure class="clip" data-src="media/dots-plan.mp4"><canvas role="img" aria-label="Late night in the living room with laptops open, drawn in dots"></canvas><figcaption class="mono">Where the plan was made</figcaption></figure>
-        <div class="chapter-copy">
-          <p class="chapter-no mono">03 · The plan</p>
-          <h3>Late night, chai, “yaar, hear me out”</h3>
-          <p>The plan came together in a living room, laptops open. A had the idea. J asked who it was for. S asked what it would cost.</p>
-          <p>We split the work the only way that works with day jobs. Everyone owns one thing, and nobody waits for permission.</p>
-        </div>
-      </article>
-
-      <article class="chapter flip">
-        <figure class="clip" data-src="media/dots-trail.mp4"><canvas role="img" aria-label="A walk up a mountain trail, drawn in dots"></canvas><figcaption class="mono">The weekend we took off</figcaption></figure>
-        <div class="chapter-copy">
-          <p class="chapter-no mono">04 · Then we built</p>
-          <h3>One month, three products, one company</h3>
-          <p>Weeknights went into code and weekends into shipping. The odd weekend went up a trail instead, and we came back and shipped anyway.</p>
-          <p>In November that became 379 commits, three new products, our own payment rail and Asanoha LLP. We are not asking you to believe a plan. We are showing you what three people did with one month and no money.</p>
-        </div>
-      </article>
-    </div>
-
-    <div class="team">
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="A, first name hidden. Naam mein kya rakha hai? Let’s talk business, dude."><span aria-hidden="true"><span class="m-init">A</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Naam mein kya rakha hai? Let’s talk business, dude.</span></span> Kumar</h3><p class="role mono">Founder and CEO</p><p>Engineer by training, MBA at IIM Indore. Writes most of the code, from the UPI gateway to the Android app.</p></article>
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="J, first name hidden. Naam mein kya rakha hai? Let’s talk business, dude."><span aria-hidden="true"><span class="m-init">J</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Naam mein kya rakha hai? Let’s talk business, dude.</span></span> John</h3><p class="role mono">Co-founder, people and partners</p><p>BTech, HR consultant by day, A’s classmate at IIM Indore. Owns hiring, partners and the People Pitchers customer side.</p></article>
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="S, first name hidden. Naam mein kya rakha hai? Let’s talk business, dude."><span aria-hidden="true"><span class="m-init">S</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Naam mein kya rakha hai? Let’s talk business, dude.</span></span> Banerjee</h3><p class="role mono">Co-founder and COO</p><p>The flatmate from the Reddit post. Runs operations, the paperwork and the costs, and makes sure things actually ship.</p></article>
-    </div>
-
-    <figure class="handnote" aria-labelledby="hn-title">
-      <h3 class="sr-only" id="hn-title">A note from the founders</h3>
-      <blockquote class="hn-verse" lang="sa" translate="no">
-        <p class="hn-line">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।</p>
-        <p class="hn-line">मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥</p>
-      </blockquote>
-      <p class="hn-line hn-src mono">Bhagavad Gita 2.47</p>
-      <p class="hn-line hn-en">“Your right is to the work alone, never to its fruits. Don’t let the fruit be your reason to act, and don’t hold on to doing nothing.”</p>
-      <p class="hn-line hn-vision">We are warriors, like Arjuna. We can’t tell you how this revolution ends, and we have stopped pretending we can. What we can tell you is the work we chose: democratising the internet, whatever it takes. That is our vision, and the result was never ours to hold.</p>
-      <div class="hn-body">
-        <p class="hn-line">That is how we build. Ideas are cheap and everyone has a few. Software that actually ships is much harder to find.</p>
-        <p class="hn-line">Our motive is not this platform, or even this company. We think the real work is shrinking the time between an idea and its execution, and so far that is where we have been strongest.</p>
-        <div class="hn-gap" role="img" aria-label="Closing the gap: the usual distance from idea to execution is months; ours is days. Kosmik went live on the day of its first commit.">
-          <svg viewBox="0 0 600 150" aria-hidden="true">
-            <g class="g-idea"><circle cx="48" cy="62" r="16"/><path d="M42 84h12M44 90h8"/><text x="48" y="118" text-anchor="middle">idea</text></g>
-            <line class="g-line" x1="72" y1="62" x2="528" y2="62"/>
-            <text class="g-was" x="300" y="44" text-anchor="middle">the usual gap: months</text>
-            <text class="g-now" x="120" y="44" text-anchor="middle">ours: days</text>
-            <g class="g-exec"><path d="M552 46 l9 16 -9 16 -9 -16z"/><path d="M543 62h18"/><text x="552" y="118" text-anchor="middle">shipped</text></g>
-          </svg>
-          <p class="g-proof">Kosmik went live on 13 Nov 2026, the same day as its first commit.</p>
-        </div>
-        <p class="hn-line">Judge us on execution. The numbers tagged Real on this page come from our own databases and git history, the estimates say Plan, and we publish both because we would rather be checked than believed.</p>
-      </div>
-      <figcaption class="hn-line hn-sign">Team Asanoha</figcaption>
-    </figure>
-  </div>
-</section>
-
-<!-- Competition -->
-<section class="section" id="competition" aria-labelledby="comp-title">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow mono">Competition</p>
-      <h2 id="comp-title">Our competitor is everyone</h2>
-      <p class="sub">Each product walks into a market with a giant in it. We pick the part the giant does badly, and we fix that part first.</p>
-    </div>
-    <div class="comp-table" role="table" aria-label="Our products against the incumbents">
-      <div class="comp-row comp-headrow" role="row"><span role="columnheader">Product</span><span role="columnheader">Up against</span><span role="columnheader">What we do differently</span></div>
-      <div class="comp-row" role="row" style="--c:var(--pp)"><span role="cell" class="comp-name"><i></i>People Pitchers</span><span role="cell">Naukri, LinkedIn, Juicebox. For tests: Mettl, HackerRank, HackerEarth, iMocha, TestGorilla</span><span role="cell">Recruiters hire from scored work, not keywords. One test engine from campus to hire, planned at ₹4,999 a month (about US$57), where HackerRank starts at US$79 a month. Our running cost is planned at about ₹1 a candidate. Job seekers decide who sees their phone number, and every reveal is logged</span></div>
-      <div class="comp-row" role="row" style="--c:var(--learn)"><span role="cell" class="comp-name"><i></i>PP Learn</span><span role="cell">Unstop, Naukri Campus</span><span role="cell">Lessons with live demos and timed tests on the same engine recruiters use, so a strong score can reach a company directly</span></div>
-      <div class="comp-row" role="row" style="--c:var(--kosmik)"><span role="cell" class="comp-name"><i></i>Kosmik</span><span role="cell">Astrotalk, Melooha</span><span role="cell">Answers come from a cited library of 2,699 entries before any model writes a word. No fear, no gemstones, no paid pujas</span></div>
-      <div class="comp-row" role="row" style="--c:var(--wearday)"><span role="cell" class="comp-name"><i></i>Wearday</span><span role="cell">Global closet apps, and memory</span><span role="cell">Photos are tagged and cut out on the phone. Outfit ideas from your own clothes, the weather and what you haven’t worn</span></div>
-      <div class="comp-row" role="row" style="--c:var(--store)"><span role="cell" class="comp-name"><i></i>Asanoha Store</span><span role="cell">Unlicensed “CBD” sellers</span><span role="cell">Leaf-only Ayurvedic medicine from an AYUSH-licensed maker, sold only on prescription, with a lab report for every batch</span></div>
-      <div class="comp-row" role="row" style="--c:var(--pay)"><span role="cell" class="comp-name"><i></i>Noha Pay</span><span role="cell">Payment gateways that take a cut</span><span role="cell">Money goes straight to the merchant’s own UPI account. Nobody in between holds it, and the code is open source</span></div>
-    </div>
-  </div>
-</section>
-
 <!-- Products, in three layers -->
 <section class="section section-alt" id="products" aria-labelledby="products-title">
   <div class="wrap" id="layers">
     <div class="section-head">
-      <p class="eyebrow mono">Three layers</p>
-      <h2 id="products-title">One store on top. Three earners in the middle. Open rails underneath.</h2>
+      <p class="eyebrow mono">Products</p>
+      <h2 id="products-title">What we build, in three layers</h2>
       <p class="sub">Think of Amazon. The store is what people see, and AWS pays for the ambition. People Pitchers, Kosmik and Wearday are meant to be our AWS. Under all of it sit rails we give away.</p>
       <p class="legend-note mono"><span class="tag tag-real">Real</span> read from our code or databases · <span class="tag tag-plan">Plan</span> our own target or estimate · <span class="tag tag-mkt">Market</span> a third-party figure</p>
     </div>
@@ -461,12 +325,138 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
   </div>
 </section>
 
+<!-- Story and founders -->
+<section class="section" id="story" aria-labelledby="team-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow mono">The story</p>
+      <h2 id="team-title">A Reddit post, a classroom and a living room</h2>
+      <p class="sub">None of us met at a startup event. We met the way people in India actually meet: looking for a flatmate and sitting in the same class.</p>
+    </div>
+
+    <div class="chapters">
+      <article class="chapter">
+        <figure class="clip" data-src="media/dots-ride.mp4"><canvas role="img" aria-label="Evening ride home at dusk, drawn in dots"></canvas><figcaption class="mono">Evenings after work</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">01 · S</p>
+          <h3>Nine people answered a flatmate post</h3>
+          <p>A needed a flatmate in Bengaluru and posted on Reddit. Nine people replied. S got the room.</p>
+          <p>The flatmate turned out to be the person who asks what everything costs, who will do the paperwork and whether anyone has eaten. Every team needs that person. Ours came from a Reddit thread, and today he runs operations.</p>
+        </div>
+      </article>
+
+      <article class="chapter flip">
+        <figure class="clip" data-src="media/dots-class.mp4"><canvas role="img" aria-label="A and J in class at IIM Indore, drawn in dots"></canvas><figcaption class="mono">A and J, IIM Indore</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">02 · J</p>
+          <h3>A classmate who asks how everyone feels</h3>
+          <p>At IIM Indore, A found J: an engineer turned HR consultant, the kind of person who asks how everyone feels, even in a meeting about fonts.</p>
+          <p>Our first product together wasn’t for investors. It was <b>IIMXamday</b>, a site for our own batch, built because the timetable lived in a spreadsheet that kept changing.</p>
+        </div>
+      </article>
+
+      <article class="chapter">
+        <figure class="clip" data-src="media/dots-plan.mp4"><canvas role="img" aria-label="Late night in the living room with laptops open, drawn in dots"></canvas><figcaption class="mono">Where the plan was made</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">03 · The plan</p>
+          <h3>Late night, chai, “yaar, hear me out”</h3>
+          <p>The plan came together in a living room, laptops open. A had the idea. J asked who it was for. S asked what it would cost.</p>
+          <p>We split the work the only way that works with day jobs. Everyone owns one thing, and nobody waits for permission.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="story-grid">
+      <div class="story-copy">
+        <h3 class="story-h" id="story-title">A month ago we had one website</h3>
+        <p>We all have day jobs, so Asanoha gets the nights and the weekends.</p>
+        <p>In September we built the store site. In October we wrote seven commits. Then in November we stopped talking and started shipping: Wearday on the 6th, People Pitchers on the 10th, Kosmik on the 13th, the LLP on the 14th and our own payment rail rewritten from scratch on the 22nd.</p>
+        <p>We keep receipts. Every line on the right links back to a commit, a date or a registration you can check.</p>
+        <p>We are not asking you to believe a plan. We are showing you what three people did with one month and no money.</p>
+      </div>
+      <ol class="timeline">
+        <li><time datetime="2026-09-25">25 Sep</time><div><b>asanoha.co.in goes up</b><span>The store site, the slam book and the prescription flow</span><code>0a8e72a</code></div></li>
+        <li class="quiet"><time datetime="2026-10">October</time><div><b>Seven commits</b><span>Day jobs and an MBA term. We planned more than we built</span></div></li>
+        <li><time datetime="2026-11-06">6 Nov</time><div><b>Wearday, first commit</b><span>A wardrobe and outfit log. Premium with limits enforced by the database the next day</span><code>89b46ee</code></div></li>
+        <li><time datetime="2026-11-10">10 Nov</time><div><b>People Pitchers, first commit</b><span>Same day: one Asanoha login across the store and Wearday</span><code>4019799</code></div></li>
+        <li><time datetime="2026-11-11">11 Nov</time><div><b>Noha Pay takes its first UPI payments</b><span>Self-hosted gateway at pay.peoplepitchers.com, with WhatsApp codes</span></div></li>
+        <li><time datetime="2026-11-13">13 Nov</time><div><b>Kosmik, first commit</b><span>Live on kosmik.asanoha.co.in the same day, Premium through Noha Pay</span><code>ffc8cb8</code></div></li>
+        <li><time datetime="2026-11-14">14 Nov</time><div><b>Asanoha LLP is incorporated</b><span>LLPIN ADE-0939, registered in Bengaluru</span></div></li>
+        <li><time datetime="2026-11-20">20 Nov</time><div><b>Six phases of the job seeker side in one day</b><span>Browser extension, outreach, job emails and an MCP server</span><code>64bd6bc</code></div></li>
+        <li><time datetime="2026-11-22">22 Nov</time><div><b>Noha Pay rewritten, clean room</b><span>Our own code, open source under AGPL-3.0, with the Noha Money wallet</span><code>e5ccc01</code></div></li>
+        <li><time datetime="2026-11-24">24 Nov</time><div><b>Kosmik on Android, tested with new users</b><span>25 bugs from the device test, fixed and retested</span><code>aa4f3e6</code></div></li>
+        <li><time datetime="2026-11-24">24 Nov</time><div><b>Launch order set</b><span>Kosmik goes public on 1 Dec, People Pitchers on 14 Dec, the store once its paperwork is done</span></div></li>
+        <li><time datetime="2026-11-25">25 Nov</time><div><b>Job seeker sign-up ready on People Pitchers</b><span>Behind a switch, terms accepted once. Kosmik sign-in reworked from tester findings the same day</span><code>f13d98b</code></div></li>
+        <li class="now"><time datetime="2026-11-25">25 Nov</time><div><b>PP Learn reaches 69 lessons and 8 timed tests</b><span>Seven tracks from DSA to finance, plus the plan for one assessment engine</span><code>4527c0c</code></div></li>
+      </ol>
+    </div>
+    <div class="team" id="team">
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="A, first name hidden. Naam mein kya rakha hai? Let’s talk business, dude."><span aria-hidden="true"><span class="m-init">A</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Naam mein kya rakha hai? Let’s talk business, dude.</span></span> Kumar</h3><p class="role mono">Founder and CEO</p><p>Engineer by training, MBA at IIM Indore. Writes most of the code, from the UPI gateway to the Android app.</p></article>
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="J, first name hidden. Naam mein kya rakha hai? Let’s talk business, dude."><span aria-hidden="true"><span class="m-init">J</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Naam mein kya rakha hai? Let’s talk business, dude.</span></span> John</h3><p class="role mono">Co-founder, people and partners</p><p>BTech, HR consultant by day, A’s classmate at IIM Indore. Owns hiring, partners and the People Pitchers customer side.</p></article>
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="S, first name hidden. Naam mein kya rakha hai? Let’s talk business, dude."><span aria-hidden="true"><span class="m-init">S</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Naam mein kya rakha hai? Let’s talk business, dude.</span></span> Banerjee</h3><p class="role mono">Co-founder and COO</p><p>The flatmate from the Reddit post. Runs operations, the paperwork and the costs, and makes sure things actually ship.</p></article>
+    </div>
+
+    <figure class="handnote" aria-labelledby="hn-title">
+      <h3 class="sr-only" id="hn-title">A note from the founders</h3>
+      <blockquote class="hn-verse" lang="sa" translate="no">
+        <p class="hn-line">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।</p>
+        <p class="hn-line">मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥</p>
+      </blockquote>
+      <p class="hn-line hn-src mono">Bhagavad Gita 2.47</p>
+      <p class="hn-line hn-en">“Your right is to the work alone, never to its fruits. Don’t let the fruit be your reason to act, and don’t hold on to doing nothing.”</p>
+      <p class="hn-line hn-vision">We are warriors, like Arjuna. We can’t tell you how this revolution ends, and we have stopped pretending we can. What we can tell you is the work we chose: democratising the internet, whatever it takes. That is our vision, and the result was never ours to hold.</p>
+      <div class="hn-body">
+        <p class="hn-line">That is how we build. Ideas are cheap and everyone has a few. Software that actually ships is much harder to find.</p>
+        <p class="hn-line">Our motive is not this platform, or even this company. We think the real work is shrinking the time between an idea and its execution, and so far that is where we have been strongest.</p>
+        <div class="hn-gap" role="img" aria-label="Closing the gap: the usual distance from idea to execution is months; ours is days. Kosmik went live on the day of its first commit.">
+          <svg viewBox="0 0 600 150" aria-hidden="true">
+            <g class="g-idea"><circle cx="48" cy="62" r="16"/><path d="M42 84h12M44 90h8"/><text x="48" y="118" text-anchor="middle">idea</text></g>
+            <line class="g-line" x1="72" y1="62" x2="528" y2="62"/>
+            <text class="g-was" x="300" y="44" text-anchor="middle">the usual gap: months</text>
+            <text class="g-now" x="120" y="44" text-anchor="middle">ours: days</text>
+            <g class="g-exec"><path d="M552 46 l9 16 -9 16 -9 -16z"/><path d="M543 62h18"/><text x="552" y="118" text-anchor="middle">shipped</text></g>
+          </svg>
+          <p class="g-proof">Kosmik went live on 13 Nov 2026, the same day as its first commit.</p>
+        </div>
+        <p class="hn-line">Judge us on execution. The numbers tagged Real on this page come from our own databases and git history, the estimates say Plan, and we publish both because we would rather be checked than believed.</p>
+      </div>
+      <figcaption class="hn-line hn-sign">Team Asanoha</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- How we build -->
+<section class="section section-alt" id="build" aria-labelledby="build-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow mono">How we build</p>
+      <h2 id="build-title">Every product makes the next one cheaper</h2>
+      <p class="sub">The revolution is boring on purpose. We build a piece once, then every product reuses it. That is why the fourth product, Kosmik, took days, not months.</p>
+    </div>
+
+    <figure class="chart-card">
+      <div class="chart-head">
+        <figcaption><b>Commits a week, by product</b><span class="muted">21 Sep to 25 Nov 2026, from our git history</span></figcaption>
+        <ul class="legend mono" id="legend"></ul>
+      </div>
+      <div class="chart" id="chart" role="img" aria-label="Commits per week. 13 and 20 in the last two weeks of September, none from 5 October to 1 November, then 35, 79, 125 and 140 in November."></div>
+    </figure>
+
+    <div class="shared">
+      <div class="shared-item"><h3>One account</h3><p>Sign in once with Google or an emailed code, and it works on the store, Kosmik and Wearday.</p></div>
+      <div class="shared-item"><h3>One rail and one wallet</h3><p>Noha Pay takes UPI for every product, and Noha Money carries cashback between them.</p></div>
+      <div class="shared-item"><h3>Library before model</h3><p>Kosmik answers from its library and cache first. People Pitchers caches every paid AI and data call for 30 days.</p></div>
+      <div class="shared-item"><h3>Free tiers, on purpose</h3><p>Cloudflare Workers, Supabase and a free Google Cloud machine. We pay for usage, not for idle servers.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- Market -->
 <section class="section" id="market" aria-labelledby="market-title">
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow mono">The market</p>
-      <h2 id="market-title">Big markets, small slices, about ₹30 crore a year</h2>
+      <h2 id="market-title">Big markets, small slices</h2>
       <p class="sub">Each product enters a market where Indians already spend real money. Our year-three targets need a fraction of one percent of each. Every grid below has 1,000 dots, each one 0.1% of the figure shown under it. Most figures are rupees. Noha Pay’s is a count of new merchants. The lit dots are what we need.</p>
       <p class="ballpark">Fine print: these are ballpark numbers. Honestly, we don’t know yet how far this goes. We are three people on a mission, and so far the mission keeps winning.</p>
     </div>
@@ -543,28 +533,22 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
   </div>
 </section>
 
-<!-- How we build -->
-<section class="section section-alt" id="build" aria-labelledby="build-title">
+<!-- Competition -->
+<section class="section section-alt" id="competition" aria-labelledby="comp-title">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow mono">How we build</p>
-      <h2 id="build-title">Every product makes the next one cheaper</h2>
-      <p class="sub">The revolution is boring on purpose. We build a piece once, then every product reuses it. That is why the fourth product, Kosmik, took days, not months.</p>
+      <p class="eyebrow mono">Competition</p>
+      <h2 id="comp-title">Our competitor is everyone</h2>
+      <p class="sub">Each product walks into a market with a giant in it. We pick the part the giant does badly, and we fix that part first.</p>
     </div>
-
-    <figure class="chart-card">
-      <div class="chart-head">
-        <figcaption><b>Commits a week, by product</b><span class="muted">21 Sep to 25 Nov 2026, from our git history</span></figcaption>
-        <ul class="legend mono" id="legend"></ul>
-      </div>
-      <div class="chart" id="chart" role="img" aria-label="Commits per week. 13 and 20 in the last two weeks of September, none from 5 October to 1 November, then 35, 79, 125 and 140 in November."></div>
-    </figure>
-
-    <div class="shared">
-      <div class="shared-item"><h3>One account</h3><p>Sign in once with Google or an emailed code, and it works on the store, Kosmik and Wearday.</p></div>
-      <div class="shared-item"><h3>One rail and one wallet</h3><p>Noha Pay takes UPI for every product, and Noha Money carries cashback between them.</p></div>
-      <div class="shared-item"><h3>Library before model</h3><p>Kosmik answers from its library and cache first. People Pitchers caches every paid AI and data call for 30 days.</p></div>
-      <div class="shared-item"><h3>Free tiers, on purpose</h3><p>Cloudflare Workers, Supabase and a free Google Cloud machine. We pay for usage, not for idle servers.</p></div>
+    <div class="comp-table" role="table" aria-label="Our products against the incumbents">
+      <div class="comp-row comp-headrow" role="row"><span role="columnheader">Product</span><span role="columnheader">Up against</span><span role="columnheader">What we do differently</span></div>
+      <div class="comp-row" role="row" style="--c:var(--pp)"><span role="cell" class="comp-name"><i></i>People Pitchers</span><span role="cell">Naukri, LinkedIn, Juicebox. For tests: Mettl, HackerRank, HackerEarth, iMocha, TestGorilla</span><span role="cell">Recruiters hire from scored work, not keywords. One test engine from campus to hire, planned at ₹4,999 a month (about US$57), where HackerRank starts at US$79 a month. Our running cost is planned at about ₹1 a candidate. Job seekers decide who sees their phone number, and every reveal is logged</span></div>
+      <div class="comp-row" role="row" style="--c:var(--learn)"><span role="cell" class="comp-name"><i></i>PP Learn</span><span role="cell">Unstop, Naukri Campus</span><span role="cell">Lessons with live demos and timed tests on the same engine recruiters use, so a strong score can reach a company directly</span></div>
+      <div class="comp-row" role="row" style="--c:var(--kosmik)"><span role="cell" class="comp-name"><i></i>Kosmik</span><span role="cell">Astrotalk, Melooha</span><span role="cell">Answers come from a cited library of 2,699 entries before any model writes a word. No fear, no gemstones, no paid pujas</span></div>
+      <div class="comp-row" role="row" style="--c:var(--wearday)"><span role="cell" class="comp-name"><i></i>Wearday</span><span role="cell">Global closet apps, and memory</span><span role="cell">Photos are tagged and cut out on the phone. Outfit ideas from your own clothes, the weather and what you haven’t worn</span></div>
+      <div class="comp-row" role="row" style="--c:var(--store)"><span role="cell" class="comp-name"><i></i>Asanoha Store</span><span role="cell">Unlicensed “CBD” sellers</span><span role="cell">Leaf-only Ayurvedic medicine from an AYUSH-licensed maker, sold only on prescription, with a lab report for every batch</span></div>
+      <div class="comp-row" role="row" style="--c:var(--pay)"><span role="cell" class="comp-name"><i></i>Noha Pay</span><span role="cell">Payment gateways that take a cut</span><span role="cell">Money goes straight to the merchant’s own UPI account. Nobody in between holds it, and the code is open source</span></div>
     </div>
   </div>
 </section>
@@ -581,7 +565,7 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
       <details><summary>Why four products and not one?</summary><p>Because the expensive parts are shared. Sign-in, payments, the wallet, WhatsApp messages and AI caching were built once. A new product starts with all of them, so we can test a market in days and keep only what works. Each product still has its own name, its own users and its own way to make money.</p></details>
       <details><summary>Isn’t that unfocused?</summary><p>The focus is the platform under the products, not one app. Our measure is simple: how fast a new idea reaches paying users, and how little it costs us to run. Products that don’t earn their place will be shut down, not kept alive.</p></details>
       <details><summary>How do you make money?</summary><p>Subscriptions (People Pitchers seats, Kosmik passes, Wearday Premium), one-off purchases (Kosmik reports, store orders), hiring fees on People Pitchers, and later a hosted Noha Pay for other merchants.</p></details>
-      <details><summary>What traction is real today?</summary><p>The numbers above are read from our databases, not estimated: 8,975 jobs from 3,344 companies, 179 job seeker profiles, 2,699 cited library entries, 27 WhatsApp-verified people in the Kosmik alpha, and IIMXamday live for our batch of 190. Revenue is still at the test stage. We would rather show you small true numbers than big round ones.</p></details>
+      <details><summary>What traction is real today?</summary><p>The live numbers at the top of this page are read from our databases, not estimated. Two more: 27 WhatsApp-verified people in the Kosmik alpha, and IIMXamday live for our batch of 190. Revenue is still at the test stage. We would rather show you small true numbers than big round ones.</p></details>
       <details><summary>How big can this get?</summary><p>Our year-three targets add up to about ₹30 crore a year, and each needs less than 1% of its market. The markets are proven: Naukri earned ₹2,343 crore from recruiters in FY26 and Astrotalk ₹1,176 crore in FY25. The math for every number is in the market section above.</p></details>
       <details><summary>How will you get users without a big ad budget?</summary><p>Through people who already know us: our IIM Indore batch, their placement cells and the companies that hire from them. Kosmik answers in Hindi and Hinglish, where most apps don’t. And one Asanoha account means a user who joins one product can try the others for free.</p></details>
       <details><summary>Why now?</summary><p>UPI made small payments free to take, AI made one engineer worth a team, and Indian users now expect apps in their own language. A small team can now ship what needed fifty people five years ago.</p></details>
@@ -696,6 +680,6 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
   </div>
 </div>
 
-<script src="investors.js?v=21" defer></script>
+<script src="investors.js?v=22" defer></script>
 </body>
 </html>
