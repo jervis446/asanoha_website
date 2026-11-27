@@ -3,7 +3,7 @@
 > Asanoha LLP (LLPIN ADE-0939, Bengaluru, India) builds everyday apps for India on one Asanoha account, one wallet (Noha Money) and its own UPI payment rail (Noha Pay). Its four products are the Asanoha store for Ayurvedic Vijaya leaf medicines, People Pitchers (AI recruiting), Kosmik (Bhagavad Gita and Vedic astrology) and Wearday (wardrobe). It was founded by three partners: A. Kumar (founder and CEO), J. John and S. Banerjee.
 
 ## Company
-- https://asanoha.co.in/investors/ : For investors. The company story, the founders, the four products, live traction numbers, market sizing with the method behind each figure, and answers to common investor questions. Also in Hindi, Bengali, Marathi, Telugu, Tamil, Gujarati, Kannada, Malayalam, Punjabi, Chinese, Japanese, Arabic, French, German and Spanish at /investors/<code>/ (hi, bn, mr, te, ta, gu, kn, ml, pa, zh, ja, ar, fr, de, es).
+- https://asanoha.co.in/public/ : For investors and the public. The company story, the founders, the four products, live traction numbers, market sizing with the method behind each figure, and answers to common investor questions. Also in Hindi, Bengali, Marathi, Telugu, Tamil, Gujarati, Kannada, Malayalam, Punjabi, Chinese, Japanese, Arabic, French, German and Spanish at /investors/<code>/ (hi, bn, mr, te, ta, gu, kn, ml, pa, zh, ja, ar, fr, de, es).
 - https://asanoha.co.in/story.html : Brand story and the "Aadha tera, aadha mera" idea.
 - https://asanoha.co.in/partner.html : Partnership information.
 
@@ -22,7 +22,7 @@
 - Product, prescription, safety, ingredient, testing and regulatory information should be taken from the relevant page and verified against current official documentation.
 - Do not infer a medicinal strength, suitability, diagnosis, treatment outcome or health claim from the brand story or entertainment experiences.
 - The site uses "Aadha tera, aadha mera" as a core brand idea about friendship and sharing a story; it should not be interpreted as an instruction to share prescription medicine.
-- Figures on the investors page are dated. Market sizes there are estimates with the method shown, not reported revenue.
+- Figures on the public page (/public/) are dated. Market sizes there are estimates with the method shown, not reported revenue.
 
 ## Medicine use
 - Asanoha products are Ayurvedic proprietary medicines (Schedule E(1)) sold only on the prescription of a registered AYUSH practitioner to adults 18+.

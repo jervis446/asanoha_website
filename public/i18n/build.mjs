@@ -1,6 +1,6 @@
-// Investor page translations. English in investors/index.html is the source.
-//   node investors/i18n/build.mjs extract   writes i18n/source.json, every string to translate
-//   node investors/i18n/build.mjs build     writes investors/<lang>/index.html from i18n/<lang>.json
+// Investor page translations. English in public/index.html is the source.
+//   node public/i18n/build.mjs extract   writes i18n/source.json, every string to translate
+//   node public/i18n/build.mjs build     writes public/<lang>/index.html from i18n/<lang>.json
 // No dependencies. A "segment" is the outermost element that holds text of its own; its inner HTML
 // (with inline tags such as <b> or <a>) is translated as one string. Elements with translate="no",
 // <code>, <script> and <style> are left alone. Missing translations fall back to English.
@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DIR = path.resolve(HERE, '..');
 const SRC = path.join(DIR, 'index.html');
-const ORIGIN = 'https://asanoha.co.in/investors/';
+const ORIGIN = 'https://asanoha.co.in/public/';
 
 // code, native name, hreflang/html lang, og locale, dir, Google Fonts sans, serif
 export const LANGS = [
@@ -109,7 +109,7 @@ function langBlocks(code) {
     .concat(`<link href="https://fonts.googleapis.com/css2?${[...new Set(LANGS.map((l) => l[5]).filter(Boolean))].map((f) => 'family=' + f.replace(/ /g, '+')).join('&')}&text=${encodeURIComponent(LANGS.map((l) => l[1]).join(''))}&display=swap" rel="stylesheet">`)
     .join('\n');
   const items = LANGS.map(([c, name, hl]) =>
-    `<li><a href="/investors/${c === 'en' ? '' : c + '/'}" hreflang="${hl}" lang="${hl}"${c === code ? ' aria-current="page"' : ''}>${name}</a></li>`).join('');
+    `<li><a href="/public/${c === 'en' ? '' : c + '/'}" hreflang="${hl}" lang="${hl}"${c === code ? ' aria-current="page"' : ''}>${name}</a></li>`).join('');
   return { hreflang, items };
 }
 
@@ -133,7 +133,7 @@ function translate(html, t, L) {
     if (t[k]) body = body.slice(0, s) + t[k] + body.slice(e);
   }
   body = body.replace(/(\s(?:aria-label|placeholder|title|alt)=")([^"]+)"/g, (_, a, v) => `${a}${esc(tr(unesc(v)))}"`);
-  body = body.replace(/href="\/investors\/"/g, `href="/investors/${code}/"`).replace(/data-src="media\//g, 'data-src="../media/');
+  body = body.replace(/href="\/public\/"/g, `href="/public/${code}/"`).replace(/data-src="media\//g, 'data-src="../media/');
   let head = html.slice(0, b0);
   head = head.replace(/<html lang="[^"]*"/, `<html lang="${hl}" dir="${dir}"`)
     .replace(/<title>([\s\S]*?)<\/title>/, (_, x) => `<title>${tr(x)}</title>`)
@@ -191,12 +191,12 @@ if (cmd === 'extract') {
     if (!fs.existsSync(f)) { console.log(`${L[0]}: no translation file, skipped`); continue; }
     const t = JSON.parse(fs.readFileSync(f, 'utf8')).t || {};
     const missing = want.filter((k) => !t[k]);
-    // the menu goes in after translate(), which points /investors/ links at this language
+    // the menu goes in after translate(), which points /public/ links at this language
     const out = setBlock(translate(html, t, L), 'langs', langBlocks(L[0]).items);
     fs.mkdirSync(path.join(DIR, L[0]), { recursive: true });
     fs.writeFileSync(path.join(DIR, L[0], 'index.html'), out);
     console.log(`${L[0]}: built, ${missing.length} missing${missing.length ? ': ' + missing.slice(0, 3).map((s) => s.slice(0, 40)).join(' | ') : ''}`);
   }
 } else {
-  console.log('usage: node investors/i18n/build.mjs extract|build');
+  console.log('usage: node public/i18n/build.mjs extract|build');
 }

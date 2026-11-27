@@ -1,5 +1,5 @@
 // Check a translation file against source.json: every string present, same HTML tags, same numbers.
-//   node investors/i18n/check.mjs hi
+//   node public/i18n/check.mjs hi
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
