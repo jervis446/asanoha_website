@@ -330,7 +330,7 @@
   var WEEKS = [T('21 Sep'), T('28 Sep'), T('5 Oct'), T('12 Oct'), T('19 Oct'), T('26 Oct'), T('2 Nov'), T('9 Nov'), T('16 Nov'), T('23 Nov')];
   var SERIES = [
     { k: 'store', name: T('Asanoha Store'), v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 44] },
-    { k: 'wearday', name: T('Other apps'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
+    { k: 'wearday', name: T('Wearday'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
     { k: 'pp', name: T('People Pitchers'), v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 149] },
     { k: 'kosmik', name: T('Kosmik'), v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 93] },
     { k: 'pay', name: T('Noha Pay'), v: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0] }
@@ -701,6 +701,7 @@
       card.focus({ preventScroll: true });
     }
     function openTour(b) {
+      try { localStorage.setItem('asanoha:public-tour-taken', '1'); } catch (e) {}
       tourOpener = b; tour.hidden = false; root.classList.add('touring');
       if (nav.classList.contains('open')) setMenu(false);
       go(0);
@@ -715,13 +716,15 @@
     /* First visit: dim the page, point at the walkthrough button */
     var intro = document.getElementById('intro');
     var start = document.getElementById('tour-start');
-    var SEEN = 'asanoha:public-intro-seen';
+    // The pointer shows on every visit until the walkthrough has been taken once;
+    // "Not now" or a click elsewhere hides it for this visit only.
+    var TAKEN = 'asanoha:public-tour-taken', SEEN = 'asanoha:public-intro-seen';
     var seen = false;
-    try { seen = localStorage.getItem(SEEN) === '1'; } catch (e) { seen = true; }
+    try { seen = localStorage.getItem(TAKEN) === '1' || sessionStorage.getItem(SEEN) === '1'; } catch (e) { seen = true; }
     function closeIntro() {
       if (!intro || intro.hidden) return;
       intro.hidden = true; root.classList.remove('intro-on');
-      try { localStorage.setItem(SEEN, '1'); } catch (e) {}
+      try { sessionStorage.setItem(SEEN, '1'); } catch (e) {}
     }
     function placeIntro() {
       if (intro.hidden) return;
@@ -730,12 +733,18 @@
       var ring = intro.querySelector('.intro-ring'), ptr = intro.querySelector('.intro-pointer'), tip = intro.querySelector('.intro-tip');
       ring.style.cssText = 'top:' + (r.top - 6) + 'px;left:' + (r.left - 6) + 'px;width:' + (r.width + 12) + 'px;height:' + (r.height + 12) + 'px';
       ptr.style.cssText = 'top:' + (r.top - 62) + 'px;left:' + (r.left + Math.min(48, r.width / 2) - 22) + 'px';
-      tip.style.cssText = 'top:' + (r.bottom + 16) + 'px;left:' + Math.max(16, r.left) + 'px';
+      // the hint goes under the button, or above the arrow when the screen has no room below
+      var below = r.bottom + 16 + tip.offsetHeight + 8 <= window.innerHeight;
+      tip.style.cssText = 'top:' + (below ? r.bottom + 16 : Math.max(8, r.top - 70 - tip.offsetHeight)) + 'px;left:' + Math.max(16, Math.min(r.left, window.innerWidth - tip.offsetWidth - 16)) + 'px';
       requestAnimationFrame(placeIntro);
     }
     if (intro && start && !seen && window.scrollY < 200 && !location.hash) {
       setTimeout(function () {
         if (!tour.hidden || window.scrollY > 200 || (dialog && dialog.open)) return;
+        if (start.getBoundingClientRect().top > window.innerHeight) return;
+        // on short screens, bring the button up so the arrow, the button and the hint all fit
+        var rb = start.getBoundingClientRect();
+        if (rb.bottom > window.innerHeight - 120) window.scrollBy(0, rb.bottom - window.innerHeight * 0.62);
         intro.hidden = false; root.classList.add('intro-on');
         placeIntro();
       }, 1200);

@@ -1008,3 +1008,8 @@ body { padding-bottom: 72px; }
   .js .beat { opacity: 1; transform: none; transition: none; }
 }
 .acts a[aria-current] .act-name { max-width: 44vw; overflow: hidden; text-overflow: ellipsis; }
+.intro-on .acts, .touring .acts { visibility: hidden; }
+.timeline a.commit { text-decoration: none; }
+.timeline a.commit code { text-decoration: underline; text-underline-offset: 2px; }
+.act-open .hero-actions { margin-top: 28px; }
+@media (max-width: 680px) { .act-open .cuts { margin-top: 32px; } }
