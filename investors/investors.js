@@ -98,7 +98,7 @@
 
   /* Reveal on scroll */
   document.querySelectorAll('.handnote .hn-line').forEach(function (l, i) { l.style.setProperty('--i', i); });
-  var revealables = document.querySelectorAll('#questions .section-head, .faq');
+  var revealables = document.querySelectorAll('#questions .section-head, .faq, #story .section-head, .handnote, .person');
   revealables.forEach(function (el) { el.classList.add('reveal'); });
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
@@ -330,7 +330,7 @@
   var WEEKS = [T('21 Sep'), T('28 Sep'), T('5 Oct'), T('12 Oct'), T('19 Oct'), T('26 Oct'), T('2 Nov'), T('9 Nov'), T('16 Nov'), T('23 Nov')];
   var SERIES = [
     { k: 'store', name: T('Asanoha Store'), v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 44] },
-    { k: 'wearday', name: T('Other apps'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
+    { k: 'wearday', name: T('Wearday'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
     { k: 'pp', name: T('People Pitchers'), v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 149] },
     { k: 'kosmik', name: T('Kosmik'), v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 93] },
     { k: 'pay', name: T('Noha Pay'), v: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0] }
@@ -640,15 +640,134 @@
   /* Six acts: the marker shows which act is on screen */
   var actsNav = document.getElementById('acts');
   var acts = document.querySelectorAll('.act');
-  if (actsNav && acts.length && 'IntersectionObserver' in window) {
-    var actLinks = actsNav.querySelectorAll('a');
-    var actIo = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var i = [].indexOf.call(acts, e.target);
-        actLinks.forEach(function (l, j) { if (j === i) l.setAttribute('aria-current', 'step'); else l.removeAttribute('aria-current'); });
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    acts.forEach(function (a) { actIo.observe(a); });
+  if (actsNav && acts.length) {
+    var actLinks = actsNav.querySelectorAll('a'), actAt = -1;
+    // the current act is the last one whose top has passed the middle of the screen
+    var markAct = function () {
+      var i = 0;
+      acts.forEach(function (a, j) { if (a.getBoundingClientRect().top < window.innerHeight * 0.5) i = j; });
+      if (i === actAt) return;
+      actAt = i;
+      actLinks.forEach(function (l, j) { if (j === i) l.setAttribute('aria-current', 'step'); else l.removeAttribute('aria-current'); });
+    };
+    window.addEventListener('scroll', markAct, { passive: true });
+    window.addEventListener('resize', markAct);
+    markAct();
+  }
+  /* Investor walkthrough: step by step, keyboard friendly, skippable at any point */
+  var STEPS = [
+    { sel: '#act-1 .act-copy', t: T('01 · The problem'), x: T('In India, getting hired, getting a straight answer and getting paid each pass through a middleman who charges at every step.') },
+    { sel: '#theme-btn', fixed: true, t: T('Day or night'), x: T('Switch between light and dark here. The choice is remembered across Asanoha.') },
+    { sel: '.lang-menu', fixed: true, t: T('Read it in your language'), x: T('This page comes in 16 languages, from Hindi, Tamil and Bengali to Japanese and Arabic. A few new lines are still in English.') },
+    { sel: '#act-2 .costs', t: T('02 · What it costs'), x: T('Three public figures, each with its source and year. They are not our market share.') },
+    { sel: '#act-3 .tried', t: T('03 · What people have tried'), x: T('Everyone gets by today, and someone in the middle still gets paid.') },
+    { sel: '#layers-3d', t: T('04 · The reveal'), x: T('Our logo, built in 3D: the store on top, the apps in the middle, shared rails at the base. Drag it, or tap a part.') },
+    { sel: '#p-pp', t: T('One person, one problem'), x: T('Each story starts with the person and what it costs them today, then what we built.') },
+    { sel: '.charge', t: T('Yes, we charge too'), x: T('A flat price shown before you pay, not a cut of every step.') },
+    { sel: '#story .section-head', t: T('Our story'), x: T('How three people with day jobs met, and what we have shipped since September.') },
+    { sel: '#act-5 .section-head', t: T('05 · What is already working'), x: T('Real numbers only, the weak ones too. Plans are tagged Plan, outside figures Market.') },
+    { sel: '#act-6 .steps-next', t: T('06 · What happens next'), x: T('What happens after you press Talk to us, in three steps.') },
+    { sel: '#founder', t: T('Talk to us'), x: T('Leave a note and confirm your WhatsApp number. One of the founders writes back.') }
+  ];
+  var tour = document.getElementById('tour');
+  if (tour) {
+    var ring = tour.querySelector('.tour-ring'), card = tour.querySelector('.tour-card');
+    var stepEl = document.getElementById('tour-step'), titleEl = document.getElementById('tour-title'), textEl = document.getElementById('tour-text');
+    var dotsEl = tour.querySelector('.tour-dots');
+    var backBtn = tour.querySelector('[data-tour-back]'), nextBtn = tour.querySelector('[data-tour-next]');
+    var at = 0, tourOpener = null, target = null;
+    STEPS.forEach(function () { dotsEl.appendChild(document.createElement('i')); });
+    function place() {
+      if (!target) return;
+      var r = target.getBoundingClientRect(), pad = 8;
+      ring.style.top = (r.top - pad) + 'px'; ring.style.left = (r.left - pad) + 'px';
+      ring.style.width = (r.width + pad * 2) + 'px'; ring.style.height = (r.height + pad * 2) + 'px';
+    }
+    function go(i) {
+      at = Math.max(0, Math.min(STEPS.length - 1, i));
+      var s = STEPS[at];
+      target = document.querySelector(s.sel);
+      stepEl.textContent = T('Step') + ' ' + (at + 1) + ' ' + T('of') + ' ' + STEPS.length;
+      titleEl.textContent = s.t; textEl.textContent = s.x;
+      [].forEach.call(dotsEl.children, function (d, j) { d.className = j === at ? 'on' : j < at ? 'done' : ''; });
+      backBtn.disabled = at === 0;
+      nextBtn.textContent = at === STEPS.length - 1 ? T('Talk to us') : T('Next');
+      if (target && !s.fixed) {
+        var r = target.getBoundingClientRect();
+        var tall = r.height > window.innerHeight * 0.6;
+        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: tall ? 'start' : 'center' });
+      }
+      place();
+      card.focus({ preventScroll: true });
+    }
+    function openTour(b) {
+      try { localStorage.setItem('asanoha:public-tour-taken', '1'); } catch (e) {}
+      tourOpener = b; tour.hidden = false; root.classList.add('touring');
+      if (nav.classList.contains('open')) setMenu(false);
+      go(0);
+      requestAnimationFrame(follow);
+    }
+    function closeTour() {
+      tour.hidden = true; root.classList.remove('touring'); target = null;
+      if (tourOpener && document.contains(tourOpener)) tourOpener.focus({ preventScroll: true });
+    }
+    document.querySelectorAll('[data-tour]').forEach(function (b) { b.addEventListener('click', function () { openTour(b); }); });
+
+    /* First visit: dim the page, point at the walkthrough button */
+    var intro = document.getElementById('intro');
+    var start = document.getElementById('tour-start');
+    // The pointer shows on every visit until the walkthrough has been taken once;
+    // "Not now" or a click elsewhere hides it for this visit only.
+    var TAKEN = 'asanoha:public-tour-taken', SEEN = 'asanoha:public-intro-seen';
+    var seen = false;
+    try { seen = localStorage.getItem(TAKEN) === '1' || sessionStorage.getItem(SEEN) === '1'; } catch (e) { seen = true; }
+    function closeIntro() {
+      if (!intro || intro.hidden) return;
+      intro.hidden = true; root.classList.remove('intro-on');
+      try { sessionStorage.setItem(SEEN, '1'); } catch (e) {}
+    }
+    function placeIntro() {
+      if (intro.hidden) return;
+      var r = start.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) { closeIntro(); return; }
+      var ring = intro.querySelector('.intro-ring'), ptr = intro.querySelector('.intro-pointer'), tip = intro.querySelector('.intro-tip');
+      ring.style.cssText = 'top:' + (r.top - 6) + 'px;left:' + (r.left - 6) + 'px;width:' + (r.width + 12) + 'px;height:' + (r.height + 12) + 'px';
+      ptr.style.cssText = 'top:' + (r.top - 62) + 'px;left:' + (r.left + Math.min(48, r.width / 2) - 22) + 'px';
+      // the hint goes under the button, or above the arrow when the screen has no room below
+      var below = r.bottom + 16 + tip.offsetHeight + 8 <= window.innerHeight;
+      tip.style.cssText = 'top:' + (below ? r.bottom + 16 : Math.max(8, r.top - 70 - tip.offsetHeight)) + 'px;left:' + Math.max(16, Math.min(r.left, window.innerWidth - tip.offsetWidth - 16)) + 'px';
+      requestAnimationFrame(placeIntro);
+    }
+    if (intro && start && !seen && window.scrollY < 200 && !location.hash) {
+      setTimeout(function () {
+        if (!tour.hidden || window.scrollY > 200 || (dialog && dialog.open)) return;
+        if (start.getBoundingClientRect().top > window.innerHeight) return;
+        // on short screens, bring the button up so the arrow, the button and the hint all fit
+        var rb = start.getBoundingClientRect();
+        if (rb.bottom > window.innerHeight - 120) window.scrollBy(0, rb.bottom - window.innerHeight * 0.62);
+        intro.hidden = false; root.classList.add('intro-on');
+        placeIntro();
+      }, 1200);
+      start.addEventListener('click', closeIntro);
+      intro.querySelector('.intro-close').addEventListener('click', closeIntro);
+      document.addEventListener('click', function (e) { if (!intro.hidden && !intro.querySelector('.intro-tip').contains(e.target)) closeIntro(); }, true);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeIntro(); });
+    }
+    tour.querySelector('[data-tour-skip]').addEventListener('click', closeTour);
+    backBtn.addEventListener('click', function () { go(at - 1); });
+    nextBtn.addEventListener('click', function () {
+      if (at < STEPS.length - 1) return go(at + 1);
+      closeTour();
+      var b = document.querySelector('#founder [data-talk]');
+      if (b) { b.focus({ preventScroll: true }); b.click(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (tour.hidden || (dialog.open)) return;
+      if (e.key === 'Escape') { e.preventDefault(); closeTour(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); nextBtn.click(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); if (at > 0) go(at - 1); }
+    });
+    // Follow the target while the page scrolls to it (smooth scroll, reveal motion, resizes)
+    function follow() { if (tour.hidden) return; place(); requestAnimationFrame(follow); }
   }
 })();
