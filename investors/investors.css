@@ -678,6 +678,7 @@ img.avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; b
 .status-soon { color: var(--store); }
 .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .kpis-2 { grid-template-columns: repeat(2, 1fr); }
+.kpis-3 { grid-template-columns: repeat(3, 1fr); }
 .kpi { display: grid; gap: 4px; align-content: start; padding: 12px; border-radius: 12px; background: var(--surface-2); min-width: 0; }
 .kpi .tag { justify-self: start; }
 .kpi b { font-size: clamp(20px, 2.4vw, 26px); font-weight: 400; color: var(--text); line-height: 1.15; overflow-wrap: anywhere; }

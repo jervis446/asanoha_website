@@ -325,13 +325,13 @@
   window.addEventListener('resize', onTimeline);
   onTimeline();
 
-  /* Build chart: commits a week by product, from git history (21 Sep to 25 Nov 2026) */
+  /* Build chart: commits a week by product, from git history (21 Sep to 27 Nov 2026; the last week is 23 to 27 Nov) */
   var WEEKS = [T('21 Sep'), T('28 Sep'), T('5 Oct'), T('12 Oct'), T('19 Oct'), T('26 Oct'), T('2 Nov'), T('9 Nov'), T('16 Nov'), T('23 Nov')];
   var SERIES = [
-    { k: 'store', name: T('Asanoha Store'), v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 34] },
+    { k: 'store', name: T('Asanoha Store'), v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 44] },
     { k: 'wearday', name: T('Wearday'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
-    { k: 'pp', name: T('People Pitchers'), v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 28] },
-    { k: 'kosmik', name: T('Kosmik'), v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 78] },
+    { k: 'pp', name: T('People Pitchers'), v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 149] },
+    { k: 'kosmik', name: T('Kosmik'), v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 93] },
     { k: 'pay', name: T('Noha Pay'), v: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0] }
   ];
   var chartEl = document.getElementById('chart');
@@ -370,10 +370,10 @@
     var narrow = W < 520;
     var pad = { l: 28, r: 4, t: 20, b: 28 };
     var iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
-    var max = 160;
+    var max = 300;
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true' });
     var grid = el('g', { class: 'grid axis' }, svg);
-    [0, 40, 80, 120, 160].forEach(function (v) {
+    [0, 100, 200, 300].forEach(function (v) {
       var y = pad.t + ih - (v / max) * ih;
       el('line', { x1: pad.l, x2: W - pad.r, y1: y, y2: y }, grid);
       var t = el('text', { x: pad.l - 8, y: y + 4, 'text-anchor': 'end' }, grid);
@@ -609,15 +609,15 @@
 
   /* Investor walkthrough: step by step, keyboard friendly, skippable at any point */
   var STEPS = [
-    { sel: '#manifesto .hero-copy', t: T('We are not a company'), x: T('We are a revolution for the democratic right of the internet: rails for payments, hiring and knowledge that no gatekeeper owns.') },
+    { sel: '#manifesto .hero-copy', t: T('What Asanoha builds'), x: T('Everyday apps for India that share one sign-in, one payment rail and one wallet.') },
     { sel: '#theme-btn', fixed: true, t: T('Day or night'), x: T('Switch between light and dark here. The choice is remembered across Asanoha.') },
     { sel: '.lang-menu', fixed: true, t: T('Read it in your language'), x: T('This page comes in 16 languages, from Hindi, Tamil and Bengali to Japanese and Arabic. A few new lines are still in English.') },
-    { sel: '#layers-3d', t: T('Three layers, one star'), x: T('Our logo, built in 3D. Asanoha Store on top, three earning products in the middle, open-source rails at the base. Drag it, or tap a part.') },
+    { sel: '#layers-3d', t: T('Three layers, one star'), x: T('Our logo, built in 3D. Asanoha Store on top, three apps in the middle, shared rails at the base. Drag it, or tap a part.') },
     { sel: '.receipts', t: T('Real numbers only'), x: T('Read from our own databases. Every plan figure on this page is tagged Plan, every outside figure Market.') },
     { sel: '#p-store', t: T('Layer 1: Asanoha Store'), x: T('The main product. It opens only after five gates: GST, licence on every product, lab reports, legal sign-off and a prescription check.') },
-    { sel: '#p-pp', t: T('Layer 2: meant to make the money'), x: T('What AWS is to Amazon, once they earn. People Pitchers is live and invite-only, with a plan to run each candidate’s test for about ₹1.') },
-    { sel: '#p-kosmik', t: T('Kosmik goes public on 1 December'), x: T('Answers from a cited library before any AI writes a word. Our 30-day target: 1,000 sign-ups.') },
-    { sel: '#p-pay', t: T('Layer 3: open rails'), x: T('Noha Pay and Noha Money are AGPL-3.0. We run them for you, or you run them yourself if you have the guts.') },
+    { sel: '#p-pp', t: T('Layer 2: the apps'), x: T('Meant to fund the company once they earn. People Pitchers is live and invite-only. Its recruiter search answers in about 4 seconds, with a quoted reason for every match.') },
+    { sel: '#p-kosmik', t: T('Kosmik, in safe mode'), x: T('Answers come from a cited library before any AI writes a word, as tendencies, not predictions. Guests get 3 questions a day.') },
+    { sel: '#p-pay', t: T('Layer 3: shared rails'), x: T('Noha Pay and Noha Money are open source under AGPL-3.0. Read the code, or run it yourself.') },
     { sel: '#market', t: T('Big markets, small slices'), x: T('Each year-three target needs less than one percent of its market. The math is under every card.') },
     { sel: '#questions', t: T('The hard questions'), x: T('Risks, focus and money, answered plainly.') },
     { sel: '#founder', t: T('Join our mission'), x: T('Press the button once to join, and again to talk to our founder.') }
