@@ -55,7 +55,7 @@
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="../investors.css?v=31">
+<link rel="stylesheet" href="../investors.css?v=32">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"Asanoha LLP","legalName":"Asanoha LLP","identifier":"LLPIN ADE-0939","url":"https://asanoha.co.in/","address":{"@type":"PostalAddress","streetAddress":"Unit 101, Oxford Towers, 139/88 HAL Old Airport Road, HAL II Stage","addressLocality":"Bengaluru","addressRegion":"Karnataka","postalCode":"560008","addressCountry":"IN"},"subOrganization":[{"@type":"Organization","name":"People Pitchers","url":"https://peoplepitchers.com"},{"@type":"Organization","name":"Kosmik","url":"https://kosmik.asanoha.co.in"}],"@id":"https://asanoha.co.in/#organization","foundingDate":"2026-11-14","founder":[{"@type":"Person","familyName":"Kumar","jobTitle":"Founder and CEO"},{"@type":"Person","familyName":"John","jobTitle":"Co-founder, people and partners"},{"@type":"Person","familyName":"Banerjee","jobTitle":"Co-founder and COO"}],"sameAs":["https://www.crunchbase.com/organization/asanoha","https://www.wikidata.org/wiki/Q142274918","https://www.linkedin.com/company/asanoha-llp/"]},{"@type":"WebPage","@id":"https://asanoha.co.in/investors/hi/#webpage","url":"https://asanoha.co.in/investors/hi/","name":"सबके लिए Asanoha LLP","inLanguage":"hi-IN","about":{"@id":"https://asanoha.co.in/#organization"},"dateModified":"2026-11-27"},{"@type":"FAQPage","@id":"https://asanoha.co.in/investors/hi/#faq","mainEntity":[{"@type":"Question","name":"आप पैसे कैसे कमाते हैं?","acceptedAnswer":{"@type":"Answer","text":"तय कीमतें, भुगतान से पहले दिखाई जाती हैं: People Pitchers सीटें, Kosmik पास और रिपोर्ट पैक, और स्टोर खुलने के बाद स्टोर ऑर्डर। आगे चलकर, दूसरे विक्रेताओं के लिए होस्टेड Noha Pay, तय मासिक कीमत पर। आज सिर्फ़ Kosmik पास और रिपोर्ट पैसे लेते हैं।"}},{"@type":"Question","name":"क्या इससे फ़ोकस नहीं बिखरता?","acceptedAnswer":{"@type":"Answer","text":"फ़ोकस ऐप्स के नीचे की साझा परत पर है। साइन-इन, भुगतान, वॉलेट, WhatsApp संदेश और AI कैशिंग एक बार बने, ताकि हर नया ऐप इन सबके साथ शुरू हो। हमारा पैमाना है कि नया आइडिया कितनी जल्दी भुगतान करने वाले उपयोगकर्ताओं तक पहुँचता है और उसे चलाना कितना सस्ता है। जो ऐप अपनी जगह नहीं कमाएँगे, उन्हें बंद कर दिया जाएगा, ज़िंदा नहीं रखा जाएगा।"}},{"@type":"Question","name":"जोखिम क्या हैं?","acceptedAnswer":{"@type":"Answer","text":"हमने अभी यह नहीं दिखाया है कि लोग बड़े पैमाने पर भुगतान करेंगे: अब तक ₹102। स्टोर एक नियंत्रित आयुर्वेदिक दवा सिर्फ़ प्रिस्क्रिप्शन पर बेचेगा, इसलिए कानूनी मंज़ूरी के बाद ही खुलेगा। WhatsApp कोड आज हमारे अपने रिले से जाते हैं और बड़े पैमाने पर जाने से पहले आधिकारिक WhatsApp Business API पर जाने चाहिए। और दिन की नौकरी वाले तीन लोगों के लिए कई ऐप बहुत हैं, इसीलिए वे जितना हो सके सब साझा करते हैं।"}},{"@type":"Question","name":"संपर्क करने के बाद क्या होता है?","acceptedAnswer":{"@type":"Answer","text":"आप कोड से अपना WhatsApp नंबर कन्फ़र्म करते हैं, ताकि हमें पता रहे कि मैसेज सच में आपका है। आपका नोट हमें तुरंत मिलता है, और कोई एक संस्थापक आपको जवाब लिखता है।"}}],"inLanguage":"hi-IN"}]}</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500&family=Noto+Serif+Devanagari:wght@400;500&display=swap" rel="stylesheet">
 <style>:root{--sans:'Manrope','Noto Sans Devanagari',system-ui,sans-serif;--serif:'Fraunces','Noto Serif Devanagari',Georgia,serif}h1,h2,h3{letter-spacing:0;line-height:1.3}body{line-height:1.75}</style>
@@ -74,9 +74,11 @@
       <a href="#act-2">लागत</a>
       <a href="#act-3">कोशिशें</a>
       <a href="#act-4">Asanoha</a>
+      <a href="#story">कहानी</a>
       <a href="#act-5">चालू</a>
       <a href="#act-6">आगे</a>
       <a href="#questions">सवाल</a>
+      <button class="nav-tour" type="button" data-tour>वॉकथ्रू</button>
     </nav>
     <div class="nav-actions">
       <div class="lang-menu">
@@ -138,7 +140,10 @@
         <li><b>जवाब।</b> जिसे सीधा जवाब चाहिए, वह हर मिनट के हिसाब से पैसे देता है।</li>
         <li><b>भुगतान।</b> छोटे विक्रेता को हर बिक्री का एक हिस्सा गँवाना पड़ता है।</li>
       </ul>
-      <a class="act-next" href="#act-2">इसकी कीमत</a>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" data-tour id="tour-start">वॉकथ्रू देखें</button>
+        <a class="act-next" href="#act-2">इसकी कीमत</a>
+      </div>
     </div>
   </div>
 </section>
@@ -264,6 +269,106 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
   </div>
 </section>
 
+<!-- Story and founders -->
+<section class="section" id="story" aria-labelledby="team-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow mono">कहानी</p>
+      <h2 id="team-title">एक Reddit पोस्ट, एक क्लासरूम और एक लिविंग रूम</h2>
+      <p class="sub">हम में से कोई किसी स्टार्टअप इवेंट में नहीं मिला। हम वैसे ही मिले जैसे भारत में लोग सच में मिलते हैं: फ़्लैटमेट ढूँढते हुए और एक ही क्लास में बैठकर।</p>
+    </div>
+
+    <div class="chapters">
+      <article class="chapter">
+        <figure class="clip" data-src="../media/dots-ride.mp4"><canvas role="img" aria-label="शाम ढले घर लौटती सवारी, बिंदुओं से बनी"></canvas><figcaption class="mono">काम के बाद की शामें</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">01 · S</p>
+          <h3>फ़्लैटमेट वाली पोस्ट पर नौ लोगों ने जवाब दिया</h3>
+          <p>A को बेंगलुरु में फ़्लैटमेट चाहिए था, तो उसने Reddit पर पोस्ट किया। नौ लोगों ने जवाब दिया। कमरा S को मिला।</p>
+          <p>यह फ़्लैटमेट वह इंसान निकला जो पूछता है कि हर चीज़ कितने की है, कागज़ी काम कौन करेगा और किसी ने खाना खाया या नहीं। हर टीम को ऐसे इंसान की ज़रूरत होती है। हमारा वाला एक Reddit थ्रेड से आया, और आज वही ऑपरेशंस संभालता है।</p>
+        </div>
+      </article>
+
+      <article class="chapter flip">
+        <figure class="clip" data-src="../media/dots-class.mp4"><canvas role="img" aria-label="क्लास में A और J, बिंदुओं से बने"></canvas><figcaption class="mono">क्लास में A और J</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">02 · J</p>
+          <h3>एक सहपाठी जो सबका हाल पूछता है</h3>
+          <p>बिज़नेस स्कूल में A की मुलाक़ात J से हुई: एक इंजीनियर से HR कंसल्टेंट बने, ऐसे इंसान जो फ़ॉन्ट वाली मीटिंग में भी पूछ लेते हैं कि सब कैसा महसूस कर रहे हैं।</p>
+          <p>हमारा साथ बना पहला प्रोडक्ट निवेशकों के लिए नहीं था। वह हमारे अपने बैच की एक साइट थी, क्योंकि टाइमटेबल एक स्प्रेडशीट में था जो बदलती रहती थी।</p>
+        </div>
+      </article>
+
+      <article class="chapter">
+        <figure class="clip" data-src="../media/dots-plan.mp4"><canvas role="img" aria-label="देर रात लिविंग रूम में खुले लैपटॉप, बिंदुओं से बने"></canvas><figcaption class="mono">जहाँ योजना बनी</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">03 · योजना</p>
+          <h3>देर रात, चाय, “यार, ज़रा मेरी बात सुनो”</h3>
+          <p>योजना एक लिविंग रूम में बनी, लैपटॉप खुले हुए। आइडिया A का था। J ने पूछा कि यह किसके लिए है। S ने पूछा कि इसकी लागत कितनी होगी।</p>
+          <p>हमने काम उसी तरह बाँटा जो नौकरी के साथ चल सकता है। हर कोई एक चीज़ का ज़िम्मेदार है, और कोई इजाज़त का इंतज़ार नहीं करता।</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="story-grid">
+      <div class="story-copy">
+        <h3 class="story-h" id="story-title">सितंबर में हमारे पास एक वेबसाइट थी</h3>
+        <p>हम सबकी नौकरियाँ हैं, इसलिए Asanoha को रातें और वीकेंड मिलते हैं।</p>
+        <p>सितंबर में हमने स्टोर की साइट बनाई। अक्टूबर में सात कमिट लिखे। फिर नवंबर में हमने बातें छोड़ीं और शिप करना शुरू किया: 6 तारीख को Wearday, 10 को People Pitchers, 13 को Kosmik, 14 को LLP और 22 को अपनी पेमेंट रेल, बिल्कुल शुरू से दोबारा लिखी हुई।</p>
+        <p>हम हर बात का सबूत रखते हैं। दाईं ओर की हर लाइन किसी कमिट, तारीख या रजिस्ट्रेशन से जुड़ी है, जिसे आप ख़ुद जाँच सकते हैं।</p>
+      </div>
+      <ol class="timeline">
+        <li><time datetime="2026-09-25">25 सितंबर</time><div><b>asanoha.co.in लाइव हुई</b><span>स्टोर साइट, स्लैम बुक और प्रिस्क्रिप्शन फ़्लो</span><code>0a8e72a</code></div></li>
+        <li class="quiet"><time datetime="2026-10">अक्टूबर</time><div><b>सात कमिट</b><span>नौकरियाँ और MBA का टर्म। बनाया कम, योजनाएँ ज़्यादा बनाईं</span></div></li>
+        <li><time datetime="2026-11-06">6 नवंबर</time><div><b>Wearday, पहला कमिट</b><span>वॉर्डरोब और आउटफ़िट लॉग। अगले ही दिन Premium की सीमाएँ डेटाबेस से लागू</span><code>89b46ee</code></div></li>
+        <li><time datetime="2026-11-10">10 नवंबर</time><div><b>People Pitchers, पहला कमिट</b><span>उसी दिन: स्टोर और Wearday पर एक ही Asanoha लॉगिन</span><code>4019799</code></div></li>
+        <li><time datetime="2026-11-11">11 नवंबर</time><div><b>Noha Pay ने पहले UPI पेमेंट लिए</b><span>pay.peoplepitchers.com पर हमारा अपना गेटवे, WhatsApp कोड के साथ</span></div></li>
+        <li><time datetime="2026-11-13">13 नवंबर</time><div><b>Kosmik, पहला कमिट</b><span>उसी दिन kosmik.asanoha.co.in पर लाइव, Premium Noha Pay के ज़रिए</span><code>ffc8cb8</code></div></li>
+        <li><time datetime="2026-11-14">14 नवंबर</time><div><b>Asanoha LLP का गठन</b><span>LLPIN ADE-0939, बेंगलुरु में रजिस्टर्ड</span></div></li>
+        <li><time datetime="2026-11-20">20 नवंबर</time><div><b>एक ही दिन में जॉब सीकर साइड के छह चरण</b><span>ब्राउज़र एक्सटेंशन, आउटरीच, जॉब ईमेल और AI असिस्टेंट के लिए नौकरियाँ खोजने का तरीका (MCP)</span><code>64bd6bc</code></div></li>
+        <li><time datetime="2026-11-22">22 नवंबर</time><div><b>Noha Pay शुरू से दोबारा लिखा गया</b><span>हमारा अपना कोड, AGPL-3.0 के तहत ओपन सोर्स, Noha Money वॉलेट के साथ</span><code>e5ccc01</code></div></li>
+        <li><time datetime="2026-11-24">24 नवंबर</time><div><b>Android पर Kosmik, नए यूज़र्स के साथ टेस्ट</b><span>डिवाइस टेस्ट में मिले 25 बग, ठीक करके दोबारा जाँचे गए</span><code>aa4f3e6</code></div></li>
+          <li><time datetime="2026-11-25">25 नवंबर</time><div><b>People Pitchers पर बना, जॉब सीकर के लिए ओपन साइन-अप</b><span>अभी चालू नहीं किया गया। टेस्टर के निष्कर्षों पर Kosmik का साइन-इन उसी दिन दोबारा बनाया गया</span><code>f13d98b</code></div></li>
+        <li><time datetime="2026-11-25">25 नवंबर</time><div><b>PP Learn में अब 69 पाठ और 8 टाइम्ड टेस्ट</b><span>DSA से फ़ाइनेंस तक सात ट्रैक, और एक असेसमेंट इंजन की योजना</span><code>4527c0c</code></div></li>
+      <li><time datetime="2026-11-27">27 नवंबर</time><div><b>रिक्रूटर सर्च अपने कारण हवाले के साथ बताता है</b><span>Gemini हर मैच को स्कोर करता है और जिस प्रोफ़ाइल पंक्ति पर भरोसा किया उसे उद्धृत करता है</span><code>efa3289</code></div></li>
+      <li class="now"><time datetime="2026-11-27">27 नवंबर</time><div><b>Kosmik सेफ़ मोड में जवाब देता है</b><span>प्रवृत्तियाँ, भविष्यवाणियाँ नहीं, और परेशान व्यक्ति के लिए हेल्पलाइन</span><code>cc41188</code></div></li>
+      </ol>
+    </div>
+    <div class="team" id="team">
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="A, पहला नाम छिपा है। हम कॉल पर पहले नाम साझा करते हैं।"><span aria-hidden="true"><span class="m-init">A</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">हम कॉल पर पहले नाम साझा करते हैं।</span></span> Kumar</h3><p class="role mono">संस्थापक और CEO</p><p>प्रशिक्षण से इंजीनियर, साथ में MBA। ज़्यादातर कोड लिखना, UPI गेटवे से लेकर Android ऐप तक।</p></article>
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="J, पहला नाम छिपा है। हम कॉल पर पहले नाम साझा करते हैं।"><span aria-hidden="true"><span class="m-init">J</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">हम कॉल पर पहले नाम साझा करते हैं।</span></span> John</h3><p class="role mono">सह-संस्थापक, लोग और पार्टनर</p><p>BTech, और दिन में HR कंसल्टेंट। भर्ती, पार्टनर और People Pitchers के ग्राहक पक्ष की ज़िम्मेदारी।</p></article>
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="S, पहला नाम छिपा है। हम कॉल पर पहले नाम साझा करते हैं।"><span aria-hidden="true"><span class="m-init">S</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">हम कॉल पर पहले नाम साझा करते हैं।</span></span> Banerjee</h3><p class="role mono">सह-संस्थापक और COO</p><p>Reddit पोस्ट वाले फ़्लैटमेट। ऑपरेशंस, कागज़ी काम और खर्च संभालते हैं, और पक्का करते हैं कि चीज़ें सच में शिप हों।</p></article>
+    </div>
+
+    <figure class="handnote" aria-labelledby="hn-title">
+      <h3 class="sr-only" id="hn-title">संस्थापकों की ओर से एक नोट</h3>
+      <blockquote class="hn-verse" lang="sa" translate="no">
+        <p class="hn-line">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।</p>
+        <p class="hn-line">मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥</p>
+      </blockquote>
+      <p class="hn-line hn-src mono">भगवद्गीता 2.47</p>
+      <p class="hn-line hn-en">“तुम्हारा अधिकार केवल कर्म पर है, उसके फल पर कभी नहीं। फल को कर्म का कारण मत बनने दो, और कर्म न करने से भी मत बँधो।”</p>
+      <p class="hn-line hn-vision">हम यह वादा नहीं कर सकते कि यह कैसे खत्म होगा। हम काम चुन सकते हैं, और उसे अच्छे से कर सकते हैं।</p>
+      <div class="hn-body">
+        <p class="hn-line">हम ऐसे ही बनाते हैं। आइडिया सस्ते हैं और सबके पास कुछ न कुछ होते हैं। ऐसा सॉफ़्टवेयर जो सच में शिप हो, मिलना कहीं ज़्यादा मुश्किल है।</p>
+        <p class="hn-line">हमारा मकसद यह प्लेटफ़ॉर्म नहीं है, यह कंपनी भी नहीं। हमें लगता है कि असली काम आइडिया और उसके अमल के बीच का समय घटाना है, और अब तक हम इसी में सबसे मज़बूत रहे हैं।</p>
+        <div class="hn-gap" role="img" aria-label="फ़ासला घटाना: आइडिया से अमल तक आम दूरी महीनों की होती है; हमारी दिनों की। Kosmik अपने पहले कमिट वाले दिन ही लाइव हो गया।">
+          <svg viewBox="0 0 600 150" aria-hidden="true">
+            <g class="g-idea"><circle cx="48" cy="62" r="16"/><path d="M42 84h12M44 90h8"/><text x="48" y="118" text-anchor="middle">आइडिया</text></g>
+            <line class="g-line" x1="72" y1="62" x2="528" y2="62"/>
+            <text class="g-was" x="300" y="44" text-anchor="middle">आम फ़ासला: महीनों का</text>
+            <text class="g-now" x="120" y="44" text-anchor="middle">हमारा: दिनों का</text>
+            <g class="g-exec"><path d="M552 46 l9 16 -9 16 -9 -16z"/><path d="M543 62h18"/><text x="552" y="118" text-anchor="middle">शिप हुआ</text></g>
+          </svg>
+          <p class="g-proof">Kosmik 13 नवंबर 2026 को लाइव हुआ, उसी दिन जिस दिन उसका पहला कमिट हुआ।</p>
+        </div>
+        <p class="hn-line">हमें अमल पर परखिए। इस पेज पर वास्तविक टैग वाले आँकड़े हमारे अपने डेटाबेस और git इतिहास से आते हैं, अनुमानों पर योजना का टैग है, और हम दोनों छापते हैं क्योंकि हम चाहते हैं कि हमें जाँचा जाए, न कि बस हम पर भरोसा किया जाए।</p>
+      </div>
+      <figcaption class="hn-line hn-sign">टीम Asanoha</figcaption>
+    </figure>
+  </div>
+</section>
+
 <!-- 05 What is already working -->
 <section class="act" id="act-5" aria-labelledby="act-5-title">
   <div class="wrap">
@@ -275,7 +380,6 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
     <dl class="stats stats-6">
       <div class="stat"><dt>कुल जॉब सीकर प्रोफ़ाइल</dt><dd><span class="num" data-count="179">179</span></dd><p class="stat-note">174 प्रोफ़ाइल एक ही प्लेसमेंट बैच से आईं, और 172 ने (उन 174 में से) कभी साइन इन नहीं किया</p></div>
       <div class="stat"><dt>अब तक ली गई रकम</dt><dd>₹<span class="num" data-count="102">102</span></dd><p class="stat-note">सब Kosmik पर। People Pitchers पर 0 भुगतान करने वाली कंपनियाँ हैं</p></div>
-      <div class="stat"><dt>सत्यापित WhatsApp नंबर</dt><dd><span class="num" data-count="27">27</span></dd><p class="stat-note">Kosmik पर वे लोग जिन्होंने कोड से अपना नंबर पक्का किया</p></div>
       <div class="stat"><dt>Learn में पाठ</dt><dd><span class="num" data-count="69">69</span></dd><p class="stat-note">7 ट्रैक में, साथ में 8 टाइम्ड टेस्ट</p></div>
       <div class="stat"><dt>Kosmik की लाइब्रेरी में गीता के श्लोक</dt><dd><span class="num" data-count="701">701</span></dd><p class="stat-note">सारे के सारे, 2,964 प्रविष्टियों में से</p></div>
     </dl>
@@ -334,13 +438,6 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
     </div>
     <details class="math"><summary>ये आँकड़े हमें कैसे मिले</summary><p>People Pitchers: 2,000 कंपनियाँ × 1.5 सीट × ₹29,988 प्रति वर्ष = ₹9.0 करोड़। Kosmik: 50,000 × ₹101 प्रति माह × 12 = ₹6.06 करोड़। स्टोर: 20,000 ग्राहक × प्रति वर्ष 4 ऑर्डर × ₹1,200 = ₹9.6 करोड़। होस्टेड Noha Pay: 5,000 विक्रेता × ₹499 प्रति माह × 12 = ₹3.0 करोड़, योजनाबद्ध कीमत पर। ये योजना के अनुमान हैं, पूर्वानुमान नहीं।</p></details>
 
-    <h3 class="act-h3" id="team-title">संस्थापक</h3>
-    <div class="team" id="team">
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="A, पहला नाम छिपा है। हम कॉल पर पहले नाम साझा करते हैं।"><span aria-hidden="true"><span class="m-init">A</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">हम कॉल पर पहले नाम साझा करते हैं।</span></span> Kumar</h3><p class="role mono">संस्थापक और CEO</p><p>प्रशिक्षण से इंजीनियर, साथ में MBA। ज़्यादातर कोड लिखना, UPI गेटवे से लेकर Android ऐप तक।</p></article>
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="J, पहला नाम छिपा है। हम कॉल पर पहले नाम साझा करते हैं।"><span aria-hidden="true"><span class="m-init">J</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">हम कॉल पर पहले नाम साझा करते हैं।</span></span> John</h3><p class="role mono">सह-संस्थापक, लोग और पार्टनर</p><p>BTech, और दिन में HR कंसल्टेंट। भर्ती, पार्टनर और People Pitchers के ग्राहक पक्ष की ज़िम्मेदारी।</p></article>
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="S, पहला नाम छिपा है। हम कॉल पर पहले नाम साझा करते हैं।"><span aria-hidden="true"><span class="m-init">S</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">हम कॉल पर पहले नाम साझा करते हैं।</span></span> Banerjee</h3><p class="role mono">सह-संस्थापक और COO</p><p>ऑपरेशन, कागज़ी काम और खर्च की ज़िम्मेदारी, और यह पक्का करना कि चीज़ें सच में शिप हों।</p></article>
-    </div>
-    <p class="team-note">हम तीनों की दिन की नौकरियाँ हैं। Asanoha को रातें और सप्ताहांत मिलते हैं।</p>
 
   </div>
   <p class="sr-only" aria-live="polite" id="mission-live"></p>
@@ -425,7 +522,32 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
   </div>
 </dialog>
 
-<script>window.INV_T={"21 Sep":"21 सितंबर","28 Sep":"28 सितंबर","5 Oct":"5 अक्टूबर","12 Oct":"12 अक्टूबर","19 Oct":"19 अक्टूबर","26 Oct":"26 अक्टूबर","2 Nov":"2 नवंबर","9 Nov":"9 नवंबर","16 Nov":"16 नवंबर","23 Nov":"23 नवंबर","Asanoha Store":"Asanoha Store","Other apps":"दूसरे ऐप्स","People Pitchers":"People Pitchers","Kosmik":"Kosmik","Noha Pay":"Noha Pay","Quiet October":"शांत अक्टूबर","October: day jobs, seven commits":"अक्टूबर: नौकरियाँ, सात कमिट","One moment":"एक पल","The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.":"संपर्क फ़ॉर्म अभी चालू नहीं है। कृपया orders@asanoha.co.in पर लिखें।","Something went wrong. Please try again.":"कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।","We couldn’t reach our server. Check your connection and try again.":"हम अपने सर्वर तक नहीं पहुँच पाए। अपना कनेक्शन जाँचें और फिर से कोशिश करें।","Please add your name.":"कृपया अपना नाम लिखें।","Please add your fund or firm. Angels can write Angel.":"कृपया अपना फ़ंड या फ़र्म लिखें। एंजल निवेशक Angel लिख सकते हैं।","Please add a 10-digit Indian mobile number that has WhatsApp.":"कृपया 10 अंकों का भारतीय मोबाइल नंबर डालें जिस पर WhatsApp हो।","That email doesn’t look right. You can also leave it empty.":"यह ईमेल सही नहीं लग रहा। आप इसे खाली भी छोड़ सकते हैं।","Please agree to be contacted so we can write back.":"कृपया संपर्क की सहमति दें, ताकि हम आपको जवाब दे सकें।","Sending the code":"कोड भेजा जा रहा है","Please type the 6-digit code from WhatsApp.":"कृपया WhatsApp पर आया 6 अंकों का कोड लिखें।","Checking":"जाँच हो रही है","We have updated your details. Our founder will reach out to you.":"हमने आपकी जानकारी अपडेट कर दी है। हमारे संस्थापक आपसे संपर्क करेंगे।","We have your details and sent you a note on WhatsApp. Our founder will reach out to you.":"आपकी जानकारी हमें मिल गई है और हमने आपको WhatsApp पर एक नोट भेजा है। हमारे संस्थापक आपसे संपर्क करेंगे।","Sent. You can ask again in a minute":"भेज दिया। एक मिनट बाद फिर से माँग सकते हैं","Send the code again":"कोड दोबारा भेजें","Welcome aboard. Press again to talk to our founder.":"स्वागत है। हमारे संस्थापक से बात करने के लिए फिर से दबाएँ।"};</script>
-<script src="../investors.js?v=24" defer></script>
+<div class="intro" id="intro" hidden>
+  <div class="intro-ring" aria-hidden="true"></div>
+  <div class="intro-pointer" aria-hidden="true">
+    <svg viewBox="0 0 64 64"><path d="M32 6v44M14 34l18 18 18-18"/></svg>
+  </div>
+  <p class="intro-tip" role="status">यहाँ नए हैं? वॉकथ्रू से शुरू करें। <button type="button" class="intro-close">अभी नहीं</button></p>
+</div>
+
+<div class="tour" id="tour" role="dialog" aria-modal="false" aria-labelledby="tour-title" hidden>
+  <div class="tour-ring" aria-hidden="true"></div>
+  <div class="tour-card" tabindex="-1">
+    <p class="tour-step mono" id="tour-step"></p>
+    <h2 class="tour-title" id="tour-title"></h2>
+    <p class="tour-text" id="tour-text"></p>
+    <div class="tour-dots" aria-hidden="true"></div>
+    <div class="tour-actions">
+      <button class="btn btn-quiet btn-sm" type="button" data-tour-skip>छोड़ें</button>
+      <span class="tour-gap"></span>
+      <button class="btn btn-quiet btn-sm" type="button" data-tour-back>पीछे</button>
+      <button class="btn btn-primary btn-sm" type="button" data-tour-next>आगे</button>
+    </div>
+    <p class="tour-keys mono muted">आगे-पीछे जाने के लिए ऐरो कीज़ · बाहर निकलने के लिए Esc</p>
+  </div>
+</div>
+
+<script>window.INV_T={"21 Sep":"21 सितंबर","28 Sep":"28 सितंबर","5 Oct":"5 अक्टूबर","12 Oct":"12 अक्टूबर","19 Oct":"19 अक्टूबर","26 Oct":"26 अक्टूबर","2 Nov":"2 नवंबर","9 Nov":"9 नवंबर","16 Nov":"16 नवंबर","23 Nov":"23 नवंबर","Asanoha Store":"Asanoha Store","Other apps":"दूसरे ऐप्स","People Pitchers":"People Pitchers","Kosmik":"Kosmik","Noha Pay":"Noha Pay","Quiet October":"शांत अक्टूबर","October: day jobs, seven commits":"अक्टूबर: नौकरियाँ, सात कमिट","One moment":"एक पल","The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.":"संपर्क फ़ॉर्म अभी चालू नहीं है। कृपया orders@asanoha.co.in पर लिखें।","Something went wrong. Please try again.":"कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।","We couldn’t reach our server. Check your connection and try again.":"हम अपने सर्वर तक नहीं पहुँच पाए। अपना कनेक्शन जाँचें और फिर से कोशिश करें।","Please add your name.":"कृपया अपना नाम लिखें।","Please add your fund or firm. Angels can write Angel.":"कृपया अपना फ़ंड या फ़र्म लिखें। एंजल निवेशक Angel लिख सकते हैं।","Please add a 10-digit Indian mobile number that has WhatsApp.":"कृपया 10 अंकों का भारतीय मोबाइल नंबर डालें जिस पर WhatsApp हो।","That email doesn’t look right. You can also leave it empty.":"यह ईमेल सही नहीं लग रहा। आप इसे खाली भी छोड़ सकते हैं।","Please agree to be contacted so we can write back.":"कृपया संपर्क की सहमति दें, ताकि हम आपको जवाब दे सकें।","Sending the code":"कोड भेजा जा रहा है","Please type the 6-digit code from WhatsApp.":"कृपया WhatsApp पर आया 6 अंकों का कोड लिखें।","Checking":"जाँच हो रही है","We have updated your details. Our founder will reach out to you.":"हमने आपकी जानकारी अपडेट कर दी है। हमारे संस्थापक आपसे संपर्क करेंगे।","We have your details and sent you a note on WhatsApp. Our founder will reach out to you.":"आपकी जानकारी हमें मिल गई है और हमने आपको WhatsApp पर एक नोट भेजा है। हमारे संस्थापक आपसे संपर्क करेंगे।","Sent. You can ask again in a minute":"भेज दिया। एक मिनट बाद फिर से माँग सकते हैं","Send the code again":"कोड दोबारा भेजें","Welcome aboard. Press again to talk to our founder.":"स्वागत है। हमारे संस्थापक से बात करने के लिए फिर से दबाएँ।","01 · The problem":"01 · समस्या","In India, getting hired, getting a straight answer and getting paid each pass through a middleman who charges at every step.":"भारत में नौकरी पाना, सीधा जवाब पाना और भुगतान पाना, तीनों में एक बिचौलिया होता है जो हर कदम पर पैसे लेता है।","Day or night":"दिन या रात","Switch between light and dark here. The choice is remembered across Asanoha.":"यहाँ लाइट और डार्क के बीच बदलें। आपकी पसंद पूरे Asanoha में याद रखी जाती है।","Read it in your language":"अपनी भाषा में पढ़ें","This page comes in 16 languages, from Hindi, Tamil and Bengali to Japanese and Arabic. A few new lines are still in English.":"यह पेज 16 भाषाओं में है, हिंदी, तमिल और बंगाली से लेकर जापानी और अरबी तक। कुछ नई लाइनें अभी अंग्रेज़ी में हैं।","02 · What it costs":"02 · इसकी क़ीमत","Three public figures, each with its source and year. They are not our market share.":"तीन सार्वजनिक आँकड़े, हर एक के साथ उसका स्रोत और साल। ये हमारा बाज़ार हिस्सा नहीं हैं।","03 · What people have tried":"03 · लोगों ने क्या आज़माया","Everyone gets by today, and someone in the middle still gets paid.":"आज सबका काम चल जाता है, और बीच में कोई न कोई अब भी कमाता है।","04 · The reveal":"04 · खुलासा","Our logo, built in 3D: the store on top, the apps in the middle, shared rails at the base. Drag it, or tap a part.":"हमारा लोगो, 3D में: ऊपर स्टोर, बीच में ऐप्स, नीचे साझा रेल। इसे खींचिए, या किसी हिस्से पर टैप कीजिए।","One person, one problem":"एक इंसान, एक समस्या","Each story starts with the person and what it costs them today, then what we built.":"हर कहानी उस इंसान से शुरू होती है और इससे कि आज उसे क्या क़ीमत चुकानी पड़ती है, फिर हमने क्या बनाया।","Yes, we charge too":"हाँ, हम भी शुल्क लेते हैं","A flat price shown before you pay, not a cut of every step.":"भुगतान से पहले दिखने वाली एक तय क़ीमत, हर क़दम पर कटौती नहीं।","Our story":"हमारी कहानी","How three people with day jobs met, and what we have shipped since September.":"नौकरी के साथ काम करने वाले तीन लोग कैसे मिले, और सितंबर से हमने क्या शिप किया है।","05 · What is already working":"05 · अब तक क्या काम कर रहा है","Real numbers only, the weak ones too. Plans are tagged Plan, outside figures Market.":"सिर्फ़ असली आँकड़े, कमज़ोर वाले भी। योजनाओं पर योजना का टैग है, बाहरी आँकड़ों पर बाज़ार का।","06 · What happens next":"06 · आगे क्या होता है","What happens after you press Talk to us, in three steps.":"बात करें दबाने के बाद क्या होता है, तीन चरणों में।","Talk to us":"बात करें","Leave a note and confirm your WhatsApp number. One of the founders writes back.":"एक नोट छोड़िए और अपना WhatsApp नंबर कन्फ़र्म कीजिए। कोई एक संस्थापक जवाब लिखता है।","Step":"चरण","of":"/","Next":"आगे"};</script>
+<script src="../investors.js?v=26" defer></script>
 </body>
 </html>

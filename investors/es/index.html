@@ -55,7 +55,7 @@
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="../investors.css?v=31">
+<link rel="stylesheet" href="../investors.css?v=32">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"Asanoha LLP","legalName":"Asanoha LLP","identifier":"LLPIN ADE-0939","url":"https://asanoha.co.in/","address":{"@type":"PostalAddress","streetAddress":"Unit 101, Oxford Towers, 139/88 HAL Old Airport Road, HAL II Stage","addressLocality":"Bengaluru","addressRegion":"Karnataka","postalCode":"560008","addressCountry":"IN"},"subOrganization":[{"@type":"Organization","name":"People Pitchers","url":"https://peoplepitchers.com"},{"@type":"Organization","name":"Kosmik","url":"https://kosmik.asanoha.co.in"}],"@id":"https://asanoha.co.in/#organization","foundingDate":"2026-11-14","founder":[{"@type":"Person","familyName":"Kumar","jobTitle":"Founder and CEO"},{"@type":"Person","familyName":"John","jobTitle":"Co-founder, people and partners"},{"@type":"Person","familyName":"Banerjee","jobTitle":"Co-founder and COO"}],"sameAs":["https://www.crunchbase.com/organization/asanoha","https://www.wikidata.org/wiki/Q142274918","https://www.linkedin.com/company/asanoha-llp/"]},{"@type":"WebPage","@id":"https://asanoha.co.in/investors/es/#webpage","url":"https://asanoha.co.in/investors/es/","name":"Asanoha LLP para el público","inLanguage":"es","about":{"@id":"https://asanoha.co.in/#organization"},"dateModified":"2026-11-27"},{"@type":"FAQPage","@id":"https://asanoha.co.in/investors/es/#faq","mainEntity":[{"@type":"Question","name":"¿Cómo ganan dinero?","acceptedAnswer":{"@type":"Answer","text":"Precios fijos, mostrados antes de que nadie pague: puestos de People Pitchers, pases y paquetes de informes de Kosmik, y pedidos de la tienda cuando abra. Más adelante, un Noha Pay alojado para otros vendedores a un precio mensual fijo. Hoy solo los pases y los informes de Kosmik cobran dinero."}},{"@type":"Question","name":"¿No es eso dispersarse?","acceptedAnswer":{"@type":"Answer","text":"El foco es la capa compartida bajo las aplicaciones. El inicio de sesión, los pagos, el monedero, los mensajes de WhatsApp y la caché de IA se construyeron una vez, así que una aplicación nueva empieza con todo eso. Nuestra medida es la rapidez con que una idea nueva llega a usuarios de pago y lo poco que cuesta mantenerla. Las aplicaciones que no se ganen su lugar se cerrarán, no se mantendrán con vida."}},{"@type":"Question","name":"¿Cuáles son los riesgos?","acceptedAnswer":{"@type":"Answer","text":"Aún no hemos demostrado que la gente pagará a gran escala: ₹102 hasta ahora. La tienda venderá un medicamento ayurvédico regulado, solo con receta, así que abrirá únicamente tras la aprobación legal. Los códigos de WhatsApp pasan hoy por nuestro propio relé y deberían pasar a la API oficial de WhatsApp Business antes de crecer. Y varias aplicaciones son mucho para tres personas con trabajo a tiempo completo, por lo que comparten todo lo que pueden."}},{"@type":"Question","name":"¿Qué pasa después de ponerme en contacto?","acceptedAnswer":{"@type":"Answer","text":"Usted confirma su número de WhatsApp con un código, para que sepamos que el mensaje es realmente suyo. Recibimos su nota al instante, y uno de los fundadores le responde personalmente."}}],"inLanguage":"es"}]}</script>
 </head>
 <body>
@@ -72,9 +72,11 @@
       <a href="#act-2">Coste</a>
       <a href="#act-3">Intentos</a>
       <a href="#act-4">Asanoha</a>
+      <a href="#story">Historia</a>
       <a href="#act-5">Avances</a>
       <a href="#act-6">Próximo</a>
       <a href="#questions">Preguntas</a>
+      <button class="nav-tour" type="button" data-tour>Recorrido</button>
     </nav>
     <div class="nav-actions">
       <div class="lang-menu">
@@ -136,7 +138,10 @@
         <li><b>Respuestas.</b> Quien quiere una respuesta clara paga por minuto.</li>
         <li><b>Pagos.</b> Un vendedor pequeño pierde una parte de cada venta.</li>
       </ul>
-      <a class="act-next" href="#act-2">Lo que cuesta</a>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" data-tour id="tour-start">Haga el recorrido</button>
+        <a class="act-next" href="#act-2">Lo que cuesta</a>
+      </div>
     </div>
   </div>
 </section>
@@ -262,6 +267,106 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
   </div>
 </section>
 
+<!-- Story and founders -->
+<section class="section" id="story" aria-labelledby="team-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow mono">La historia</p>
+      <h2 id="team-title">Una publicación en Reddit, un aula y una sala de estar</h2>
+      <p class="sub">Ninguno de nosotros se conoció en un evento de startups. Nos conocimos como se conoce de verdad la gente en la India: buscando compañero de piso y sentados en la misma clase.</p>
+    </div>
+
+    <div class="chapters">
+      <article class="chapter">
+        <figure class="clip" data-src="../media/dots-ride.mp4"><canvas role="img" aria-label="Vuelta a casa al anochecer, dibujada con puntos"></canvas><figcaption class="mono">Tardes después del trabajo</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">01 · S</p>
+          <h3>Nueve personas respondieron a un anuncio para compartir piso</h3>
+          <p>A necesitaba compañero de piso en Bengaluru y publicó en Reddit. Respondieron nueve personas. S se quedó con la habitación.</p>
+          <p>El compañero de piso resultó ser quien pregunta cuánto cuesta todo, quién va a hacer el papeleo y si alguien ha comido. Todo equipo necesita a esa persona. La nuestra llegó por un hilo de Reddit, y hoy dirige las operaciones.</p>
+        </div>
+      </article>
+
+      <article class="chapter flip">
+        <figure class="clip" data-src="../media/dots-class.mp4"><canvas role="img" aria-label="A y J en clase, dibujados con puntos"></canvas><figcaption class="mono">A y J, en clase</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">02 · J</p>
+          <h3>Un compañero de clase que pregunta cómo se sienten todos</h3>
+          <p>En la escuela de negocios, A conoció a J: de ingeniería pasó a la consultoría de RR. HH., de las personas que preguntan cómo se siente cada uno, incluso en una reunión sobre tipografías.</p>
+          <p>Nuestro primer producto juntos no era para inversores. Era un sitio para nuestra propia promoción, hecho porque el horario vivía en una hoja de cálculo que cambiaba sin parar.</p>
+        </div>
+      </article>
+
+      <article class="chapter">
+        <figure class="clip" data-src="../media/dots-plan.mp4"><canvas role="img" aria-label="De madrugada en la sala de estar con los portátiles abiertos, dibujado con puntos"></canvas><figcaption class="mono">Donde se hizo el plan</figcaption></figure>
+        <div class="chapter-copy">
+          <p class="chapter-no mono">03 · El plan</p>
+          <h3>De madrugada, con chai: «yaar, escúchame»</h3>
+          <p>El plan tomó forma en una sala de estar, con los portátiles abiertos. A tenía la idea. J preguntó para quién era. S preguntó cuánto costaría.</p>
+          <p>Nos repartimos el trabajo de la única forma que funciona cuando se tiene otro empleo. Cada uno es dueño de una cosa, y nadie espera permiso.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="story-grid">
+      <div class="story-copy">
+        <h3 class="story-h" id="story-title">En septiembre teníamos un solo sitio web</h3>
+        <p>Todos tenemos trabajo, así que Asanoha se queda con las noches y los fines de semana.</p>
+        <p>En septiembre creamos el sitio de la tienda. En octubre hicimos siete commits. Y en noviembre dejamos de hablar y empezamos a lanzar: Wearday el 6, People Pitchers el 10, Kosmik el 13, la LLP el 14 y nuestra propia red de pagos, reescrita desde cero, el 22.</p>
+        <p>Guardamos los comprobantes. Cada línea de la derecha remite a un commit, una fecha o un registro que usted puede verificar.</p>
+      </div>
+      <ol class="timeline">
+        <li><time datetime="2026-09-25">25 sept.</time><div><b>Se publica asanoha.co.in</b><span>El sitio de la tienda, el álbum de amigos y el flujo de recetas</span><code>0a8e72a</code></div></li>
+        <li class="quiet"><time datetime="2026-10">Octubre</time><div><b>Siete commits</b><span>Trabajo y un trimestre del MBA. Planeamos más de lo que construimos</span></div></li>
+        <li><time datetime="2026-11-06">6 nov.</time><div><b>Wearday, primer commit</b><span>Un registro de armario y de conjuntos. Premium con límites aplicados por la base de datos al día siguiente</span><code>89b46ee</code></div></li>
+        <li><time datetime="2026-11-10">10 nov.</time><div><b>People Pitchers, primer commit</b><span>El mismo día: un solo inicio de sesión Asanoha para la tienda y Wearday</span><code>4019799</code></div></li>
+        <li><time datetime="2026-11-11">11 nov.</time><div><b>Noha Pay recibe sus primeros pagos UPI</b><span>Pasarela propia en pay.peoplepitchers.com, con códigos por WhatsApp</span></div></li>
+        <li><time datetime="2026-11-13">13 nov.</time><div><b>Kosmik, primer commit</b><span>En línea en kosmik.asanoha.co.in el mismo día, con Premium a través de Noha Pay</span><code>ffc8cb8</code></div></li>
+        <li><time datetime="2026-11-14">14 nov.</time><div><b>Se constituye Asanoha LLP</b><span>LLPIN ADE-0939, registrada en Bengaluru</span></div></li>
+        <li><time datetime="2026-11-20">20 nov.</time><div><b>Seis fases del lado de los candidatos en un solo día</b><span>Extensión de navegador, contacto con reclutadores, correos de empleo y una forma de que los asistentes de IA busquen empleos (MCP)</span><code>64bd6bc</code></div></li>
+        <li><time datetime="2026-11-22">22 nov.</time><div><b>Noha Pay reescrito desde cero</b><span>Código propio, abierto bajo AGPL-3.0, con el monedero Noha Money</span><code>e5ccc01</code></div></li>
+        <li><time datetime="2026-11-24">24 nov.</time><div><b>Kosmik en Android, probado con usuarios nuevos</b><span>25 errores de la prueba en dispositivos, corregidos y verificados de nuevo</span><code>aa4f3e6</code></div></li>
+          <li><time datetime="2026-11-25">25 nov.</time><div><b>Registro abierto para quienes buscan empleo, construido sobre People Pitchers</b><span>Aún sin activar. Inicio de sesión de Kosmik rehecho el mismo día a partir de lo que encontraron los probadores</span><code>f13d98b</code></div></li>
+        <li><time datetime="2026-11-25">25 nov.</time><div><b>PP Learn llega a 69 lecciones y 8 pruebas cronometradas</b><span>Siete itinerarios, de DSA a finanzas, más el plan de un único motor de evaluación</span><code>4527c0c</code></div></li>
+      <li><time datetime="2026-11-27">27 nov.</time><div><b>La búsqueda de reclutadores cita sus motivos</b><span>Gemini puntúa cada resultado y cita la línea del perfil en la que se apoya</span><code>efa3289</code></div></li>
+      <li class="now"><time datetime="2026-11-27">27 nov.</time><div><b>Kosmik responde en modo seguro</b><span>Tendencias, no predicciones, con líneas de ayuda para quien esté en apuros</span><code>cc41188</code></div></li>
+      </ol>
+    </div>
+    <div class="team" id="team">
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="A, nombre oculto. Compartimos los nombres en una llamada."><span aria-hidden="true"><span class="m-init">A</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Compartimos los nombres en una llamada.</span></span> Kumar</h3><p class="role mono">Fundador y CEO</p><p>Ingeniero de formación, con un MBA. Escribe la mayor parte del código, desde la pasarela de UPI hasta la aplicación de Android.</p></article>
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="J, nombre oculto. Compartimos los nombres en una llamada."><span aria-hidden="true"><span class="m-init">J</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Compartimos los nombres en una llamada.</span></span> John</h3><p class="role mono">Cofundador, personas y alianzas</p><p>BTech, y consultor de RR. HH. de día. Se ocupa de la contratación, los socios y el lado de clientes de People Pitchers.</p></article>
+      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="S, nombre oculto. Compartimos los nombres en una llamada."><span aria-hidden="true"><span class="m-init">S</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Compartimos los nombres en una llamada.</span></span> Banerjee</h3><p class="role mono">Cofundador y COO</p><p>El compañero de piso de la publicación en Reddit. Dirige las operaciones, el papeleo y los costes, y se asegura de que las cosas salgan de verdad.</p></article>
+    </div>
+
+    <figure class="handnote" aria-labelledby="hn-title">
+      <h3 class="sr-only" id="hn-title">Una nota de los fundadores</h3>
+      <blockquote class="hn-verse" lang="sa" translate="no">
+        <p class="hn-line">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।</p>
+        <p class="hn-line">मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥</p>
+      </blockquote>
+      <p class="hn-line hn-src mono">Bhagavad Gita 2.47</p>
+      <p class="hn-line hn-en">«Tu derecho es solo al trabajo, nunca a sus frutos. Que el fruto no sea tu razón para actuar, y no te aferres a no hacer nada.»</p>
+      <p class="hn-line hn-vision">No podemos prometer cómo acabará esto. Sí podemos elegir el trabajo y hacerlo bien.</p>
+      <div class="hn-body">
+        <p class="hn-line">Así construimos. Las ideas son baratas y todo el mundo tiene unas cuantas. El software que de verdad se lanza es mucho más difícil de encontrar.</p>
+        <p class="hn-line">Nuestro motivo no es esta plataforma, ni siquiera esta empresa. Creemos que el verdadero trabajo es acortar el tiempo entre una idea y su ejecución, y hasta ahora ahí es donde hemos sido más fuertes.</p>
+        <div class="hn-gap" role="img" aria-label="Cerrar la brecha: la distancia habitual entre la idea y la ejecución es de meses; la nuestra, de días. Kosmik se lanzó el día de su primer commit.">
+          <svg viewBox="0 0 600 150" aria-hidden="true">
+            <g class="g-idea"><circle cx="48" cy="62" r="16"/><path d="M42 84h12M44 90h8"/><text x="48" y="118" text-anchor="middle">idea</text></g>
+            <line class="g-line" x1="72" y1="62" x2="528" y2="62"/>
+            <text class="g-was" x="300" y="44" text-anchor="middle">la brecha habitual: meses</text>
+            <text class="g-now" x="120" y="44" text-anchor="middle">la nuestra: días</text>
+            <g class="g-exec"><path d="M552 46 l9 16 -9 16 -9 -16z"/><path d="M543 62h18"/><text x="552" y="118" text-anchor="middle">lanzado</text></g>
+          </svg>
+          <p class="g-proof">Kosmik se lanzó el 13 de noviembre de 2026, el mismo día de su primer commit.</p>
+        </div>
+        <p class="hn-line">Júzguenos por la ejecución. Las cifras marcadas como Real en esta página salen de nuestras propias bases de datos y del historial de git, las estimaciones dicen Plan, y publicamos ambas porque preferimos que nos comprueben a que nos crean.</p>
+      </div>
+      <figcaption class="hn-line hn-sign">Equipo Asanoha</figcaption>
+    </figure>
+  </div>
+</section>
+
 <!-- 05 What is already working -->
 <section class="act" id="act-5" aria-labelledby="act-5-title">
   <div class="wrap">
@@ -273,7 +378,6 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
     <dl class="stats stats-6">
       <div class="stat"><dt>Perfiles de candidatos, en total</dt><dd><span class="num" data-count="179">179</span></dd><p class="stat-note">174 vinieron de una sola promoción de colocación, y 172 de esos 174 nunca han iniciado sesión</p></div>
       <div class="stat"><dt>Dinero cobrado hasta ahora</dt><dd>₹<span class="num" data-count="102">102</span></dd><p class="stat-note">todo en Kosmik. People Pitchers tiene 0 empresas de pago</p></div>
-      <div class="stat"><dt>Números de WhatsApp verificados</dt><dd><span class="num" data-count="27">27</span></dd><p class="stat-note">personas en Kosmik que confirmaron su número con un código</p></div>
       <div class="stat"><dt>Lecciones en Learn</dt><dd><span class="num" data-count="69">69</span></dd><p class="stat-note">en 7 itinerarios, más 8 pruebas cronometradas</p></div>
       <div class="stat"><dt>Versos de la Gita en la biblioteca de Kosmik</dt><dd><span class="num" data-count="701">701</span></dd><p class="stat-note">todos, de 2,964 entradas</p></div>
     </dl>
@@ -332,13 +436,6 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
     </div>
     <details class="math"><summary>Cómo llegamos a estas cifras</summary><p>People Pitchers: 2,000 empresas × 1.5 puestos × ₹29,988 al año = ₹9.0 crore. Kosmik: 50,000 × ₹101 al mes × 12 = ₹6.06 crore. Tienda: 20,000 clientes × 4 pedidos al año × ₹1,200 = ₹9.6 crore. Noha Pay alojado: 5,000 vendedores × ₹499 al mes × 12 = ₹3.0 crore, a un precio previsto. Son estimaciones de planificación, no previsiones.</p></details>
 
-    <h3 class="act-h3" id="team-title">Los fundadores</h3>
-    <div class="team" id="team">
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="A, nombre oculto. Compartimos los nombres en una llamada."><span aria-hidden="true"><span class="m-init">A</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Compartimos los nombres en una llamada.</span></span> Kumar</h3><p class="role mono">Fundador y CEO</p><p>Ingeniero de formación, con un MBA. Escribe la mayor parte del código, desde la pasarela de UPI hasta la aplicación de Android.</p></article>
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="J, nombre oculto. Compartimos los nombres en una llamada."><span aria-hidden="true"><span class="m-init">J</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Compartimos los nombres en una llamada.</span></span> John</h3><p class="role mono">Cofundador, personas y alianzas</p><p>BTech, y consultor de RR. HH. de día. Se ocupa de la contratación, los socios y el lado de clientes de People Pitchers.</p></article>
-      <article class="person"><h3><span class="masked" role="img" tabindex="0" aria-label="S, nombre oculto. Compartimos los nombres en una llamada."><span aria-hidden="true"><span class="m-init">S</span><span class="m-dots">••••</span></span><span class="naam-tip" role="tooltip">Compartimos los nombres en una llamada.</span></span> Banerjee</h3><p class="role mono">Cofundador y COO</p><p>Lleva las operaciones, el papeleo y los costes, y se asegura de que las cosas realmente salgan.</p></article>
-    </div>
-    <p class="team-note">Los tres tenemos un trabajo a tiempo completo. Asanoha se queda con las noches y los fines de semana.</p>
 
   </div>
   <p class="sr-only" aria-live="polite" id="mission-live"></p>
@@ -423,7 +520,32 @@ cd NohaPI-PG &amp;&amp; docker compose up -d</code></pre>
   </div>
 </dialog>
 
-<script>window.INV_T={"21 Sep":"21 sept.","28 Sep":"28 sept.","5 Oct":"5 oct.","12 Oct":"12 oct.","19 Oct":"19 oct.","26 Oct":"26 oct.","2 Nov":"2 nov.","9 Nov":"9 nov.","16 Nov":"16 nov.","23 Nov":"23 nov.","Asanoha Store":"Asanoha Store","Other apps":"Otras aplicaciones","People Pitchers":"People Pitchers","Kosmik":"Kosmik","Noha Pay":"Noha Pay","Quiet October":"Octubre tranquilo","October: day jobs, seven commits":"Octubre: trabajo de día, siete commits","One moment":"Un momento","The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.":"El formulario de contacto aún no está activado. Escriba a orders@asanoha.co.in.","Something went wrong. Please try again.":"Algo salió mal. Inténtelo de nuevo.","We couldn’t reach our server. Check your connection and try again.":"No pudimos conectar con nuestro servidor. Compruebe su conexión e inténtelo de nuevo.","Please add your name.":"Indique su nombre.","Please add your fund or firm. Angels can write Angel.":"Indique su fondo o firma. Si es inversor ángel, puede escribir «Angel».","Please add a 10-digit Indian mobile number that has WhatsApp.":"Indique un número de móvil indio de 10 dígitos que tenga WhatsApp.","That email doesn’t look right. You can also leave it empty.":"Ese correo electrónico no parece correcto. También puede dejarlo vacío.","Please agree to be contacted so we can write back.":"Acepte que le contactemos para que podamos responderle.","Sending the code":"Enviando el código","Please type the 6-digit code from WhatsApp.":"Escriba el código de 6 dígitos que recibió por WhatsApp.","Checking":"Comprobando","We have updated your details. Our founder will reach out to you.":"Hemos actualizado sus datos. Nuestro fundador se pondrá en contacto con usted.","We have your details and sent you a note on WhatsApp. Our founder will reach out to you.":"Tenemos sus datos y le hemos enviado una nota por WhatsApp. Nuestro fundador se pondrá en contacto con usted.","Sent. You can ask again in a minute":"Enviado. Podrá pedirlo de nuevo en un minuto","Send the code again":"Enviar el código de nuevo","Welcome aboard. Press again to talk to our founder.":"Bienvenido a bordo. Pulse de nuevo para hablar con nuestro fundador."};</script>
-<script src="../investors.js?v=24" defer></script>
+<div class="intro" id="intro" hidden>
+  <div class="intro-ring" aria-hidden="true"></div>
+  <div class="intro-pointer" aria-hidden="true">
+    <svg viewBox="0 0 64 64"><path d="M32 6v44M14 34l18 18 18-18"/></svg>
+  </div>
+  <p class="intro-tip" role="status">¿Es nuevo aquí? Empiece por el recorrido. <button type="button" class="intro-close">Ahora no</button></p>
+</div>
+
+<div class="tour" id="tour" role="dialog" aria-modal="false" aria-labelledby="tour-title" hidden>
+  <div class="tour-ring" aria-hidden="true"></div>
+  <div class="tour-card" tabindex="-1">
+    <p class="tour-step mono" id="tour-step"></p>
+    <h2 class="tour-title" id="tour-title"></h2>
+    <p class="tour-text" id="tour-text"></p>
+    <div class="tour-dots" aria-hidden="true"></div>
+    <div class="tour-actions">
+      <button class="btn btn-quiet btn-sm" type="button" data-tour-skip>Saltar</button>
+      <span class="tour-gap"></span>
+      <button class="btn btn-quiet btn-sm" type="button" data-tour-back>Atrás</button>
+      <button class="btn btn-primary btn-sm" type="button" data-tour-next>Próximo</button>
+    </div>
+    <p class="tour-keys mono muted">Flechas para moverse · Esc para salir</p>
+  </div>
+</div>
+
+<script>window.INV_T={"21 Sep":"21 sept.","28 Sep":"28 sept.","5 Oct":"5 oct.","12 Oct":"12 oct.","19 Oct":"19 oct.","26 Oct":"26 oct.","2 Nov":"2 nov.","9 Nov":"9 nov.","16 Nov":"16 nov.","23 Nov":"23 nov.","Asanoha Store":"Asanoha Store","Other apps":"Otras aplicaciones","People Pitchers":"People Pitchers","Kosmik":"Kosmik","Noha Pay":"Noha Pay","Quiet October":"Octubre tranquilo","October: day jobs, seven commits":"Octubre: trabajo de día, siete commits","One moment":"Un momento","The contact form isn’t switched on yet. Please write to orders@asanoha.co.in.":"El formulario de contacto aún no está activado. Escriba a orders@asanoha.co.in.","Something went wrong. Please try again.":"Algo salió mal. Inténtelo de nuevo.","We couldn’t reach our server. Check your connection and try again.":"No pudimos conectar con nuestro servidor. Compruebe su conexión e inténtelo de nuevo.","Please add your name.":"Indique su nombre.","Please add your fund or firm. Angels can write Angel.":"Indique su fondo o firma. Si es inversor ángel, puede escribir «Angel».","Please add a 10-digit Indian mobile number that has WhatsApp.":"Indique un número de móvil indio de 10 dígitos que tenga WhatsApp.","That email doesn’t look right. You can also leave it empty.":"Ese correo electrónico no parece correcto. También puede dejarlo vacío.","Please agree to be contacted so we can write back.":"Acepte que le contactemos para que podamos responderle.","Sending the code":"Enviando el código","Please type the 6-digit code from WhatsApp.":"Escriba el código de 6 dígitos que recibió por WhatsApp.","Checking":"Comprobando","We have updated your details. Our founder will reach out to you.":"Hemos actualizado sus datos. Nuestro fundador se pondrá en contacto con usted.","We have your details and sent you a note on WhatsApp. Our founder will reach out to you.":"Tenemos sus datos y le hemos enviado una nota por WhatsApp. Nuestro fundador se pondrá en contacto con usted.","Sent. You can ask again in a minute":"Enviado. Podrá pedirlo de nuevo en un minuto","Send the code again":"Enviar el código de nuevo","Welcome aboard. Press again to talk to our founder.":"Bienvenido a bordo. Pulse de nuevo para hablar con nuestro fundador.","01 · The problem":"01 · El problema","In India, getting hired, getting a straight answer and getting paid each pass through a middleman who charges at every step.":"En India, conseguir empleo, obtener una respuesta clara y cobrar pasan cada uno por un intermediario que cobra en cada paso.","Day or night":"Día o noche","Switch between light and dark here. The choice is remembered across Asanoha.":"Cambie aquí entre modo claro y oscuro. La elección se recuerda en todo Asanoha.","Read it in your language":"Léala en su idioma","This page comes in 16 languages, from Hindi, Tamil and Bengali to Japanese and Arabic. A few new lines are still in English.":"Esta página está disponible en 16 idiomas, del hindi, el tamil y el bengalí al japonés y el árabe. Algunas líneas nuevas siguen en inglés.","02 · What it costs":"02 · Lo que cuesta","Three public figures, each with its source and year. They are not our market share.":"Tres cifras públicas, cada una con su fuente y año. No son nuestra cuota de mercado.","03 · What people have tried":"03 · Lo que ha probado la gente","Everyone gets by today, and someone in the middle still gets paid.":"Hoy todos se las arreglan, y alguien en el medio sigue cobrando.","04 · The reveal":"04 · La revelación","Our logo, built in 3D: the store on top, the apps in the middle, shared rails at the base. Drag it, or tap a part.":"Nuestro logo, construido en 3D: la tienda arriba, las apps en medio, rieles compartidos en la base. Arrástralo, o toca una parte.","One person, one problem":"Una persona, un problema","Each story starts with the person and what it costs them today, then what we built.":"Cada historia empieza con la persona y lo que le cuesta hoy, y luego con lo que construimos.","Yes, we charge too":"Sí, nosotros también cobramos","A flat price shown before you pay, not a cut of every step.":"Un precio fijo que ves antes de pagar, no una parte de cada paso.","Our story":"Nuestra historia","How three people with day jobs met, and what we have shipped since September.":"Cómo se conocieron tres personas con trabajo de día, y qué hemos lanzado desde septiembre.","05 · What is already working":"05 · Lo que ya funciona","Real numbers only, the weak ones too. Plans are tagged Plan, outside figures Market.":"Solo cifras reales, también las débiles. Los planes llevan la etiqueta Plan; las cifras externas, Mercado.","06 · What happens next":"06 · Lo que viene después","What happens after you press Talk to us, in three steps.":"Qué pasa después de pulsar Hablemos, en tres pasos.","Talk to us":"Hablemos","Leave a note and confirm your WhatsApp number. One of the founders writes back.":"Deja una nota y confirma tu número de WhatsApp. Uno de los fundadores te responde.","Step":"Paso","of":"de","Next":"Próximo"};</script>
+<script src="../investors.js?v=26" defer></script>
 </body>
 </html>
