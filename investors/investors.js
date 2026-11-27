@@ -98,7 +98,7 @@
 
   /* Reveal on scroll */
   document.querySelectorAll('.handnote .hn-line').forEach(function (l, i) { l.style.setProperty('--i', i); });
-  var revealables = document.querySelectorAll('.handnote, .section-head, .tier-head, .selfhost, .product, .rail, .comp-table, .chart-card, .shared-item, .faq, .person, .cta-inner, .stats');
+  var revealables = document.querySelectorAll('#questions .section-head, .faq');
   revealables.forEach(function (el) { el.classList.add('reveal'); });
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
@@ -313,8 +313,9 @@
 
   /* Timeline: the line fills as you read */
   var timeline = document.querySelector('.timeline');
-  var items = timeline.querySelectorAll('li');
+  var items = timeline ? timeline.querySelectorAll('li') : [];
   function onTimeline() {
+    if (!timeline) return;
     var r = timeline.getBoundingClientRect();
     var mid = window.innerHeight * 0.6;
     var p = Math.max(0, Math.min(1, (mid - r.top) / r.height));
@@ -329,7 +330,7 @@
   var WEEKS = [T('21 Sep'), T('28 Sep'), T('5 Oct'), T('12 Oct'), T('19 Oct'), T('26 Oct'), T('2 Nov'), T('9 Nov'), T('16 Nov'), T('23 Nov')];
   var SERIES = [
     { k: 'store', name: T('Asanoha Store'), v: [13, 20, 0, 0, 0, 0, 0, 4, 3, 44] },
-    { k: 'wearday', name: T('Wearday'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
+    { k: 'wearday', name: T('Other apps'), v: [0, 0, 0, 0, 0, 0, 35, 24, 1, 0] },
     { k: 'pp', name: T('People Pitchers'), v: [0, 0, 0, 0, 0, 0, 0, 19, 69, 149] },
     { k: 'kosmik', name: T('Kosmik'), v: [0, 0, 0, 0, 0, 0, 0, 32, 51, 93] },
     { k: 'pay', name: T('Noha Pay'), v: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0] }
@@ -607,111 +608,47 @@
     m.addEventListener('keydown', function (e) { if (e.key === 'Escape') m.classList.remove('show'); });
   });
 
-  /* Investor walkthrough: step by step, keyboard friendly, skippable at any point */
-  var STEPS = [
-    { sel: '#manifesto .hero-copy', t: T('What Asanoha builds'), x: T('Everyday apps for India that share one sign-in, one payment rail and one wallet.') },
-    { sel: '#theme-btn', fixed: true, t: T('Day or night'), x: T('Switch between light and dark here. The choice is remembered across Asanoha.') },
-    { sel: '.lang-menu', fixed: true, t: T('Read it in your language'), x: T('This page comes in 16 languages, from Hindi, Tamil and Bengali to Japanese and Arabic. A few new lines are still in English.') },
-    { sel: '#layers-3d', t: T('Three layers, one star'), x: T('Our logo, built in 3D. Asanoha Store on top, three apps in the middle, shared rails at the base. Drag it, or tap a part.') },
-    { sel: '.receipts', t: T('Real numbers only'), x: T('Read from our own databases. Every plan figure on this page is tagged Plan, every outside figure Market.') },
-    { sel: '#p-store', t: T('Layer 1: Asanoha Store'), x: T('The main product. It opens only after five gates: GST, licence on every product, lab reports, legal sign-off and a prescription check.') },
-    { sel: '#p-pp', t: T('Layer 2: the apps'), x: T('Meant to fund the company once they earn. People Pitchers is live and invite-only. Its recruiter search answers in about 4 seconds, with a quoted reason for every match.') },
-    { sel: '#p-kosmik', t: T('Kosmik, in safe mode'), x: T('Answers come from a cited library before any AI writes a word, as tendencies, not predictions. Guests get 3 questions a day.') },
-    { sel: '#p-pay', t: T('Layer 3: shared rails'), x: T('Noha Pay and Noha Money are open source under AGPL-3.0. Read the code, or run it yourself.') },
-    { sel: '#market', t: T('Big markets, small slices'), x: T('Each year-three target needs less than one percent of its market. The math is under every card.') },
-    { sel: '#questions', t: T('The hard questions'), x: T('Risks, focus and money, answered plainly.') },
-    { sel: '#founder', t: T('Join our mission'), x: T('Press the button once to join, and again to talk to our founder.') }
-  ];
-  var tour = document.getElementById('tour');
-  if (tour) {
-    var ring = tour.querySelector('.tour-ring'), card = tour.querySelector('.tour-card');
-    var stepEl = document.getElementById('tour-step'), titleEl = document.getElementById('tour-title'), textEl = document.getElementById('tour-text');
-    var dotsEl = tour.querySelector('.tour-dots');
-    var backBtn = tour.querySelector('[data-tour-back]'), nextBtn = tour.querySelector('[data-tour-next]');
-    var at = 0, tourOpener = null, target = null;
-    STEPS.forEach(function () { dotsEl.appendChild(document.createElement('i')); });
-    function place() {
-      if (!target) return;
-      var r = target.getBoundingClientRect(), pad = 8;
-      ring.style.top = (r.top - pad) + 'px'; ring.style.left = (r.left - pad) + 'px';
-      ring.style.width = (r.width + pad * 2) + 'px'; ring.style.height = (r.height + pad * 2) + 'px';
-    }
-    function go(i) {
-      at = Math.max(0, Math.min(STEPS.length - 1, i));
-      var s = STEPS[at];
-      target = document.querySelector(s.sel);
-      stepEl.textContent = T('Step') + ' ' + (at + 1) + ' ' + T('of') + ' ' + STEPS.length;
-      titleEl.textContent = s.t; textEl.textContent = s.x;
-      [].forEach.call(dotsEl.children, function (d, j) { d.className = j === at ? 'on' : j < at ? 'done' : ''; });
-      backBtn.disabled = at === 0;
-      nextBtn.textContent = at === STEPS.length - 1 ? T('Join our mission') : T('Next');
-      if (target && !s.fixed) {
-        var r = target.getBoundingClientRect();
-        var tall = r.height > window.innerHeight * 0.6;
-        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: tall ? 'start' : 'center' });
-      }
-      place();
-      card.focus({ preventScroll: true });
-    }
-    function openTour(b) {
-      tourOpener = b; tour.hidden = false; root.classList.add('touring');
-      if (nav.classList.contains('open')) setMenu(false);
-      go(0);
-      requestAnimationFrame(follow);
-    }
-    function closeTour() {
-      tour.hidden = true; root.classList.remove('touring'); target = null;
-      if (tourOpener && document.contains(tourOpener)) tourOpener.focus({ preventScroll: true });
-    }
-    document.querySelectorAll('[data-tour]').forEach(function (b) { b.addEventListener('click', function () { openTour(b); }); });
+  /* Talk to us: opens the contact flow */
+  document.querySelectorAll('[data-talk]').forEach(function (b) {
+    b.addEventListener('click', function () { openContact(b); });
+  });
 
-    /* First visit: dim the page, point at the walkthrough button */
-    var intro = document.getElementById('intro');
-    var start = document.getElementById('tour-start');
-    var SEEN = 'asanoha:public-intro-seen';
-    var seen = false;
-    try { seen = localStorage.getItem(SEEN) === '1'; } catch (e) { seen = true; }
-    function closeIntro() {
-      if (!intro || intro.hidden) return;
-      intro.hidden = true; root.classList.remove('intro-on');
-      try { localStorage.setItem(SEEN, '1'); } catch (e) {}
-    }
-    function placeIntro() {
-      if (intro.hidden) return;
-      var r = start.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > window.innerHeight) { closeIntro(); return; }
-      var ring = intro.querySelector('.intro-ring'), ptr = intro.querySelector('.intro-pointer'), tip = intro.querySelector('.intro-tip');
-      ring.style.cssText = 'top:' + (r.top - 6) + 'px;left:' + (r.left - 6) + 'px;width:' + (r.width + 12) + 'px;height:' + (r.height + 12) + 'px';
-      ptr.style.cssText = 'top:' + (r.top - 62) + 'px;left:' + (r.left + Math.min(48, r.width / 2) - 22) + 'px';
-      tip.style.cssText = 'top:' + (r.bottom + 16) + 'px;left:' + Math.max(16, r.left) + 'px';
-      requestAnimationFrame(placeIntro);
-    }
-    if (intro && start && !seen && window.scrollY < 200 && !location.hash) {
-      setTimeout(function () {
-        if (!tour.hidden || window.scrollY > 200 || (dialog && dialog.open)) return;
-        intro.hidden = false; root.classList.add('intro-on');
-        placeIntro();
-      }, 1200);
-      start.addEventListener('click', closeIntro);
-      intro.querySelector('.intro-close').addEventListener('click', closeIntro);
-      document.addEventListener('click', function (e) { if (!intro.hidden && !intro.querySelector('.intro-tip').contains(e.target)) closeIntro(); }, true);
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeIntro(); });
-    }
-    tour.querySelector('[data-tour-skip]').addEventListener('click', closeTour);
-    backBtn.addEventListener('click', function () { go(at - 1); });
-    nextBtn.addEventListener('click', function () {
-      if (at < STEPS.length - 1) return go(at + 1);
-      closeTour();
-      var b = document.querySelector('#founder [data-mission]');
-      if (b) { b.focus({ preventScroll: true }); b.click(); }
-    });
-    document.addEventListener('keydown', function (e) {
-      if (tour.hidden || (dialog.open)) return;
-      if (e.key === 'Escape') { e.preventDefault(); closeTour(); }
-      else if (e.key === 'ArrowRight') { e.preventDefault(); nextBtn.click(); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); if (at > 0) go(at - 1); }
-    });
-    // Follow the target while the page scrolls to it (smooth scroll, reveal motion, resizes)
-    function follow() { if (tour.hidden) return; place(); requestAnimationFrame(follow); }
+  /* Beats: inside each act (after the first), lines arrive one after another */
+  var beats = document.querySelectorAll('.act:not(.act-open) :is(.act-no, h2, .sub, .legend-note, .stack, .cost, .tried li, .story, .store-note, .charge, .stat, .chart-card, .steps-next li, .ask-item, .act-h3, .now li, .targets, .math, .person, .team-note)');
+  beats.forEach(function (el) {
+    var sibs = [].filter.call(el.parentNode.children, function (c) { return c.matches && [].indexOf.call(beats, c) > -1; });
+    el.style.setProperty('--b', Math.min(sibs.indexOf(el), 5));
+    el.classList.add('beat');
+  });
+  var beatIo = 'IntersectionObserver' in window && !reduce ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); beatIo.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' }) : null;
+  beats.forEach(function (el) { beatIo ? beatIo.observe(el) : el.classList.add('in'); });
+
+  /* Progress line along the bottom */
+  var bar = document.getElementById('progress-bar');
+  function onProgress() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    // a jump past an act (a link, the end key) still shows what was skipped
+    beats.forEach(function (el) { if (!el.classList.contains('in') && el.getBoundingClientRect().top < window.innerHeight * 0.9) el.classList.add('in'); });
+    if (bar) bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0).toFixed(4) + ')';
+  }
+  window.addEventListener('scroll', onProgress, { passive: true });
+  window.addEventListener('resize', onProgress);
+  onProgress();
+
+  /* Six acts: the marker shows which act is on screen */
+  var actsNav = document.getElementById('acts');
+  var acts = document.querySelectorAll('.act');
+  if (actsNav && acts.length && 'IntersectionObserver' in window) {
+    var actLinks = actsNav.querySelectorAll('a');
+    var actIo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = [].indexOf.call(acts, e.target);
+        actLinks.forEach(function (l, j) { if (j === i) l.setAttribute('aria-current', 'step'); else l.removeAttribute('aria-current'); });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    acts.forEach(function (a) { actIo.observe(a); });
   }
 })();

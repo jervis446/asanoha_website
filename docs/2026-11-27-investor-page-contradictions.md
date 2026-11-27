@@ -12,7 +12,7 @@ Facts were re-read on 27 Nov 2026 from the People Pitchers database (read-only),
 | 4 | Products intro, Layer 2 title, walkthrough | Amazon and AWS comparison ("our AWS", "what AWS is to Amazon") | "The apps meant to fund the company" | Comparison implies a scale we do not have |
 | 5 | 3D stack tags | "Middle · earns", "Base · open to all" (PP Learn) | "Middle · app", "Base · shared lessons" | The apps don't earn yet; PP Learn needs a People Pitchers sign-in and is not open source |
 | 6 | Live numbers | 8,975 jobs from 3,344 companies; 2,699 library entries; 412 commits, 379 in November; read on 25 Nov | 11,234 jobs from 3,807 companies; revenue ₹102 (all Kosmik, People Pitchers 0 paying companies); 558 commits since 25 Sep, 525 in November; read on 27 Nov | Fresh read; money shown where traction is shown |
-| 7 | Live numbers, job seekers | "174 from the IIM Indore placement batch" | "174 from one business school’s placement batch, and 172 of those have never signed in" | 172 of 174 never signed in; no written OK found to name the college for this figure |
+| 7 | Live numbers, job seekers | "174 from" a named college's placement batch | "174 from one business school’s placement batch, and 172 of those have never signed in" | 172 of 174 never signed in; no written OK found to name the college for this figure |
 | 8 | Store status | "Coming · not before January 2027" | "Not open yet: waiting on GST, licence and legal sign-off" | Future launch date removed |
 | 9 | People Pitchers status | "Live, invite-only · public on 14 Dec" | "Live, invite-only" | Future launch date removed |
 | 10 | People Pitchers targets | "First 90 days … 8 paying companies, ₹1.5 lakh revenue by 28 Feb 2027" | "First targets (Plan) … Today: 0 paying companies" | Dated promise removed; target shown next to today |
@@ -47,3 +47,15 @@ Facts were re-read on 27 Nov 2026 from the People Pitchers database (read-only),
 | 39 | Meta, Twitter card, JSON-LD | Store "opens after licensing", "Four Indian apps", stale FAQ copy | Status words, "Indian apps", FAQ rebuilt from the page | Matches the page |
 
 Not changed (owner or lawyer to decide): the founders' story lines ("Late night, chai, yaar, hear me out"), the founders' own school in their story and bios, the store's Vijaya framing ("Packed in pairs …"), the "AYUSH-licensed maker" line, the "no fear, no gemstones, no paid pujas" and "unlicensed CBD sellers" comparisons, and the "Join our mission" header button.
+
+## Six-act rebuild (27 Nov 2026, later the same day)
+
+The page was then rebuilt as a story in six acts, with a 01 to 06 marker fixed at the bottom of the screen: the problem, what it costs, what people have tried, the reveal, what is already working, and what happens next.
+
+- Cut: the walkthrough and its first-visit pointer, the founders' story chapters and dot videos, the timeline, the Gita note, the competition table, the market dot grids, the batch site card, the separate live-numbers strip and most of the FAQ.
+- Wearday is no longer on the page: its store status could not be confirmed. In the commit chart its commits are labelled "Other apps".
+- No college is named anywhere on the page.
+- The search speed (about 4 seconds) and the 93% agreement are left out: both were measured in testing.
+- Costs in act 02 carry their source and year and say they are not our market share.
+- Year-three targets (Plan) sit next to today's Real figure, with no dates. Wearday's target is gone, so they no longer add up to ₹30 crore.
+- The ask is "Join" (try Kosmik, ask for a People Pitchers invite) and "Talk to us" (the WhatsApp contact form), with no amount.
